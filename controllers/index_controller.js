@@ -16,9 +16,8 @@ const { body, validationResult } = require("express-validator");
 exports.main_page_get = asyncHandler(async (req, res, next) => {
   const allPosts = await Post.find({}).sort({ date_of_post: 1 }).exec();
 
-  //check if logged in or not
-
   res.render("index", {
+    user: res.locals.currentUser,
     posts: allPosts,
   });
 });
