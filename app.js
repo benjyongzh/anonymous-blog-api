@@ -47,6 +47,7 @@ app.use(express.urlencoded({ extended: false }));
 // ========================= use locals ============================
 app.use(function (req, res, next) {
   res.locals.currentUser = req.user;
+  res.locals.mainTitle = "Anon Blog";
   next();
 });
 
