@@ -3,16 +3,15 @@ const { DateTime } = require("luxon");
 
 const Schema = mongoose.Schema;
 
-const PostSchema = new Schema({
-  title: { type: String, required: true },
+const CommentSchema = new Schema({
   text: { type: String, required: true },
   user: { type: Schema.Types.ObjectId, ref: "User", required: true },
-  date_of_post: { type: Date, required: true, default: Date.now },
-  comments: [{ type: Schema.Types.ObjectId, ref: "Comment" }],
+  date_of_comment: { type: Date, required: true, default: Date.now },
+  replies: [{ type: Schema.Types.ObjectId, ref: "Comment" }],
 });
 
 //virtual for URL
-PostSchema.virtual("url").get(function () {
+CommentSchema.virtual("url").get(function () {
   return `/post/${this._id}`;
 });
 
@@ -25,4 +24,4 @@ PostSchema.virtual("url").get(function () {
 //     : "";
 // });
 
-module.exports = mongoose.model("Post", PostSchema);
+module.exports = mongoose.model("Comment", CommentSchema);
