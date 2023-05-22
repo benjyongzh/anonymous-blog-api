@@ -7,6 +7,7 @@ const passport = require("passport");
 const bcrypt = require("bcryptjs");
 const User = require("../models/user");
 
+const { nameValidation } = require("../middleware/nameValidation");
 const { usernameValidation } = require("../middleware/usernameValidation");
 const { passwordValidation } = require("../middleware/passwordValidation");
 
@@ -39,6 +40,7 @@ router.post(
   "/signup",
 
   //validate and sanitize form here
+  nameValidation,
   usernameValidation,
   passwordValidation,
 
