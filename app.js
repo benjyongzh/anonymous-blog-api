@@ -5,8 +5,8 @@ var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 
 const session = require("express-session");
-const passportSetup = require("./config/passport-setup");
 const passport = require("passport");
+require("./config/passport-setup")(passport);
 
 var indexRouter = require("./routes/index");
 var authRouter = require("./routes/auth");
@@ -14,7 +14,7 @@ var authRouter = require("./routes/auth");
 // ============================= DB connect
 var mongoose = require("mongoose");
 require("dotenv").config();
-const mongodb = process.env.MONGODB_URI;
+const mongoDb = process.env.MONGODB_URI;
 mongoose.connect(mongoDb, { useUnifiedTopology: true, useNewUrlParser: true });
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "mongo connection error"));
