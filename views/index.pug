@@ -2,4 +2,15 @@ extends layout
 
 block content
   h1= title
-  p Welcome to #{title}
+  p Welcome to #{mainTitle}
+
+  ul(class="list-group")
+    each post in posts 
+      a(href=post.url class="list-group-item list-group-item-action") 
+        p(class="h6") #{post.user }
+        p(class="h6") #{post.date_of_post }
+        p(class="h5") #{post.title }
+
+    else 
+      p There are no posts yet.
+

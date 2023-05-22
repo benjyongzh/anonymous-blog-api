@@ -18,6 +18,7 @@ exports.main_page_get = asyncHandler(async (req, res, next) => {
 
   res.render("index", {
     user: res.locals.currentUser,
+    title: "Home",
     posts: allPosts,
   });
 });
