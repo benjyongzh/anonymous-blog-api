@@ -1,0 +1,23 @@
+extends layout
+
+block content
+  p Welcome to #{mainTitle}
+
+  form(method="POST" action ="")
+    div.form-group
+      label(for="username") Username: 
+      input#username.form-control(type="text" placeholder="Username Here" name="username" required='true')
+
+    div.form-group
+      label(for="password") Password: 
+      input#password.form-control(type="password" name="password" required='true')
+
+    button(class="btn btn-primary mr-3" type='submit') Submit
+    a(class="btn btn-outline-dark" href="/" role="button") Cancel
+
+      
+
+  p Not signed up yet?
+    a(href='/signup') Create an account
+    span .
+
