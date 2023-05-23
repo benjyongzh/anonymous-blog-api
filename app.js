@@ -15,9 +15,13 @@ var authRouter = require("./routes/auth");
 var mongoose = require("mongoose");
 require("dotenv").config();
 const mongoDb = process.env.MONGODB_URI;
-mongoose.connect(mongoDb, { useUnifiedTopology: true, useNewUrlParser: true });
+mongoose
+  .connect(mongoDb, { useUnifiedTopology: true, useNewUrlParser: true })
+  .catch((error) => console.error(error));
+
+// mongo error handling
 const db = mongoose.connection;
-db.on("error", console.error.bind(console, "mongo connection error"));
+db.on("error", console.error.bind(console, "Mongo Connection Error:"));
 
 var app = express();
 
@@ -29,7 +33,7 @@ app.set("view engine", "pug");
 var compression = require("compression");
 var helmet = require("helmet");
 app.use(compression());
-app.use(helmet());
+app.use(helmet.crossOriginEmbedderPolicy({ policy: "credentialless" }));
 
 app.use(logger("dev"));
 app.use(express.json());
