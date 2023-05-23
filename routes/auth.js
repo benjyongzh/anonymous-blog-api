@@ -25,7 +25,7 @@ router.get("/loggingout", (req, res, next) => {
     if (err) {
       return next(err);
     }
-    res.redirect("/logout");
+    res.redirect("/auth/logout");
   });
 });
 
