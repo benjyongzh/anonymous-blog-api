@@ -10,7 +10,6 @@ const nameValidation = [
     .withMessage("First name can only contain alphabets, spaces and hypens.")
     .escape()
     .withMessage("First name is required."),
-  ,
   body("last_name", "Last name must not be empty")
     .trim()
     .isLength({ min: 1 })
@@ -19,7 +18,6 @@ const nameValidation = [
     .withMessage("Last name can only contain alphabets, spaces and hypens.")
     .escape()
     .withMessage("Last name is required."),
-  ,
 ];
 
 module.exports = { nameValidation };

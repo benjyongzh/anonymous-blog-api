@@ -44,6 +44,7 @@ exports.user_signup_post = [
           password: "",
           member_status: "Normal",
         });
+        // console.log(results.array());
 
         res.render("signup_page", { user: temp_user, errors: results.array() });
       } else {
