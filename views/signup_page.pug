@@ -8,31 +8,32 @@ block content
     if errors 
       ul(class="list-group list-group-flush mt-3") 
         for error in errors 
-          li(class='list-group-item alert alert-danger') Error: (#{error.path}) #{error.msg}
+          if error.path!=="first_name" && error.path!=="last_name" && error.path!=="username" && error.path!=="password"
+            li(class='list-group-item alert alert-danger') Error: (#{error.path}) #{error.msg}
 
     div.form-group
       label(for="first_name") First Name: 
-      input#first_name.form-control(type="text" placeholder="Jack" name="first_name" required='true' value=(undefined===user ? "" : user.first_name))
+      input#first_name.form-control(type="text" placeholder="Jack" name="first_name" required='true' value=(undefined===signing_user ? "" : signing_user.first_name))
       if errors 
         for error in errors 
           if error.path==="first_name"
-            p(class='alert alert-danger') Error: #{error.msg}
+            p(class='alert alert-danger mt-2') Error: #{error.msg}
 
     div.form-group
       label(for="last_name") Last Name: 
-      input#last_name.form-control(type="text" placeholder="Sparrow" name="last_name" required='true' value=(undefined===user ? "" : user.last_name))
+      input#last_name.form-control(type="text" placeholder="Sparrow" name="last_name" required='true' value=(undefined===signing_user ? "" : signing_user.last_name))
       if errors 
         for error in errors 
           if error.path==="last_name"
-            p(class='alert alert-danger') Error: #{error.msg}
+            p(class='alert alert-danger mt-2') Error: #{error.msg}
 
     div.form-group
       label(for="username") Username: 
-      input#username.form-control(type="text" placeholder="Username Here" name="username" required='true' value=(undefined===user ? "" : user.username))
+      input#username.form-control(type="text" placeholder="Username Here" name="username" required='true' value=(undefined===signing_user ? "" : signing_user.username))
       if errors 
         for error in errors 
           if error.path==="username"
-            p(class='alert alert-danger') Error: #{error.msg}
+            p(class='alert alert-danger mt-2') Error: #{error.msg}
 
     div.form-group
       label(for="password") Password: 

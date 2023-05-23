@@ -46,7 +46,10 @@ exports.user_signup_post = [
         });
         // console.log(results.array());
 
-        res.render("signup_page", { user: temp_user, errors: results.array() });
+        res.render("signup_page", {
+          signing_user: temp_user,
+          errors: results.array(),
+        });
       } else {
         bcrypt.hash(req.body.password, 10, async (err, hashedPassword) => {
           const user = new User({
@@ -58,6 +61,7 @@ exports.user_signup_post = [
           });
 
           const result = await user.save();
+          //make sure user stays logged in
           res.redirect("/");
         });
       }
