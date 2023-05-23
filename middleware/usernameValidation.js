@@ -6,7 +6,7 @@ const usernameValidation = [
     .trim()
     .isLength({ min: 5 })
     .withMessage("Username must be at least 5 characters long")
-    .isAlphanumeric("en-US", { ignore: /\-/g })
+    .isAlphanumeric("en-US", { ignore: /\_\-/g })
     .withMessage(
       "Username can only contain alphanumeric characters and hypens."
     )
