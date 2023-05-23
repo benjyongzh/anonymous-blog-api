@@ -17,7 +17,9 @@ router.get("/signup", (req, res) => {
 });
 
 /* POST signup page. */
-router.post("/signup", userController.user_signup_post);
+router.post("/signup", (req, res) => {
+  userController.user_signup_post;
+});
 
 /* GET logging out page. */
 router.get("/loggingout", (req, res, next) => {

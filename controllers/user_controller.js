@@ -57,7 +57,6 @@ exports.user_signup_post = [
           });
 
           const result = await user.save();
-
           res.redirect("/");
         });
       }
