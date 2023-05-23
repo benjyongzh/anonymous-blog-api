@@ -1,15 +1,7 @@
 var express = require("express");
 var router = express.Router();
-const asyncHandler = require("express-async-handler");
-const { body, validationResult } = require("express-validator");
 
-const passport = require("passport");
-const bcrypt = require("bcryptjs");
-const User = require("../models/user");
-
-const { nameValidation } = require("../middleware/nameValidation");
-const { usernameValidation } = require("../middleware/usernameValidation");
-const { passwordValidation } = require("../middleware/passwordValidation");
+const userController = require("../controllers/user_controller");
 
 /* GET login page. */
 router.get("/login", (req, res) => {
@@ -17,18 +9,7 @@ router.get("/login", (req, res) => {
 });
 
 /* POST login page. */
-router.post(
-  "/login",
-
-  //validate and sanitize form here
-  usernameValidation,
-  passwordValidation,
-
-  passport.authenticate("local", {
-    successRedirect: "/",
-    failureRedirect: "/login",
-  })
-);
+router.post("/login", userController.user_login_post);
 
 /* GET signup page. */
 router.get("/signup", (req, res) => {
@@ -36,30 +17,7 @@ router.get("/signup", (req, res) => {
 });
 
 /* POST signup page. */
-router.post(
-  "/signup",
-
-  //validate and sanitize form here
-  nameValidation,
-  usernameValidation,
-  passwordValidation,
-
-  async (req, res, next) => {
-    try {
-      bcrypt.hash(req.body.password, 10, async (err, hashedPassword) => {
-        const user = new User({
-          username: req.body.username,
-          password: hashedPassword,
-        });
-        const result = await user.save();
-
-        res.redirect("/");
-      });
-    } catch (err) {
-      return next(err);
-    }
-  }
-);
+router.post("/signup", userController.user_signup_post);
 
 /* GET logging out page. */
 router.get("/loggingout", (req, res, next) => {
