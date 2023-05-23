@@ -21,10 +21,9 @@ module.exports = function (passport) {
           }
           if (res) {
             //password matches. log in
-            console.log("passwords match");
             return done(null, user);
           } else {
-            console.log("passwords do not match");
+            //password no match
             return done(null, false, { message: "Incorrect password" });
           }
         });
