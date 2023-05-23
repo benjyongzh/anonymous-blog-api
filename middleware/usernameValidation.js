@@ -4,8 +4,8 @@ const usernameValidation = [
   //validation and sanitization of fields
   body("username", "Title must not be empty")
     .trim()
-    .isLength({ min: 8 })
-    .withMessage("Username must be at least 8 characters long")
+    .isLength({ min: 5 })
+    .withMessage("Username must be at least 5 characters long")
     .isAlphanumeric("en-US", { ignore: /\-/g })
     .withMessage(
       "Username can only contain alphanumeric characters and hypens."
