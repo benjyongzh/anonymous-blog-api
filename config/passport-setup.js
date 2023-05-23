@@ -2,7 +2,7 @@ const LocalStrategy = require("passport-local").Strategy;
 const bcrypt = require("bcryptjs");
 const User = require("../models/user");
 
-export default function (passport) {
+module.exports = function (passport) {
   passport.use(
     new LocalStrategy(async (username, password, done) => {
       try {
@@ -49,4 +49,4 @@ export default function (passport) {
       done(err);
     }
   });
-}
+};
