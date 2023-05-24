@@ -4,6 +4,9 @@ block content
   h1= title
   p Welcome to #{mainTitle}
 
+  a(class="btn btn-primary" href="/post/create" role="button") Create Post
+
+
   ul(class="list-group")
     each post in posts 
       a(href=post.url class="list-group-item list-group-item-action") 
