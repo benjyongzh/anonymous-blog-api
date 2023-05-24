@@ -10,6 +10,7 @@ module.exports = function (passport) {
 
         //check username
         if (!user) {
+          console.log("no such username");
           return done(null, false, { message: "Incorrect username" });
         }
 
@@ -24,6 +25,7 @@ module.exports = function (passport) {
             return done(null, user);
           } else {
             //password no match
+            console.log("password no match");
             return done(null, false, { message: "Incorrect password" });
           }
         });

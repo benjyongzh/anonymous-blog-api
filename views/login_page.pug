@@ -6,11 +6,24 @@ block content
   form(method="POST" action ="")
     div.form-group
       label(for="username") Username: 
-      input#username.form-control(type="text" placeholder="Username Here" name="username" required='true')
+      input#username.form-control(type="text" placeholder="Username Here" name="username" required='true' value=(undefined===signing_user ? "" : signing_user.username))
+      if errors 
+        for error in errors 
+          if error.path==="username"
+            p(class='alert alert-danger mt-2') Error: #{error.msg}
 
     div.form-group
       label(for="password") Password: 
       input#password.form-control(type="password" name="password" required='true')
+      if errors 
+        for error in errors 
+          if error.path==="password"
+            p(class='alert alert-danger mt-2') Error: #{error.msg}
+
+    if errors 
+        for error in errors 
+          if error.path==="generic"
+            p(class='alert alert-danger mt-2') Error: #{error.msg}
 
     button(class="btn btn-primary mr-3" type='submit') Submit
 

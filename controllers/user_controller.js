@@ -5,6 +5,7 @@ const asyncHandler = require("express-async-handler");
 const { validationResult } = require("express-validator");
 
 // passport
+const errorMsg = require("../config/passport-error-messages");
 const passport = require("passport");
 const bcrypt = require("bcryptjs");
 
@@ -21,8 +22,26 @@ exports.user_login_post = [
 
   passport.authenticate("local", {
     successRedirect: "/",
-    failureRedirect: "/login",
+    failWithError: true,
+    failureMessage: true,
   }),
+  function (err, req, res, next) {
+    console.log(req.session.messages);
+    //authentication failed
+    const validationResults = validationResult(req);
+
+    let temp_user = new User({
+      username: req.body.username,
+    });
+
+    //error is in validation or make up invalid error
+    return res.render("login_page", {
+      signing_user: temp_user,
+      errors: !validationResults.isEmpty()
+        ? validationResults.array()
+        : [{ path: "generic", msg: "Invalid username and/or password" }],
+    });
+  },
 ];
 
 //POST sign-up of user
