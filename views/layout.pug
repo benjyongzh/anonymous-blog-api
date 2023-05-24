@@ -33,7 +33,7 @@ html
           ul(class='nav navbar-nav')
             if user
               li(class='nav-item') 
-                a(class='nav-link' href='/user/:id') Profile
+                a(class='nav-link' href='/user/:id') #{user.first_name}
               li(class='nav-item') 
                 a(class='nav-link' href='/auth/loggingout') Log Out
             else 

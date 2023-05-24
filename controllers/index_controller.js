@@ -20,7 +20,7 @@ exports.main_page_get = asyncHandler(async (req, res, next) => {
     .exec();
 
   res.render("index", {
-    user: res.locals.currentUser,
+    user: req.user,
     title: "Home",
     posts: allPosts,
   });
