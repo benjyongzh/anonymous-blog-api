@@ -61,8 +61,14 @@ exports.user_signup_post = [
           });
 
           const result = await user.save();
+
           //make sure user stays logged in
-          res.redirect("/");
+          req.login(user, function (err) {
+            // if (err) {
+            //   return next(err);
+            // }
+            return res.redirect("/");
+          });
         });
       }
     } catch (err) {
