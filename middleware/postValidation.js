@@ -9,7 +9,7 @@ const postValidation = [
     .escape(),
   body("text")
     .trim()
-    .isLength({ max: 10 })
+    .isLength({ max: 300 })
     .withMessage("Text must be maximum of 300 characters")
     .escape(),
 ];
