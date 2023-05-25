@@ -4,8 +4,6 @@ Practice project for MongoDB, ExpressJS and OAuth. This is a project based on an
 
 Things to work on:
 
-- /post/create form.
-- /post/create middleware validations.
 - post detail page.
 - user detail page.
 - styling for navbar. (shift to right side)
