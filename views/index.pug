@@ -1,9 +1,7 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{mainTitle}
-
+  h3= title
   
   a(class=`btn ${user ? "btn-primary" : "btn-secondary disabled"}` href="/post/create"  aria-disabled=(user===undefined) role="button") Create Post
 
