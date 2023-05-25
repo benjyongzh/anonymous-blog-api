@@ -1,0 +1,16 @@
+extends layout
+
+block content
+  h3 #{post.title}
+
+  p(class='h6') #{post.text}
+
+  if post.comments 
+    ul(class='list-group')
+      each comment in post.comments 
+        li(class='list-group-item')
+          p #{comment.user}
+          p #{comment.date_of_comment}
+          p #{comment.text}
+  else 
+    p No comments posted yet.

@@ -1,0 +1,28 @@
+extends layout
+
+block content
+  p Create a post
+
+  form(method="POST" action ="")
+
+    div.form-group
+      label(for="title") Title of Post: 
+      input#title.form-control(type="text" placeholder="Post Title Here" name="title" required='true' value=(undefined===post ? "" : post.title))
+      if errors 
+        for error in errors 
+          if error.path==="title"
+            p(class='alert alert-danger mt-2') Error: #{error.msg}
+
+      div.form-group
+        label(for='text') Post Text:
+        textarea#text.form-control(type='textarea', placeholder="Maximum of 300 characters" name='text') #{undefined===post ? "" : post.text}
+        if errors 
+        for error in errors 
+          if error.path==="text"
+            p(class='alert alert-danger mt-2') Error: #{error.msg}
+
+    button(class="btn btn-primary mr-3" type='submit') Submit
+    a(class="btn btn-outline-secondary" href=backURL type='button') Cancel
+
+      
+
