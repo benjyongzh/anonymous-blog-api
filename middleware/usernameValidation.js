@@ -8,10 +8,9 @@ const usernameValidation = [
     .withMessage("Username must be at least 5 characters long")
     .isAlphanumeric("en-US", { ignore: /\_\-/g })
     .withMessage(
-      "Username can only contain alphanumeric characters and hypens."
+      "Username can only contain alphanumeric characters, underscores and hypens."
     )
-    .escape()
-    .withMessage("Username is required."),
+    .escape(),
 ];
 
 module.exports = { usernameValidation };

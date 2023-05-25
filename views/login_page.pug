@@ -1,35 +1,40 @@
 extends layout
 
 block content
-  h3 Log In
+  div(class="d-flex flex-column align-items-stretch justify-content-center container" style="max-width: 380px")
+    h3(class="m-4 text-center") Log In
 
-  form(method="POST" action ="")
-    div.form-group
-      label(for="username") Username: 
-      input#username.form-control(type="text" placeholder="Username Here" name="username" required='true' value=(undefined===signing_user ? "" : signing_user.username))
-      if errors 
-        for error in errors 
-          if error.path==="username"
-            p(class='alert alert-danger mt-2') Error: #{error.msg}
+    form(method="POST" action ="")
+      div(class="mt-3 form-group")
+        label(for="username") Username: 
+        input#username.form-control(type="text" placeholder="Username Here" name="username" required='true' value=(undefined===signing_user ? "" : signing_user.username))
+        p &nbsp;
+          if errors 
+            for error in errors 
+              if error.path==="username"
+                span(class='text-danger') #{error.msg}
 
-    div.form-group
-      label(for="password") Password: 
-      input#password.form-control(type="password" name="password" required='true')
-      if errors 
-        for error in errors 
-          if error.path==="password"
-            p(class='alert alert-danger mt-2') Error: #{error.msg}
+      div(class="mt-2 form-group")
+        label(for="password") Password:
+        input#password.form-control(type="password" name="password" required='true')
+        p &nbsp;
+          if errors 
+            for error in errors 
+              if error.path==="password"
+                span(class='text-danger') #{error.msg}
 
-    if errors 
-        for error in errors 
-          if error.path==="generic"
-            p(class='alert alert-danger mt-2') Error: #{error.msg}
+      p &nbsp;
+        if errors 
+          for error in errors 
+            if error.path==="generic"
+              span(class='text-danger') #{error.msg}
 
-    button(class="btn btn-primary mr-3" type='submit') Submit
+      div(class="mt-2 text-center form-group")
+        button(class="col btn btn-primary" type='submit') Submit
 
-      
+        
 
-  p Not signed up yet? Create an account 
-    a(href='/auth/signup') here
-    span .
+    p(class="mt-2") Not signed up yet? Create an account 
+      a(href='/auth/signup') here
+      span .
 

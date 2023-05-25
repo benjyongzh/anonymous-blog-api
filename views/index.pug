@@ -6,7 +6,7 @@ block content
   a(class=`btn ${user ? "btn-primary" : "btn-secondary disabled"}` href="/post/create"  aria-disabled=(user===undefined) role="button") Create Post
 
 
-  ul(class="list-group")
+  ul(class="list-group mt-3")
     each post in posts 
       a(href=post.url class="list-group-item list-group-item-action") 
         p(class="h6") #{post.user.username }
