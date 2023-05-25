@@ -1,5 +1,6 @@
 const User = require("../models/user");
 const Post = require("../models/post");
+const Comment = require("../models/comment");
 
 const asyncHandler = require("express-async-handler");
 const { body, validationResult } = require("express-validator");
@@ -10,6 +11,7 @@ const { postValidation } = require("../middleware/postValidation");
 //GET post creation page
 exports.post_create_get = asyncHandler(async (req, res, next) => {
   res.render("post_create_page", {
+    user: req.user,
     backURL: req.header.renderer || "/",
   });
 });
@@ -27,7 +29,7 @@ exports.post_create_post = [
       title: req.body.title,
       text: req.body.text,
       user: req.user,
-      date_of_post: Date.now,
+      date_of_post: Date.now(),
       comments: [],
     });
 
@@ -35,6 +37,7 @@ exports.post_create_post = [
     if (!results.isEmpty()) {
       // there are validation errors
       res.render("post_create_page", {
+        user: req.user,
         post: post,
         errors: results.array(),
         backURL: req.header.renderer || "/",
@@ -50,7 +53,7 @@ exports.post_create_post = [
 exports.post_detail = asyncHandler(async (req, res, next) => {
   const post = Post.findById(req.params.id)
     .populate("user")
-    .populate("comments")
+    .populate({ path: "comments", model: Comment })
     .exec();
 
   if (post === null) {
@@ -60,6 +63,7 @@ exports.post_detail = asyncHandler(async (req, res, next) => {
   }
 
   res.render("post_detail_page", {
+    user: req.user,
     post: post,
   });
 });

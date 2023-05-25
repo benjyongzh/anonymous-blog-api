@@ -7,7 +7,11 @@ const CommentSchema = new Schema({
   text: { type: String, required: true },
   user: { type: Schema.Types.ObjectId, ref: "User", required: true },
   date_of_comment: { type: Date, required: true, default: Date.now },
-  replies: [{ type: Schema.Types.ObjectId, ref: "Comment" }],
+});
+
+//add recursive comments
+CommentSchema.add({
+  replies: [CommentSchema],
 });
 
 //virtual for URL
