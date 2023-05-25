@@ -5,7 +5,6 @@ const asyncHandler = require("express-async-handler");
 const { validationResult } = require("express-validator");
 
 // passport
-const errorMsg = require("../config/passport-error-messages");
 const passport = require("passport");
 const bcrypt = require("bcryptjs");
 
