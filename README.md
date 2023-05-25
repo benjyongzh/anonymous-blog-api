@@ -5,6 +5,5 @@ Practice project for MongoDB, ExpressJS and OAuth. This is a project based on an
 Things to work on:
 
 - user detail page.
-- styling for navbar. (shift to right side)
 - option to become premium member and admin. Including censoring of real names of post unless admin.
 - creating comments.

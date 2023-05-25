@@ -26,21 +26,21 @@ html
     div(class='container-fluid p-0')
       nav(class='navbar navbar-expand-sm navbar-light bg-light')
         a(class='navbar-brand' href='/') #{mainTitle}
-        button(class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation")
+        button(class="navbar-toggler mb-3" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation")
           span(class="navbar-toggler-icon")
 
         div(class="collapse navbar-collapse" id="navbarSupportedContent")
-          ul(class='nav navbar-nav')
+          ul(class='nav navbar-nav ml-auto justify-content-end' style="gap: 1rem")
             if user
               li(class='nav-item') 
-                a(class='nav-link' href=`/user/${user._id}`) #{user.first_name}
+                a(class=`fs-3 nav-link text-right ${page_name==="user_detail" ? "active" : ""}` href=`/user/${user._id}`) #{user.first_name}
               li(class='nav-item') 
-                a(class='nav-link' href='/auth/loggingout') Log Out
+                a(class='fs-3 nav-link text-right' href='/auth/loggingout') Log Out
             else 
               li(class='nav-item') 
-                a(class='nav-link' href='/auth/login') Log In
+                a(class=`fs-3 nav-link text-right ${page_name==="login_page" ? "active" : ""}` href='/auth/login') Log In
               li(class='nav-item') 
-                a(class='nav-link' href='/auth/signup') Sign Up
+                a(class=`fs-3 nav-link text-right ${page_name==="signup_page" ? "active" : ""}` href='/auth/signup') Sign Up
                 
         
       div(class='container-fluid')

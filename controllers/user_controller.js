@@ -35,6 +35,7 @@ exports.user_login_post = [
 
     //error is in validation or make up invalid error
     return res.render("login_page", {
+      page_name: "login_page",
       signing_user: temp_user,
       errors: !validationResults.isEmpty()
         ? validationResults.array()
@@ -65,6 +66,7 @@ exports.user_signup_post = [
         // console.log(results.array());
 
         res.render("signup_page", {
+          page_name: "signup_page",
           signing_user: temp_user,
           errors: results.array(),
         });
@@ -103,6 +105,7 @@ exports.user_detail = asyncHandler(async (req, res, next) => {
   ]);
 
   res.render("user_detail", {
+    page_name: "user_detail",
     user: userToFind,
     posts: posts,
   });
