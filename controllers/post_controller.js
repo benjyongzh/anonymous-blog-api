@@ -51,7 +51,7 @@ exports.post_create_post = [
 
 //POST post creation page
 exports.post_detail = asyncHandler(async (req, res, next) => {
-  const post = Post.findById(req.params.id)
+  const post = await Post.findById(req.params.id)
     .populate("user")
     .populate({ path: "comments", model: Comment })
     .exec();
