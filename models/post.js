@@ -17,12 +17,10 @@ PostSchema.virtual("url").get(function () {
 });
 
 // //virtual for formatted dates
-// BrandSchema.virtual("year_established_formatted").get(function () {
-//   return this.year_established
-//     ? DateTime.fromJSDate(this.year_established).toLocaleString(
-//         DateTime.DATE_FULL
-//       )
-//     : "";
-// });
+PostSchema.virtual("date_of_post_formatted").get(function () {
+  return this.date_of_post
+    ? DateTime.fromJSDate(this.date_of_post).toLocaleString(DateTime.DATE_FULL)
+    : "";
+});
 
 module.exports = mongoose.model("Post", PostSchema);
