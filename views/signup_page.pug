@@ -1,53 +1,61 @@
 extends layout
 
 block content
-  h3 Sign Up
+  div(class="d-flex flex-column align-items-stretch justify-content-center container" style="max-width: 380px")
+    h3(class="m-4 text-center") Sign Up
 
-  form(method="POST" action ="")
+    form(method="POST" action ="")
 
-    if errors 
-      ul(class="list-group list-group-flush mt-3") 
-        for error in errors 
-          if error.path!=="first_name" && error.path!=="last_name" && error.path!=="username" && error.path!=="password"
-            li(class='list-group-item alert alert-danger') Error: (#{error.path}) #{error.msg}
+      div(class="mt-3 form-group")
+        label(for="first_name") First Name: 
+        input#first_name.form-control(type="text" placeholder="Jack" name="first_name" required='true' value=(undefined===signing_user ? "" : signing_user.first_name))
+        p &nbsp;
+          if errors 
+            for error in errors 
+              if error.path==="first_name"
+                p(class='text-danger') #{error.msg}
 
-    div.form-group
-      label(for="first_name") First Name: 
-      input#first_name.form-control(type="text" placeholder="Jack" name="first_name" required='true' value=(undefined===signing_user ? "" : signing_user.first_name))
-      if errors 
-        for error in errors 
-          if error.path==="first_name"
-            p(class='alert alert-danger mt-2') Error: #{error.msg}
+      div(class="mt-2 form-group")
+        label(for="last_name") Last Name: 
+        input#last_name.form-control(type="text" placeholder="Sparrow" name="last_name" required='true' value=(undefined===signing_user ? "" : signing_user.last_name))
+        p &nbsp;
+          if errors 
+            for error in errors 
+              if error.path==="last_name"
+                p(class='text-danger') #{error.msg}
 
-    div.form-group
-      label(for="last_name") Last Name: 
-      input#last_name.form-control(type="text" placeholder="Sparrow" name="last_name" required='true' value=(undefined===signing_user ? "" : signing_user.last_name))
-      if errors 
-        for error in errors 
-          if error.path==="last_name"
-            p(class='alert alert-danger mt-2') Error: #{error.msg}
+      div(class="mt-2 form-group")
+        label(for="username") Username: 
+        input#username.form-control(type="text" placeholder="Username Here" name="username" required='true' value=(undefined===signing_user ? "" : signing_user.username))
+        p &nbsp;
+          if errors 
+            for error in errors 
+              if error.path==="username"
+                p(class='text-danger') #{error.msg}
 
-    div.form-group
-      label(for="username") Username: 
-      input#username.form-control(type="text" placeholder="Username Here" name="username" required='true' value=(undefined===signing_user ? "" : signing_user.username))
-      if errors 
-        for error in errors 
-          if error.path==="username"
-            p(class='alert alert-danger mt-2') Error: #{error.msg}
+      div(class="mt-2 form-group")
+        label(for="password") Password: 
+        input#password.form-control(type="password" name="password" required='true')
+        p &nbsp;
+          if errors 
+            for error in errors 
+              if error.path==="password"
+                p(class='text-danger') #{error.msg}
 
-    div.form-group
-      label(for="password") Password: 
-      input#password.form-control(type="password" name="password" required='true')
-      if errors 
-        for error in errors 
-          if error.path==="password"
-            p(class='alert alert-danger mt-2') Error: #{error.msg}
-
-    button(class="btn btn-primary mr-3" type='submit') Submit
+      p &nbsp;
+        if errors 
+          ul(class="list-group list-group-flush") 
+            for error in errors 
+              if error.path!=="first_name" && error.path!=="last_name" && error.path!=="username" && error.path!=="password"
+                li(class='text-danger') Error: (#{error.path}) #{error.msg}
 
       
+      div(class="mt-2 text-center form-group")
+        button(class="col btn btn-primary" type='submit') Submit
 
-  p Already have an account? Log in 
-    a(href='/auth/login') here
-    span .
+        
+
+    p(class="mt-2") Already have an account? Log in 
+      a(href='/auth/login') here
+      span .
 
