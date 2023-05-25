@@ -97,15 +97,13 @@ exports.user_signup_post = [
 
 //display list of all posts of this user
 exports.user_detail = asyncHandler(async (req, res, next) => {
-  const [currentUser, posts] = await Promise.all([
-    res.locals.currentUser,
-    Post.find({ user: res.locals.currentUser })
-      .sort({ date_of_post: 1 })
-      .exec(),
+  const [userToFind, posts] = await Promise.all([
+    User.findById(req.params.id),
+    Post.find({ user: userToFind }).sort({ date_of_post: 1 }).exec(),
   ]);
 
   res.render("user_detail", {
-    user: currentUser,
+    user: userToFind,
     posts: posts,
   });
 });
