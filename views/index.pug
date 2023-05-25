@@ -4,7 +4,8 @@ block content
   h1= title
   p Welcome to #{mainTitle}
 
-  a(class="btn btn-primary" href="/post/create" role="button") Create Post
+  
+  a(class=`btn ${user ? "btn-primary" : "btn-secondary disabled"}` href="/post/create"  aria-disabled=(user===undefined) role="button") Create Post
 
 
   ul(class="list-group")
