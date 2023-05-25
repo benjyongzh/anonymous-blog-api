@@ -1,7 +1,7 @@
 extends layout
 
 block content
-  p Create a post
+  h3 Create a post
 
   form(method="POST" action ="")
 
@@ -13,10 +13,10 @@ block content
           if error.path==="title"
             p(class='alert alert-danger mt-2') Error: #{error.msg}
 
-      div.form-group
-        label(for='text') Post Text:
-        textarea#text.form-control(type='textarea', placeholder="Maximum of 300 characters" name='text') #{undefined===post ? "" : post.text}
-        if errors 
+    div.form-group
+      label(for='text') Post Text:
+      textarea#text.form-control(type='textarea', placeholder="Maximum of 300 characters" name='text') #{undefined===post ? "" : post.text}
+      if errors 
         for error in errors 
           if error.path==="text"
             p(class='alert alert-danger mt-2') Error: #{error.msg}
