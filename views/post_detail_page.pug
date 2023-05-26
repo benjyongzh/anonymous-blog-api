@@ -1,8 +1,8 @@
 extends layout
 
 block content
-  div(class="bg-primary bg-gradient bg-opacity-25 mt-4 d-flex flex-column align-items-stretch justify-content-center container border-start border-end border-primary border-2" style="max-width: 900px")
-    div(class="d-flex flex-wrap mt-2")
+  div(class="mt-4 d-flex flex-column align-items-stretch justify-content-center container" style="max-width: 900px")
+    div(class="d-flex flex-wrap mt-2 mb-0")
       a(class="link-primary" href=post.user.url) #{post.user.username}
       span &nbsp;-&nbsp;
       p posted on #{post.date_of_post_formatted}
@@ -11,11 +11,11 @@ block content
       //-   a(class="btn btn-outline-secondary" href=post.url type='button' style="max-width:250px") Edit
       //-   a(class="btn btn-outline-danger" href=post.url type='button' style="max-width:250px") Delete
 
-    hr
+    //- hr(class='mt-0')
     h3 #{post.title}
     p #{post.text}
 
-    hr
+    hr(class='mt-0')
 
     h5 #{post.comments.length} Comments
     if post.comments.length > 0 
