@@ -15,7 +15,7 @@ const { body, validationResult } = require("express-validator");
 
 //GET main page, sort posts according to date of posting
 exports.main_page_get = asyncHandler(async (req, res, next) => {
-  const allPosts = await Post.find({}, "user title date_of_post")
+  const allPosts = await Post.find({})
     .populate("user")
     .sort({ date_of_post: 1 })
     .exec();
