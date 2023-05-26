@@ -7,9 +7,9 @@ block content
       span &nbsp;-&nbsp;
       p posted on #{post.date_of_post_formatted}
 
-      if user && post.user._id.toString()===user._id.toString()
-        a(class="btn btn-outline-secondary" href=post.url type='button' style="max-width:250px") Edit
-        a(class="btn btn-outline-danger" href=post.url type='button' style="max-width:250px") Delete
+      //- if user && post.user._id.toString()===user._id.toString()
+      //-   a(class="btn btn-outline-secondary" href=post.url type='button' style="max-width:250px") Edit
+      //-   a(class="btn btn-outline-danger" href=post.url type='button' style="max-width:250px") Delete
 
     hr
     h3 #{post.title}
