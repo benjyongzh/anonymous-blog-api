@@ -104,6 +104,12 @@ exports.user_signup_post = [
 //display list of all posts of this user
 exports.user_detail = asyncHandler(async (req, res, next) => {
   const userToFind = await User.findById(req.params.id).exec();
+  if (userToFind === null) {
+    // no such user
+    const err = new Error("User not found");
+    err.status = 404;
+    return next(err);
+  }
 
   const posts = await Post.find({ user: userToFind })
     .sort({ date_of_post: 1 })
