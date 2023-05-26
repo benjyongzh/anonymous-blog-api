@@ -21,12 +21,12 @@ block content
 
     //- changing member status
     if user && userToLookAt._id.toString()===user._id.toString()
-      div(class="text-center")
-        a(class=`btn btn-warning` href="/user/:id/memberstatus") Update Membership
+      div(class="text-center mb-4")
+        a(class=`btn btn-warning` href=`/user/${userToLookAt._id}/memberstatus`) Update Membership
 
     //- posts
     hr(class='mt-0')
-        if user && userToLookAt._id.toString()===user._id.toString()
+    if user && userToLookAt._id.toString()===user._id.toString()
       h6(class="text-center") Your posts
     else 
       h6(class="text-center") Posts by #{userToLookAt.username}
