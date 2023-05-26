@@ -11,8 +11,8 @@ const UserSchema = new Schema({
   member_status: {
     type: String,
     required: true,
-    enum: ["Normal", "Premium", "Admin"],
-    default: "Normal",
+    enum: ["Basic", "Premium", "Admin"],
+    default: "Basic",
   },
 });
 
