@@ -12,6 +12,12 @@ router.get("/", index_controller.main_page_get);
 /* GET user detail page. */
 router.get("/user/:id", user_controller.user_detail);
 
+/* GET user member status page. */
+router.get("/user/:id/memberstatus", user_controller.user_memberstatus_get);
+
+/* POST user member status page. */
+router.post("/user/:id/memberstatus", user_controller.user_memberstatus_post);
+
 /* GET post creation page. */
 router.get("/post/create", post_controller.post_create_get);
 
