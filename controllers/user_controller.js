@@ -122,3 +122,41 @@ exports.user_detail = asyncHandler(async (req, res, next) => {
     posts: posts,
   });
 });
+
+//GET membership status option
+exports.user_memberstatus_get = asyncHandler(async (req, res, next) => {
+  const userToLookAt = await User.findById(req.params.id).exec();
+  //check for errors
+  if (userToLookAt === null) {
+    // no such user
+    const err = new Error("User not found");
+    err.status = 404;
+    return next(err);
+  }
+
+  res.render("user_member_status_page", {
+    userToLookAt: userToLookAt,
+    user: req.user,
+  });
+});
+
+//POST membership status option
+exports.user_memberstatus_post = asyncHandler(async (req, res, next) => {
+  const userToLookAt = await User.findById(req.params.id).exec();
+
+  //check for errors
+  if (userToLookAt === null) {
+    // no such user
+    const err = new Error("User not found");
+    err.status = 404;
+    return next(err);
+  }
+
+  //update user object into db
+  await User.findByIdAndUpdate(
+    req.params.id,
+    { member_status: req.body.member_status },
+    {}
+  );
+  res.redirect(userToLookAt.url);
+});
