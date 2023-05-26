@@ -7,7 +7,7 @@ block content
     form(method="POST" action ="")
 
       div(class="mt-3 form-group")
-        label(class="mb-1" for="first_name") First Name: 
+        label(class="form-label mb-1" for="first_name") First Name: 
         input#first_name.form-control(type="text" placeholder="Jack" name="first_name" required='true' value=(undefined===signing_user ? "" : signing_user.first_name))
         p &nbsp;
           if errors 
@@ -16,7 +16,7 @@ block content
                 p(class='text-danger') #{error.msg}
 
       div(class="mt-2 form-group")
-        label(class="mb-1" for="last_name") Last Name: 
+        label(class="form-label mb-1" for="last_name") Last Name: 
         input#last_name.form-control(type="text" placeholder="Sparrow" name="last_name" required='true' value=(undefined===signing_user ? "" : signing_user.last_name))
         p &nbsp;
           if errors 
@@ -25,7 +25,7 @@ block content
                 p(class='text-danger') #{error.msg}
 
       div(class="mt-2 form-group")
-        label(class="mb-1" for="username") Username: 
+        label(class="form-label mb-1" for="username") Username: 
         input#username.form-control(type="text" placeholder="Username Here" name="username" required='true' value=(undefined===signing_user ? "" : signing_user.username))
         p &nbsp;
           if errors 
@@ -34,7 +34,7 @@ block content
                 p(class='text-danger') #{error.msg}
 
       div(class="mt-2 form-group")
-        label(class="mb-1" for="password") Password: 
+        label(class="form-label mb-1" for="password") Password: 
         input#password.form-control(type="password" name="password" required='true')
         p &nbsp;
           if errors 
