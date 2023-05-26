@@ -1,22 +1,29 @@
 extends layout
 
 block content
-  h3 #{post.title}
+  div(class="bg-primary bg-gradient bg-opacity-25 mt-4 d-flex flex-column align-items-stretch justify-content-center container border-start border-end border-primary border-2" style="max-width: 900px")
+    div(class="d-flex flex-wrap mt-2")
+      a(class="link-primary" href=post.user.url) #{post.user.username}
+      span &nbsp;-&nbsp;
+      p posted on #{post.date_of_post_formatted}
 
-  p(class="h6") - 
-    a(class="h6" href=post.user.url) #{post.user.username}
+      if user && post.user._id.toString()===user._id.toString()
+        a(class="btn btn-outline-secondary" href=post.url type='button' style="max-width:250px") Edit
+        a(class="btn btn-outline-danger" href=post.url type='button' style="max-width:250px") Delete
 
-  p(class="mt-4") #{post.text}
+    hr
+    h3 #{post.title}
+    p #{post.text}
 
-  div(class="d-flex")
-    p(class="ml-auto") Posted on #{post.date_of_post_formatted}
+    hr
 
-  if post.comments.length > 0 
-    ul(class='list-group')
-      each comment in post.comments 
-        li(class='list-group-item')
-          p #{comment.user}
-          p #{comment.date_of_comment}
-          p #{comment.text}
-  else 
-    p No comments posted yet.
+    h5 #{post.comments.length} Comments
+    if post.comments.length > 0 
+      ul(class='list-group')
+        each comment in post.comments 
+          li(class='list-group-item')
+            p #{comment.user}
+            p #{comment.date_of_comment}
+            p #{comment.text}
+    else 
+      p No comments posted yet.
