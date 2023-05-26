@@ -4,6 +4,9 @@ block content
   div(class="mt-4 d-flex flex-column align-items-stretch justify-content-center container" style="max-width: 900px")
     div(class="d-flex flex-wrap mt-2 mb-0")
       a(class="link-primary" href=post.user.url) #{post.user.username}
+      if user && user.member_status!=="Basic"
+        span &nbsp
+        span (#{post.user.first_name} #{post.user.last_name})
       span &nbsp;-&nbsp;
       p posted on #{post.date_of_post_formatted}
 
