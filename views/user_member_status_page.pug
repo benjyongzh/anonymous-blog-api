@@ -7,10 +7,10 @@ block content
     form(method="POST" action ="")
       div(class="mt-3 form-group")
         label(class="form-label mb-1" for="member_status") Membership Status: 
-        select#member_status(class="form-select")
-          option(value="Basic" selected=(user.member_status==="Basic")) Basic
-          option(value="Premium" selected=(user.member_status==="Premium")) Premium
-          option(value="Admin" selected=(user.member_status==="Admin")) Admin
+        select#member_status(class="form-select form-control" name="member_status" required='true')
+          option(value="Basic" selected=(userToLookAt.member_status==="Basic")) Basic
+          option(value="Premium" selected=(userToLookAt.member_status==="Premium")) Premium
+          option(value="Admin" selected=(userToLookAt.member_status==="Admin")) Admin
         if errors 
           for error in errors 
             p(class='text-danger') #{error.msg}
