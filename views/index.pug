@@ -12,7 +12,7 @@ block content
       each post in posts 
         a(href=post.url class="list-group-item list-group-item-action") 
           p(class="h6") #{post.user.username }
-          p(class="h6") #{post.date_of_post }
+          p(class="h6") #{post.date_of_post_formatted }
           p(class="h5") #{post.title }
 
       else 
