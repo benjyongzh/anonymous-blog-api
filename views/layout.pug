@@ -42,18 +42,18 @@ html
             //- span(class="navbar-toggler-icon")
             i(class='bx bx-md bx-menu-alt-right')
 
-          div(class="navbar-collapse collapse" id="navbarSupportedContent")
+          div(class="navbar-collapse collapse justify-content-end" id="navbarSupportedContent")
             ul(class='nav navbar-nav' style="gap: 1rem")
               if user
                 li(class='nav-item') 
-                  a(class=`fs-6 nav-link text-right ${page_name==="user_detail" ? "active text-primary fw-bold" : ""}` href=`/user/${user._id}`) #{user.first_name}
+                  a(class=`fs-6 nav-link text-end ${page_name==="user_detail" ? "active text-primary fw-bold" : ""}` href=`/user/${user._id}`) #{user.first_name}
                 li(class='nav-item') 
-                  a(class='fs-6 nav-link text-right' href='/auth/loggingout') Log Out
+                  a(class='fs-6 nav-link text-end' href='/auth/loggingout') Log Out
               else 
                 li(class='nav-item') 
-                  a(class=`fs-6 nav-link text-right ${page_name==="login_page" ? "active text-primary fw-bold" : ""}` href='/auth/login') Log In
+                  a(class=`fs-6 nav-link text-end ${page_name==="login_page" ? "active text-primary fw-bold" : ""}` href='/auth/login') Log In
                 li(class='nav-item') 
-                  a(class=`fs-6 nav-link text-right ${page_name==="signup_page" ? "active text-primary fw-bold" : ""}` href='/auth/signup') Sign Up
+                  a(class=`fs-6 nav-link text-end ${page_name==="signup_page" ? "active text-primary fw-bold" : ""}` href='/auth/signup') Sign Up
                 
         
       div(class='container-fluid')
