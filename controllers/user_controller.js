@@ -12,6 +12,9 @@ const bcrypt = require("bcryptjs");
 const { nameValidation } = require("../middleware/nameValidation");
 const { usernameValidation } = require("../middleware/usernameValidation");
 const { passwordValidation } = require("../middleware/passwordValidation");
+const {
+  memberStatusValidation,
+} = require("../middleware/memberStatusValidation");
 
 //POST log-in of user
 exports.user_login_post = [
@@ -50,6 +53,7 @@ exports.user_signup_post = [
   nameValidation,
   usernameValidation,
   passwordValidation,
+  memberStatusValidation,
 
   asyncHandler(async (req, res, next) => {
     try {
@@ -61,7 +65,7 @@ exports.user_signup_post = [
           last_name: req.body.last_name,
           username: req.body.username,
           password: "",
-          member_status: "Normal",
+          member_status: req.body.member_status,
         });
         // console.log(results.array());
 
@@ -77,7 +81,7 @@ exports.user_signup_post = [
             last_name: req.body.last_name,
             username: req.body.username,
             password: hashedPassword,
-            member_status: "Normal",
+            member_status: req.body.member_status,
           });
 
           const result = await user.save();
