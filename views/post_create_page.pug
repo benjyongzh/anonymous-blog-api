@@ -7,7 +7,7 @@ block content
     form(method="POST" action ="")
 
       div(class="mt-3 form-group")
-        label(for="title") Title of Post: 
+        label(class="mb-1" for="title") Title of Post: 
         input#title.form-control(type="text" placeholder="Post Title Here" name="title" required='true' value=(undefined===post ? "" : post.title))
         p &nbsp;
           if errors 
@@ -16,7 +16,7 @@ block content
                 span(class='text-danger') #{error.msg}
 
       div(class="mt-3 form-group")
-        label(for='text') Text:
+        label(class="mb-1" for='text') Text:
         textarea#text.form-control(type='textarea', placeholder="Maximum of 300 characters" name='text') #{undefined===post ? "" : post.text}
         p &nbsp;
           if errors 
@@ -25,8 +25,8 @@ block content
                 span(class='text-danger') #{error.msg}
 
       div(class="d-flex justify-content-center mt-2")
-        button(class="col btn btn-primary mr-3" type='submit' style="max-width: 250px") Submit
-        a(class="col btn btn-outline-secondary ml-3" href=backURL type='button' style="max-width:250px") Cancel
+        button(class="w-100 btn btn-primary me-3" type='submit' style="max-width: 250px") Submit
+        a(class="w-100 btn btn-outline-secondary ms-3" href=backURL type='button' style="max-width:250px") Cancel
 
       
 

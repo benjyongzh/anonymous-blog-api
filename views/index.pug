@@ -2,9 +2,9 @@ extends layout
 
 block content
   div(class="d-flex flex-column align-items-stretch justify-content-center container" style="max-width: 900px")
-    h3(class="text-center") #{title}
+    h3(class="text-center m-4") #{title}
     
-    div(class="text-right")
+    div(class="text-end")
       a(class=`btn ${user ? "btn-primary" : "btn-secondary disabled"}` href="/post/create"  aria-disabled=(user===undefined) role="button") Create Post
 
 
