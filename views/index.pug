@@ -11,12 +11,13 @@ block content
     ul(class="list-group mt-3")
       each post in posts 
         a(href=post.url class="list-group-item list-group-item-action") 
-          p(class='fw-bold') #{post.user.username }
-          if user && user.member_status!=="Basic"
-            span &nbsp
-            span (#{post.user.first_name} #{post.user.last_name})
-          span &nbsp;-&nbsp;
-          span #{post.date_of_post_formatted}
+          div(class='mb-1')
+            span(class='fw-bold') #{post.user.username }
+            if user && user.member_status!=="Basic"
+              span &nbsp
+              span (#{post.user.first_name} #{post.user.last_name})
+            span &nbsp;-&nbsp;
+            span #{post.date_of_post_formatted}
           p(class="h5") #{post.title }
           p(class="mb-0") #{post.comments.length } Comments
 
