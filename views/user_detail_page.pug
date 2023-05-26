@@ -1,0 +1,19 @@
+extends layout
+
+block content
+  div(class="bg-primary bg-gradient bg-opacity-25 mt-4 d-flex flex-column align-items-stretch justify-content-center container border-start border-end border-primary border-2" style="max-width: 900px")
+    h3(class="m-4") #{userToLookAt.username}
+    if user
+      if userToLookAt._id.toString()===user._id.toString()
+        span (You)
+      else 
+        span (#{userToLookAt.first_name} #{userToLookAt.last_name})
+    h5 Posts by #{userToLookAt.username}
+    ul(class="list-group mt-3")
+      each post in posts 
+        a(href=post.url class="list-group-item list-group-item-action") 
+          p(class="h6") #{post.date_of_post_formatted }
+          p(class="h5") #{post.title }
+
+      else 
+        p There are no posts yet.

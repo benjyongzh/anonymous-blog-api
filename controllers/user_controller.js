@@ -104,9 +104,9 @@ exports.user_detail = asyncHandler(async (req, res, next) => {
     Post.find({ user: userToFind }).sort({ date_of_post: 1 }).exec(),
   ]);
 
-  res.render("user_detail", {
+  res.render("user_detail_page", {
     page_name: "user_detail",
-    user: userToFind,
+    userToLookAt: userToFind,
     posts: posts,
   });
 });
