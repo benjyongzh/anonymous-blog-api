@@ -18,7 +18,7 @@ block content
     
     //- member status
     div(class='d-flex justify-content-center')
-      p(class=`badge text-center ${userToLookAt.member_status==="Basic" ? "text-bg-primary" : userToLookAt.member_status==="Premium" ? "text-bg-warning" : "text-bg-danger"}`) #{userToLookAt.member_status} Member
+      p(class=`badge text-center ${userToLookAt.member_status==="Basic" ? "text-bg-primary" : userToLookAt.member_status==="Premium" ? "text-bg-warning" : "text-bg-danger"}`) #{userToLookAt.member_status}
 
     //- changing member status
     if user && userToLookAt._id.toString()===user._id.toString()

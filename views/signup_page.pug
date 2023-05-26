@@ -7,36 +7,40 @@ block content
     form(method="POST" action ="")
 
       div(class="mt-3 form-group")
-        label(class="form-label mb-1" for="first_name") First Name: 
-        input#first_name.form-control(type="text" placeholder="Jack" name="first_name" required='true' value=(undefined===signing_user ? "" : signing_user.first_name))
-        p &nbsp;
+        div(class="form-floating mb-1")
+          input#first_name(class="form-control" type="text" placeholder="Jack" name="first_name" required='true' value=(undefined===signing_user ? "" : signing_user.first_name))
+          label(class="mt-1" for="first_name") First Name
+        p(class="mt-1") &nbsp;
           if errors 
             for error in errors 
               if error.path==="first_name"
                 p(class='text-danger') #{error.msg}
 
       div(class="mt-2 form-group")
-        label(class="form-label mb-1" for="last_name") Last Name: 
-        input#last_name.form-control(type="text" placeholder="Sparrow" name="last_name" required='true' value=(undefined===signing_user ? "" : signing_user.last_name))
-        p &nbsp;
+        div(class="form-floating mb-1")
+          input#last_name(class="form-control" type="text" placeholder="Sparrow" name="last_name" required='true' value=(undefined===signing_user ? "" : signing_user.last_name))
+          label(class="mt-1" for="last_name") Last Name
+        p(class="mt-1") &nbsp;
           if errors 
             for error in errors 
               if error.path==="last_name"
                 p(class='text-danger') #{error.msg}
 
       div(class="mt-2 form-group")
-        label(class="form-label mb-1" for="username") Username: 
-        input#username.form-control(type="text" placeholder="Username Here" name="username" required='true' value=(undefined===signing_user ? "" : signing_user.username))
-        p &nbsp;
+        div(class="form-floating mb-1")
+          input#username(class="form-control" type="text" placeholder="my_username" name="username" required='true' value=(undefined===signing_user ? "" : signing_user.username))
+          label(class="mt-1" for="username") Username
+        p(class="mt-1") &nbsp;
           if errors 
             for error in errors 
               if error.path==="username"
                 p(class='text-danger') #{error.msg}
 
       div(class="mt-2 form-group")
-        label(class="form-label mb-1" for="password") Password: 
-        input#password.form-control(type="password" name="password" required='true')
-        p &nbsp;
+        div(class="form-floating mb-1")
+          input#password(class="form-control" type="password" placeholder="mypassword" name="password" required='true')
+          label(class="mt-1" for="password") Password
+        p(class="mt-1") &nbsp;
           if errors 
             for error in errors 
               if error.path==="password"
