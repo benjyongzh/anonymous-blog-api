@@ -3,6 +3,7 @@ var router = express.Router();
 const index_controller = require("../controllers/index_controller");
 const user_controller = require("../controllers/user_controller");
 const post_controller = require("../controllers/post_controller");
+const comment_controller = require("../controllers/comment_controller");
 
 const passport = require("passport");
 
@@ -26,5 +27,8 @@ router.post("/post/create", post_controller.post_create_post);
 
 /* GET post page. */
 router.get("/post/:id", post_controller.post_detail);
+
+/* POST post page. */
+router.post("/post/:id/comment/create", comment_controller.comment_create_post);
 
 module.exports = router;

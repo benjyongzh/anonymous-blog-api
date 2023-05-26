@@ -14,13 +14,32 @@ block content
       //-   a(class="btn btn-outline-secondary" href=post.url type='button' style="max-width:250px") Edit
       //-   a(class="btn btn-outline-danger" href=post.url type='button' style="max-width:250px") Delete
 
-    //- hr(class='mt-0')
+    //- post content
     h3 #{post.title}
     p #{post.text}
 
     hr(class='mt-0')
-
     h5 #{post.comments.length} Comments
+
+    //- comment input section
+    if user
+      hr(class='mt-0')
+      form(method="POST" action =`/post/${post._id}/comment/create`)
+        div(class="mt-3 form-group")
+          div(class="form-floating mb-1")
+            textarea#text(class="form-control" type='textarea', placeholder="Maximum of 300 characters" style="height: 250px" name='text') #{undefined===post ? "" : post.text}
+            label(for='text') Comment as #{user.username}
+          p(class="mt-1") &nbsp;
+            if errors 
+              for error in errors 
+                if error.path==="comment"
+                  span(class='text-danger') #{error.msg}
+
+        div(class="d-flex justify-content-end mt-2")
+          button(class="w-100 btn btn-primary" type='submit' style="max-width: 250px") Comment
+
+
+    //- comments section
     if post.comments.length > 0 
       ul(class='list-group')
         each comment in post.comments 
