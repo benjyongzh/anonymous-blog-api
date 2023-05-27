@@ -41,11 +41,16 @@ block content
 
     //- comments section
     if post.comments.length > 0 
-      ul(class='list-group')
+      ul(class='list-group list-group-flush')
         each comment in post.comments 
           li(class='list-group-item')
-            p #{comment.user}
-            p #{comment.date_of_comment}
+            p(class='fw-bold') #{comment.user.username }
+              if user && user.member_status!=="Basic"
+                span &nbsp
+                span (#{comment.user.first_name} #{comment.user.last_name})
+              span &nbsp;-&nbsp;
+              span #{comment.date_of_comment_formatted}
             p #{comment.text}
+            p #{comment.replies.length} replies
     else 
       p No comments posted yet.
