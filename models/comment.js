@@ -20,9 +20,11 @@ CommentSchema.virtual("url").get(function () {
 });
 
 // //virtual for formatted dates
-CommentSchema.virtual("date_of_post_formatted").get(function () {
-  return this.date_of_post
-    ? DateTime.fromJSDate(this.date_of_post).toLocaleString(DateTime.DATE_FULL)
+CommentSchema.virtual("date_of_comment_formatted").get(function () {
+  return this.date_of_comment
+    ? DateTime.fromJSDate(this.date_of_comment).toLocaleString(
+        DateTime.DATE_FULL
+      )
     : "";
 });
 
