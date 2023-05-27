@@ -28,7 +28,13 @@ router.post("/post/create", post_controller.post_create_post);
 /* GET post page. */
 router.get("/post/:id", post_controller.post_detail);
 
-/* POST post page. */
+/* POST creating comments on post page. */
 router.post("/post/:id/comment/create", comment_controller.comment_create_post);
+
+/* POST creating replies to a particular comment. */
+router.post(
+  "/post/:postid/comment/:commentid/reply",
+  comment_controller.reply_create_post
+);
 
 module.exports = router;

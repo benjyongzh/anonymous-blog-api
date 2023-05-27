@@ -9,4 +9,13 @@ const commentValidation = [
     .escape(),
 ];
 
-module.exports = { commentValidation };
+const replyValidation = [
+  //validation and sanitization of fields
+  body("new_reply")
+    .trim()
+    .isLength({ max: 100 })
+    .withMessage("Reply must be maximum of 100 characters")
+    .escape(),
+];
+
+module.exports = { commentValidation, replyValidation };
