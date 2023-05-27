@@ -28,4 +28,10 @@ CommentSchema.virtual("date_of_comment_formatted").get(function () {
     : "";
 });
 
+// //virtual for time past for dates
+CommentSchema.virtual("date_of_comment_ago").get(function () {
+  if (!this.date_of_comment) return "";
+  return DateTime.fromJSDate(this.date_of_comment).toRelative();
+});
+
 module.exports = mongoose.model("Comment", CommentSchema);
