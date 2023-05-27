@@ -9,6 +9,8 @@ block content
         span (#{post.user.first_name} #{post.user.last_name})
       span &nbsp;-&nbsp;
       p posted on #{post.date_of_post_formatted}
+        span &nbsp;
+        span #[em (#{post.date_of_post_ago})]
 
       //- if user && post.user._id.toString()===user._id.toString()
       //-   a(class="btn btn-outline-secondary" href=post.url type='button' style="max-width:250px") Edit
@@ -48,21 +50,38 @@ block content
       ul(class='list-group list-group-flush')
         each comment in post.comments 
           li(class='list-group-item bg-light')
+            //- comment info
             div(class='mt-2 mb-3')
               a(class='fw-bold link-primary' href=comment.user.url) #{comment.user.username }
               if user && user.member_status!=="Basic"
                 span &nbsp
                 span (#{comment.user.first_name} #{comment.user.last_name})
               span &nbsp;-&nbsp;
-              span #{comment.date_of_comment_formatted}
+              span #{comment.date_of_comment_ago}
+
             p(class="mb-2") #{comment.text}
+
+            //- comment bottom row controls
             p(class="mb-2")
+              div(class='d-flex')
+                if comment.replies.length > 0 
+                  if comment.replies.length === 1 
+                    a(href=`#commentRepliesFor${comment._id}` role="button" data-bs-toggle="collapse" aria-expanded="false" aria-controls="collapseExample") #{comment.replies.length} reply
+                  else
+                    a(href=`#commentRepliesFor${comment._id}` role="button" data-bs-toggle="collapse" aria-expanded="false" aria-controls="collapseExample") #{comment.replies.length} replies 
+                  
+                else 
+                  span #{comment.replies.length} replies 
+
+                //- comment control buttons here
+              
+              //- replies section
               if comment.replies.length > 0 
-                if comment.replies.length === 1 
-                  a(href="#" class="badge badge-pill text-bg-primary") #{comment.replies.length} reply
-                else
-                  a(href="#" class="badge badge-pill text-bg-primary") #{comment.replies.length} replies 
-              else 
-                span(class="badge badge-pill text-bg-secondary") #{comment.replies.length} replies 
+                div(class="collapse" id=`commentRepliesFor${comment._id}`)
+                    ul(class='list-group list-group-flush')
+                      each reply in comment.replies 
+                        li(class='list-group-item bg-light')
+                          a(class='fw-bold link-primary' href=reply.user.url) #{reply.user.username }
+                          p #{reply.text}
     else 
       p No comments posted yet.
