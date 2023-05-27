@@ -62,26 +62,38 @@ block content
             p(class="mb-2") #{comment.text}
 
             //- comment bottom row controls
-            p(class="mb-2")
-              div(class='d-flex')
-                if comment.replies.length > 0 
-                  if comment.replies.length === 1 
-                    a(href=`#commentRepliesFor${comment._id}` role="button" data-bs-toggle="collapse" aria-expanded="false" aria-controls="collapseExample") #{comment.replies.length} reply
-                  else
-                    a(href=`#commentRepliesFor${comment._id}` role="button" data-bs-toggle="collapse" aria-expanded="false" aria-controls="collapseExample") #{comment.replies.length} replies 
-                  
-                else 
-                  span #{comment.replies.length} replies 
+            div(class="mb-2")
+              div(class='d-flex gap-3 justify-content-start')
+                //- comment control buttons here upvote, donwvote
+                button(class="btn btn-outline-primary btn-sm text-center align-middle px-3" style="border-width: 0px" type="button" data-bs-target=`#commentRepliesFor${comment._id}` data-bs-toggle="collapse" aria-expanded="false" aria-controls="collapseExample")
+                  if comment.replies.length > 0
+                    span #{comment.replies.length}
+                    span &nbsp;&nbsp;
+                  i(class='bx bxs-comment align-bottom mb-1')
 
-                //- comment control buttons here
+
               
               //- replies section
-              if comment.replies.length > 0 
-                div(class="collapse" id=`commentRepliesFor${comment._id}`)
-                    ul(class='list-group list-group-flush')
-                      each reply in comment.replies 
-                        li(class='list-group-item bg-light')
-                          a(class='fw-bold link-primary' href=reply.user.url) #{reply.user.username }
-                          p #{reply.text}
+              div(class="collapse" id=`commentRepliesFor${comment._id}`)
+                ul(class='list-group list-group-flush')
+                  each reply in comment.replies 
+                    li(class='list-group-item bg-light' style="padding-right: 0px")
+                      a(class='fw-bold link-primary' href=reply.user.url) #{reply.user.username }
+                      p #{reply.text}
+                //- form for replying to comment
+                if user
+                  form(method="POST" action =`/post/${post._id}/comment/${comment._id}/reply`)
+                    div(class="mt-3 form-group")
+                      div(class="form-floating mb-1")
+                        textarea#new_reply(class="form-control" type='textarea', placeholder="Maximum of 100 characters" name='new_reply') #{new_reply ? new_reply : ""}
+                        label(for='new_reply') Reply as #{user.username}, maximum of 100 characters
+                      p(class="mt-1 mb-0") &nbsp;
+                        if errors 
+                          for error in errors 
+                            if error.path==="new_reply"
+                              span(class='text-danger') #{error.msg}
+
+                    div(class="d-flex justify-content-end")
+                      button(class="btn btn-primary" type='submit' style="max-width: 250px") Reply
     else 
       p No comments posted yet.
