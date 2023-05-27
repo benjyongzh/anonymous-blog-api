@@ -36,7 +36,7 @@ block content
     ul(class="list-group mt-2 mb-3")
       each post in posts 
         a(href=post.url class="list-group-item list-group-item-action") 
-          p #{post.date_of_post_formatted }
+          p #{post.date_of_post_formatted } (#{post.date_of_post_ago})
           p(class="h5") #{post.title }
           p(class="mb-0") #{post.comments.length } Comments
 
