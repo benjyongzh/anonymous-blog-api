@@ -17,7 +17,8 @@ block content
               span &nbsp
               span (#{post.user.first_name} #{post.user.last_name})
             span &nbsp;-&nbsp;
-            span #{post.date_of_post_formatted}
+            //- span #{post.date_of_post_formatted}
+            span #{post.date_of_post_ago}
           p(class="h5") #{post.title }
 
           if post.comments.length === 1

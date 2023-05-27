@@ -23,4 +23,14 @@ PostSchema.virtual("date_of_post_formatted").get(function () {
     : "";
 });
 
+// //virtual for time past for dates
+PostSchema.virtual("date_of_post_ago").get(function () {
+  if (!this.date_of_post) return "";
+
+  //const datePosted = DateTime.fromJSDate(this.date_of_post);
+  //const duration = DateTime.now() - datePosted;
+  //return duration.toRelative();
+  return DateTime.fromJSDate(this.date_of_post).toRelative();
+});
+
 module.exports = mongoose.model("Post", PostSchema);
