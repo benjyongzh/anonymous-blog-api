@@ -19,7 +19,11 @@ block content
             span &nbsp;-&nbsp;
             span #{post.date_of_post_formatted}
           p(class="h5") #{post.title }
-          p(class="mb-0") #{post.comments.length } Comments
+
+          if post.comments.length === 1
+            p(class="mb-0") #{post.comments.length } Comment
+          else 
+            p(class="mb-0") #{post.comments.length } Comments
 
       else 
         p There are no posts yet.
