@@ -6,7 +6,7 @@ const Schema = mongoose.Schema;
 const CommentSchema = new Schema({
   text: { type: String, required: true },
   user: { type: Schema.Types.ObjectId, ref: "User", required: true },
-  date_of_comment: { type: Date, required: true, default: Date.now },
+  date_of_comment: { type: Date, required: true, default: Date.now() },
 });
 
 //add recursive comments
