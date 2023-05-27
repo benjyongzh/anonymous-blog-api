@@ -8,9 +8,9 @@ block content
       a(class=`btn ${user ? "btn-primary" : "btn-secondary disabled"}` href="/post/create"  aria-disabled=(user===undefined) role="button") Create Post
 
 
-    ul(class="list-group mt-3")
+    ul(class="list-group mt-3 gap-3")
       each post in posts 
-        a(href=post.url class="list-group-item list-group-item-action") 
+        a(href=post.url class="list-group-item list-group-item-action bg-light bg-gradient border border-2 border-secondary rounded-3") 
           div(class='mb-1')
             span(class='fw-bold') #{post.user.username }
             if user && user.member_status!=="Basic"
