@@ -80,6 +80,7 @@ block content
                     li(class='list-group-item bg-light' style="padding-right: 0px")
                       a(class='fw-bold link-primary' href=reply.user.url) #{reply.user.username }
                       p #{reply.text}
+                      p #{reply.date_of_comment_ago}
                 //- form for replying to comment
                 if user
                   form(method="POST" action =`/post/${post._id}/comment/${comment._id}/reply`)
