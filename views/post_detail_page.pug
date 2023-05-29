@@ -74,13 +74,14 @@ block content
 
               
               //- replies section
-              div(class="collapse" id=`commentRepliesFor${comment._id}`)
+              div(class="ps-4 collapse" id=`commentRepliesFor${comment._id}`)
+                hr
                 ul(class='list-group list-group-flush')
                   each reply in comment.replies 
-                    li(class='list-group-item bg-light' style="padding-right: 0px")
+                    li(class='list-group-item bg-light border-start border-secondary border-2 py-1' style="padding-right: 0px")
                       a(class='fw-bold link-primary' href=reply.user.url) #{reply.user.username }
-                      p #{reply.text}
-                      p #{reply.date_of_comment_ago}
+                      p(class="mb-1 mt-2") #{reply.text}
+                      p(class="mb-0") #[em #{reply.date_of_comment_ago}]
                 //- form for replying to comment
                 if user
                   form(method="POST" action =`/post/${post._id}/comment/${comment._id}/reply`)
