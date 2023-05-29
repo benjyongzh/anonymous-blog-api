@@ -17,8 +17,8 @@ block content
       //-   a(class="btn btn-outline-danger" href=post.url type='button' style="max-width:250px") Delete
 
     //- post content
-    h3 #{post.title}
-    p #{post.text}
+    h3 #{post.title_unescaped}
+    p #{post.text_unescaped}
 
     hr(class='mt-0')
     if post.comments.length === 1
@@ -59,7 +59,7 @@ block content
               span &nbsp;-&nbsp;
               span #{comment.date_of_comment_ago}
 
-            p(class="mb-2") #{comment.text}
+            p(class="mb-2") #{comment.text_unescaped}
 
             //- comment bottom row controls
             div(class="mb-2")
@@ -80,7 +80,7 @@ block content
                   each reply in comment.replies 
                     li(class='list-group-item bg-light border-start border-secondary border-2 py-1' style="padding-right: 0px")
                       a(class='fw-bold link-primary' href=reply.user.url) #{reply.user.username }
-                      p(class="mb-1 mt-2") #{reply.text}
+                      p(class="mb-1 mt-2") #{reply.text_unescaped}
                       p(class="mb-0") #[em #{reply.date_of_comment_ago}]
                 //- form for replying to comment
                 if user
