@@ -5,8 +5,7 @@ const commentValidation = [
   body("new_comment")
     .trim()
     .isLength({ max: 300 })
-    .withMessage("Comment must be maximum of 300 characters")
-    .escape(),
+    .withMessage("Comment must be maximum of 300 characters"),
 ];
 
 const replyValidation = [
@@ -14,8 +13,7 @@ const replyValidation = [
   body("new_reply")
     .trim()
     .isLength({ max: 100 })
-    .withMessage("Reply must be maximum of 100 characters")
-    .escape(),
+    .withMessage("Reply must be maximum of 100 characters"),
 ];
 
 module.exports = { commentValidation, replyValidation };

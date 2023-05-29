@@ -5,13 +5,11 @@ const postValidation = [
   body("title", "Title must not be empty")
     .trim()
     .isLength({ min: 1 })
-    .withMessage("Title must be at least 1 character long")
-    .escape(),
+    .withMessage("Title must be at least 1 character long"),
   body("text")
     .trim()
     .isLength({ max: 300 })
-    .withMessage("Text must be maximum of 300 characters")
-    .escape(),
+    .withMessage("Text must be maximum of 300 characters"),
 ];
 
 module.exports = { postValidation };
