@@ -55,10 +55,9 @@ exports.post_detail = asyncHandler(async (req, res, next) => {
     .populate("user")
     .populate({
       path: "comments",
-      model: Comment,
       populate: [
-        { path: "user", model: User },
-        { path: "replies", model: Comment },
+        { path: "user" },
+        { path: "replies", populate: [{ path: "user" }] },
       ],
     })
     .exec();
