@@ -4,7 +4,6 @@ Practice project for MongoDB, ExpressJS and OAuth. This is a project based on an
 
 Things to work on:
 
-- Find out how to un-escape texts.
 - like/dislike system.
 
 Learning points:
@@ -14,3 +13,4 @@ Learning points:
 - Mongoose multi-level populate.
 - Mongoose recursive modelling.
 - Conditional rendering in Pug.
+- Escaping vs unescaping data in Pug.
