@@ -4,7 +4,7 @@ Practice project for MongoDB, ExpressJS and OAuth. This is a project based on an
 
 Things to work on:
 
-- Replying to comments.
+- Find out how to un-escape texts.
 - like/dislike system.
 
 Learning points:
