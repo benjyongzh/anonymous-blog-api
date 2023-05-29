@@ -31,14 +31,18 @@ block content
     if user
       form(method="POST" action =`/post/${post._id}/comment/create`)
         div(class="mt-3 form-group")
-          div(class="form-floating mb-1")
-            textarea#new_comment(class="form-control" type='textarea', placeholder="Maximum of 300 characters" style="height: 150px" name='new_comment') #{new_comment ? new_comment : ""}
+          div(class="form-floating mb-0")
+            textarea#new_comment(class="form-control" type='textarea', placeholder="Max. 300 characters" style="height: 150px" name='new_comment') #{new_comment ? new_comment : ""}
             label(for='new_comment') Comment as #{user.username}
-          p(class="mt-1") &nbsp;
+          p(class="mt-0") 
             if errors 
               for error in errors 
                 if error.path==="new_comment"
                   span(class='text-danger') #{error.msg}
+                else
+                  span &nbsp;
+            else
+              span &nbsp;
 
         div(class="d-flex justify-content-end")
           button(class="w-100 btn btn-primary" type='submit' style="max-width: 250px") Comment
@@ -75,25 +79,28 @@ block content
               
               //- replies section
               div(class="ps-4 collapse" id=`commentRepliesFor${comment._id}`)
-                hr
-                ul(class='list-group list-group-flush')
+                ul(class='list-group list-group-flush border-start border-secondary border-2')
                   each reply in comment.replies 
-                    li(class='list-group-item bg-light border-start border-secondary border-2 py-1' style="padding-right: 0px")
+                    li(class='list-group-item bg-light py-2 border-bottom border-secondary border-2' style="padding-right: 0px")
                       a(class='fw-bold link-primary' href=reply.user.url) #{reply.user.username }
                       p(class="mb-1 mt-2") #{reply.text_unescaped}
                       p(class="mb-0") #[em #{reply.date_of_comment_ago}]
                 //- form for replying to comment
                 if user
-                  form(method="POST" action =`/post/${post._id}/comment/${comment._id}/reply`)
-                    div(class="mt-3 form-group")
+                  form(class="border-start border-secondary border-2 pt-3" method="POST" action =`/post/${post._id}/comment/${comment._id}/reply`)
+                    div(class="ps-3 form-group")
                       div(class="form-floating mb-1")
-                        textarea#new_reply(class="form-control" type='textarea', placeholder="Maximum of 100 characters" name='new_reply') #{new_reply ? new_reply : ""}
-                        label(for='new_reply') Reply as #{user.username}, maximum of 100 characters
-                      p(class="mt-1 mb-0") &nbsp;
+                        textarea#new_reply(class="form-control" type='textarea', placeholder="Max. 100 characters" name='new_reply') #{new_reply ? new_reply : ""}
+                        label(for='new_reply') Reply with max. 100 characters
+                      p(class="mt-0 mb-0") 
                         if errors 
                           for error in errors 
                             if error.path==="new_reply"
                               span(class='text-danger') #{error.msg}
+                            else
+                              span &nbsp;
+                        else
+                          span &nbsp;
 
                     div(class="d-flex justify-content-end")
                       button(class="btn btn-primary" type='submit' style="max-width: 250px") Reply
