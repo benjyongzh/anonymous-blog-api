@@ -69,11 +69,24 @@ block content
             div(class="mb-2")
               div(class='d-flex gap-3 justify-content-start')
                 //- comment control buttons here upvote, donwvote
-                button(class="btn btn-outline-primary btn-sm text-center align-middle px-3" style="border-width: 0px" type="button" data-bs-target=`#commentRepliesFor${comment._id}` data-bs-toggle="collapse" aria-expanded="false" aria-controls="collapseExample")
+
+                //- comment reply button. check if user and check if any replies at all
+                if user
+                  button(class="btn btn-outline-primary btn-sm text-center align-middle px-3" style="border-width: 0px" type="button" data-bs-target=`#commentRepliesFor${comment._id}` data-bs-toggle="collapse" aria-expanded="false" aria-controls="collapseExample")
+                    if comment.replies.length > 0
+                      span #{comment.replies.length}
+                      span &nbsp;&nbsp;
+                    i(class='bx bxs-comment align-bottom mb-1')
+                else 
                   if comment.replies.length > 0
-                    span #{comment.replies.length}
-                    span &nbsp;&nbsp;
-                  i(class='bx bxs-comment align-bottom mb-1')
+                    button(class="btn btn-outline-primary btn-sm text-center align-middle px-3" style="border-width: 0px" type="button" data-bs-target=`#commentRepliesFor${comment._id}` data-bs-toggle="collapse" aria-expanded="false" aria-controls="collapseExample")
+                      span #{comment.replies.length}
+                      span &nbsp;&nbsp;
+                      i(class='bx bxs-comment align-bottom mb-1')
+                  else
+                    a(href="/auth/login" class="btn btn-outline-primary btn-sm text-center align-middle px-3" style="border-width: 0px" type="button")
+                      i(class='bx bxs-comment align-bottom mb-1')
+
 
 
               
