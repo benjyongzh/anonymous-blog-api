@@ -6,7 +6,7 @@ block content
       a(class="fw-bold link-primary" href=post.user.url) #{post.user.username}
       if user && user.member_status!=="Basic"
         span &nbsp
-        span (#{post.user.first_name} #{post.user.last_name})
+        span (#{post.user.full_name})
       span &nbsp;-&nbsp;
       p posted on #{post.date_of_post_formatted}
         span &nbsp;
@@ -55,7 +55,7 @@ block content
               a(class='fw-bold link-primary' href=comment.user.url) #{comment.user.username }
               if user && user.member_status!=="Basic"
                 span &nbsp
-                span (#{comment.user.first_name} #{comment.user.last_name})
+                span (#{comment.user.full_name})
               span &nbsp;-&nbsp;
               span #{comment.date_of_comment_ago}
 

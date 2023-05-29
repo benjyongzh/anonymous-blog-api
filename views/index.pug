@@ -15,7 +15,7 @@ block content
             span(class='fw-bold') #{post.user.username }
             if user && user.member_status!=="Basic"
               span &nbsp
-              span (#{post.user.first_name} #{post.user.last_name})
+              span (#{post.user.full_name})
             span &nbsp;-&nbsp;
             //- span #{post.date_of_post_formatted}
             span #{post.date_of_post_ago}
