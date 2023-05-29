@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const { DateTime } = require("luxon");
+const decoder = require("he");
 
 const Schema = mongoose.Schema;
 
@@ -17,6 +18,11 @@ CommentSchema.add({
 //virtual for URL
 CommentSchema.virtual("url").get(function () {
   return `/post/${this._id}`;
+});
+
+//virtual for escaped text
+CommentSchema.virtual("text_unescaped").get(function () {
+  return decoder.decode(this.text);
 });
 
 // //virtual for formatted dates
