@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const { DateTime } = require("luxon");
+const decoder = require("he");
 
 const Schema = mongoose.Schema;
 
@@ -21,13 +22,9 @@ UserSchema.virtual("url").get(function () {
   return `/user/${this._id}`;
 });
 
-// //virtual for formatted dates
-// BrandSchema.virtual("year_established_formatted").get(function () {
-//   return this.year_established
-//     ? DateTime.fromJSDate(this.year_established).toLocaleString(
-//         DateTime.DATE_FULL
-//       )
-//     : "";
-// });
+//virtual for full name
+UserSchema.virtual("full_name").get(function () {
+  return `${this.first_name} ${this.last_name}`;
+});
 
 module.exports = mongoose.model("User", UserSchema);
