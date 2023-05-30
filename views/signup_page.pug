@@ -77,15 +77,14 @@ block content
             span &nbsp;
 
       p 
-        if errors 
-          ul(class="list-group list-group-flush") 
-            for error in errors 
-              if error.path!=="first_name" && error.path!=="last_name" && error.path!=="username" && error.path!=="password"
-                li(class='text-danger') Error: (#{error.path}) #{error.msg}
-              else
-                span &nbsp;
-        else
-          span &nbsp;
+      if errors 
+        for error in errors 
+          if error.path!=="first_name" && error.path!=="last_name" && error.path!=="username" && error.path!=="password" && error.path!=="confirmpassword"
+            span(class='text-danger') Error: (#{error.path}) #{error.msg}
+          else
+            span &nbsp;
+      else
+        span &nbsp;
 
       
       div(class="mt-2 text-center form-group")
