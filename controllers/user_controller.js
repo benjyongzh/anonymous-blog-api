@@ -11,7 +11,7 @@ const bcrypt = require("bcryptjs");
 //custom middleware
 const { nameValidation } = require("../middleware/nameValidation");
 const { usernameValidation } = require("../middleware/usernameValidation");
-const { passwordValidation } = require("../middleware/passwordValidation");
+const { passwordCheck } = require("../middleware/passwordValidation");
 const {
   memberStatusValidation,
 } = require("../middleware/memberStatusValidation");
@@ -24,7 +24,26 @@ require("dotenv").config();
 exports.user_login_post = [
   //validate and sanitize form here
   usernameValidation,
-  passwordValidation,
+  passwordCheck,
+
+  //check for errors before passport steps in
+  (req, res, next) => {
+    const validationResults = validationResult(req);
+
+    if (!validationResults.isEmpty()) {
+      //authentication failed
+      let temp_user = new User({
+        username: req.body.username,
+      });
+      res.render("login_page", {
+        page_name: "login_page",
+        signing_user: temp_user,
+        errors: validationResults.array(),
+      });
+    } else {
+      next();
+    }
+  },
 
   passport.authenticate("local", {
     successRedirect: "/",
@@ -32,10 +51,7 @@ exports.user_login_post = [
     failureMessage: true,
   }),
   function (err, req, res, next) {
-    console.log(req.session.messages);
     //authentication failed
-    const validationResults = validationResult(req);
-
     let temp_user = new User({
       username: req.body.username,
     });
@@ -44,9 +60,7 @@ exports.user_login_post = [
     return res.render("login_page", {
       page_name: "login_page",
       signing_user: temp_user,
-      errors: !validationResults.isEmpty()
-        ? validationResults.array()
-        : [{ path: "generic", msg: "Invalid username and/or password" }],
+      errors: [{ path: "generic", msg: "Invalid username and/or password" }],
     });
   },
 ];
@@ -56,7 +70,7 @@ exports.user_signup_post = [
   //validate and sanitize form here
   nameValidation,
   usernameValidation,
-  passwordValidation,
+  passwordCheck,
   memberStatusValidation,
 
   asyncHandler(async (req, res, next) => {

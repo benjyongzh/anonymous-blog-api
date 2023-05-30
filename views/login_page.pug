@@ -33,6 +33,20 @@ block content
           else
             span &nbsp;
 
+      div(class="mt-2 form-group")
+        div(class="form-floating mb-1")
+          input#confirmpassword(class="form-control" type="password" name="confirmpassword" placeholder="password" required='true')
+          label(class="mt-1" for="confirmpassword") Confirm Password
+        p(class="mt-1") 
+          if errors 
+            for error in errors 
+              if error.path==="confirmpassword"
+                span(class='text-danger') #{error.msg}
+              else
+                span &nbsp;
+          else
+            span &nbsp;
+
       p 
         if errors 
           for error in errors 
