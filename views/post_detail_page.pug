@@ -11,17 +11,17 @@ block content
       else 
         a(class="fw-bold link-secondary" href="/user/null") Deleted User
       span &nbsp;-&nbsp;
-      p posted on #{post.date_of_post_formatted}
+      p(class="mb-0") posted on #{post.date_of_post_formatted}
         span &nbsp;
         span #[em (#{post.date_of_post_ago})]
 
       //- delete button for admins
       if user && user.member_status.toString() === "Admin"
-        a(class="btn btn-outline-danger btn-sm text-center align-middle px-3" href=`/post/${post._id}/delete` style="border-width: 0px; max-width:250px" type="button")
-          i(class='bx bxs-comment align-bottom mb-1')
+        a(class="btn btn-outline-danger ms-auto btn-sm text-center align-top" href=`/post/${post._id}/delete` style="border-width: 0px; max-width:250px" type="button")
+          i(class='bx bxs-trash align-bottom mb-1')
 
     //- post content
-    h3 #{post.title_unescaped}
+    h3(class="mt-2") #{post.title_unescaped}
     p #{post.text_unescaped}
 
     hr(class='mt-0')
