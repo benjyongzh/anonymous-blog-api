@@ -105,14 +105,19 @@ exports.user_signup_post = [
   }),
 ];
 
+exports.user_nonexist = (req, res, next) => {
+  res.render("user_detail_nonexist_page", {
+    page_name: "user_detail",
+    user: req.user,
+    backURL: req.header.referer || "/",
+  });
+};
+
 //display list of all posts of this user
 exports.user_detail = asyncHandler(async (req, res, next) => {
   const userToFind = await User.findById(req.params.id).exec();
   if (userToFind === null) {
-    // no such user
-    const err = new Error("User not found");
-    err.status = 404;
-    return next(err);
+    res.redirect("/user/null");
   }
 
   const posts = await Post.find({ user: userToFind })

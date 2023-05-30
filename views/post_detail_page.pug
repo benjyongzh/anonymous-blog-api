@@ -3,10 +3,13 @@ extends layout
 block content
   div(class="mt-4 d-flex flex-column align-items-stretch justify-content-center container" style="max-width: 900px")
     div(class="d-flex flex-wrap mt-2 mb-0")
-      a(class="fw-bold link-primary" href=post.user.url) #{post.user.username}
-      if user && user.member_status!=="Basic"
-        span &nbsp
-        span (#{post.user.full_name})
+      if post.user!==null
+        a(class="fw-bold link-primary" href=post.user.url) #{post.user.username}
+        if user && user.member_status!=="Basic"
+          span &nbsp
+          span (#{post.user.full_name})
+      else 
+        a(class="fw-bold link-secondary" href="/user/null") Deleted User
       span &nbsp;-&nbsp;
       p posted on #{post.date_of_post_formatted}
         span &nbsp;
@@ -56,10 +59,13 @@ block content
           li(class='list-group-item bg-light')
             //- comment info
             div(class='mt-2 mb-3')
-              a(class='fw-bold link-primary' href=comment.user.url) #{comment.user.username }
-              if user && user.member_status!=="Basic"
-                span &nbsp
-                span (#{comment.user.full_name})
+              if comment.user!== null
+                a(class='fw-bold link-primary' href=comment.user.url) #{comment.user.username }
+                if user && user.member_status!=="Basic"
+                  span &nbsp
+                  span (#{comment.user.full_name})
+              else 
+                a(class='fw-bold link-secondary' href="/user/null") Deleted User
               span &nbsp;-&nbsp;
               span #{comment.date_of_comment_ago}
 
@@ -95,7 +101,10 @@ block content
                 ul(class='list-group list-group-flush border-start border-secondary border-2')
                   each reply in comment.replies 
                     li(class='list-group-item bg-light py-2 border-bottom border-secondary border-2' style="padding-right: 0px")
-                      a(class='fw-bold link-primary' href=reply.user.url) #{reply.user.username }
+                      if reply.user !== null
+                        a(class='fw-bold link-primary' href=reply.user.url) #{reply.user.username }
+                      else
+                        a(class='fw-bold link-secondary' href="/user/null") Deleted user
                       p(class="mb-1 mt-2") #{reply.text_unescaped}
                       p(class="mb-0") #[em #{reply.date_of_comment_ago}]
                 //- form for replying to comment

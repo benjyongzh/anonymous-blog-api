@@ -10,6 +10,9 @@ const passport = require("passport");
 /* GET home page. */
 router.get("/", index_controller.main_page_get);
 
+/* GET user non-exist page. */
+router.get("/user/null", user_controller.user_nonexist);
+
 /* GET user detail page. */
 router.get("/user/:id", user_controller.user_detail);
 
