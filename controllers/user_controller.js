@@ -121,7 +121,6 @@ exports.user_signup_post = [
 
 exports.user_nonexist = (req, res, next) => {
   res.render("user_detail_nonexist_page", {
-    page_name: "user_detail",
     user: req.user,
     backURL: req.header.referer || "/",
   });

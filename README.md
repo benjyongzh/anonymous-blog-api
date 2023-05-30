@@ -6,7 +6,6 @@ Things to work on:
 
 - like/dislike system.
 - delete post button for admins.
-- password confirmation for login and signup pages.
 
 Learning points:
 
