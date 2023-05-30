@@ -13,7 +13,7 @@ block content
         a(href=post.url class="list-group-item list-group-item-action bg-light bg-gradient border border-2 border-secondary rounded-3") 
           div(class='mb-1')
             if post.user!== null
-              span(class='fw-bold') #{post.user.username }
+              span(class='fw-bold text-primary') #{post.user.username }
               if user && user.member_status!=="Basic"
                 span &nbsp
                 span (#{post.user.full_name})
