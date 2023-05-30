@@ -6,8 +6,8 @@ Things to work on:
 
 - like/dislike system.
 - delete button for admins.
-- user does not exist page. Use user detail page.
 - password confirmation for login and signup pages.
+- add OP badge for original poster of post. for comments.
 
 Learning points:
 
