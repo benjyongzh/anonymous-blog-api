@@ -28,8 +28,8 @@ router.get("/post/create", post_controller.post_create_get);
 /* POST post creation page. */
 router.post("/post/create", post_controller.post_create_post);
 
-/* POST post creation page. */
-router.get("/post/:id/create", post_controller.post_delete_get);
+/* GET post deleting method. */
+router.get("/post/:id/delete", post_controller.post_delete_get);
 
 /* GET post page. */
 router.get("/post/:id", post_controller.post_detail);
