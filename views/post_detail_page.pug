@@ -15,9 +15,10 @@ block content
         span &nbsp;
         span #[em (#{post.date_of_post_ago})]
 
-      //- if user && post.user._id.toString()===user._id.toString()
-      //-   a(class="btn btn-outline-secondary" href=post.url type='button' style="max-width:250px") Edit
-      //-   a(class="btn btn-outline-danger" href=post.url type='button' style="max-width:250px") Delete
+      //- delete button for admins
+      if user && user.member_status.toString() === "Admin"
+        a(class="btn btn-outline-danger btn-sm text-center align-middle px-3" href=`/post/${post._id}/delete` style="border-width: 0px; max-width:250px" type="button")
+          i(class='bx bxs-comment align-bottom mb-1')
 
     //- post content
     h3 #{post.title_unescaped}
