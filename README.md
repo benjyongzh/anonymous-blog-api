@@ -5,9 +5,9 @@ Practice project for MongoDB, ExpressJS and OAuth. This is a project based on an
 Things to work on:
 
 - like/dislike system.
-- passcode for premium and admin membership.
 - delete button for admins.
-- membership upgrading text for form.
+- user does not exist page. Use user detail page.
+- password confirmation for login and signup pages.
 
 Learning points:
 

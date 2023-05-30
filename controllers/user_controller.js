@@ -15,9 +15,7 @@ const { passwordValidation } = require("../middleware/passwordValidation");
 const {
   memberStatusValidation,
 } = require("../middleware/memberStatusValidation");
-const {
-  memberPasscodeValidation,
-} = require("../middleware/memberStatusValidation");
+const { passcodeCheck } = require("../middleware/membershipCodeValidation");
 
 //membership status upgrade codes
 require("dotenv").config();
@@ -149,7 +147,7 @@ exports.user_memberstatus_get = asyncHandler(async (req, res, next) => {
 //POST membership status option
 exports.user_memberstatus_post = [
   //validate passcodes
-  memberPasscodeValidation,
+  passcodeCheck,
 
   asyncHandler(async (req, res, next) => {
     const userToLookAt = await User.findById(req.params.id).exec();
@@ -166,60 +164,19 @@ exports.user_memberstatus_post = [
     const results = validationResult(req);
     if (!results.isEmpty()) {
       //wrong passcode input
-      rerenderMemberPageWithErr("user_member_status_page", true, userToLookAt, {
-        msg: results.array(),
+      res.render("user_member_status_page", {
+        userToLookAt: userToLookAt,
+        user: req.user,
+        errors: results.array(),
       });
-      return;
     } else {
-      let new_status = "";
-      //check which passcode is used
-      if (req.body.member_password === process.env.PREMIUM_PASSCODE) {
-        //premium passcode used. only basic members can use
-        if (userToLookAt.member_status === "Basic") {
-          new_status = "Premium";
-        } else {
-          //error.msg: already premium
-          rerenderMemberPageWithErr(true, userToLookAt, {
-            msg: "Already a premium member",
-          });
-          return;
-        }
-      } else {
-        //admin passwcode used. only basic and premium members can use
-        if (
-          userToLookAt.member_status === "Basic" ||
-          userToLookAt.member_status === "Premium"
-        ) {
-          new_status = "Admin";
-        } else {
-          //error.msg: already admin
-          rerenderMemberPageWithErr(true, userToLookAt, {
-            msg: "Already an admin",
-          });
-          return;
-        }
-      }
       //update user object into db
-      upgradeMembership(req.params.id, new_status);
-      return;
+      await User.findByIdAndUpdate(
+        req.params.id,
+        { member_status: req.body.new_membership },
+        {}
+      );
+      res.redirect(userToLookAt.url);
     }
   }),
 ];
-
-const upgradeMembership = (userId, new_status) => {
-  asyncHandler(async (req, res, next) => {
-    await User.findByIdAndUpdate(userId, { member_status: new_status }, {});
-    currentUser = await User.findById(userId);
-    res.redirect(currentUser.url);
-  });
-};
-
-const rerenderMemberPageWithErr = (loggedInBoolean, userToLookAt, err) => {
-  asyncHandler(async (req, res, next) => {
-    res.render("user_member_status_page", {
-      userToLookAt: userToLookAt ? userToLookAt : null,
-      user: loggedInBoolean ? req.user : null,
-      errors: err ? err : {},
-    });
-  });
-};

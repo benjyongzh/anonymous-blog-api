@@ -21,7 +21,7 @@ block content
       p(class=`badge text-center ${userToLookAt.member_status==="Basic" ? "text-bg-primary" : userToLookAt.member_status==="Premium" ? "text-bg-warning" : "text-bg-danger"}`) #{userToLookAt.member_status}
 
     //- changing member status
-    if user && userToLookAt._id.toString()===user._id.toString()
+    if user && userToLookAt._id.toString()===user._id.toString() && user.member_status!=="Admin"
       div(class="text-center mb-4")
         a(class=`btn btn-warning` href=`/user/${userToLookAt._id}/memberstatus`) Upgrade Membership
 
