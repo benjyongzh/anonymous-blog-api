@@ -50,6 +50,40 @@ exports.post_create_post = [
 ];
 
 //POST post creation page
+exports.post_delete_get = asyncHandler(async (req, res, next) => {
+  //get poster
+  const currentPost = await Post.findById(req.params.id)
+    .populate({
+      path: "comments",
+      populate: [
+        {
+          path: "replies",
+        },
+      ],
+    })
+    .exec();
+
+  if (currentPost === null) {
+    const err = new Error("Post could not be found");
+    err.status = 404;
+    return next(err);
+  }
+
+  //get all related comments and replies in this post. will need recursion to find replies
+  const directCommentsId = currentPost.comments.map((comment) => comment._id);
+  const indirectCommentsId = currentPost.comments
+    .map((comment) => {
+      return comment.replies._id;
+    })
+    .flat();
+
+  await Comment.deleteMany({ _id: { $in: indirectCommentsId } });
+  await Comment.deleteMany({ _id: { $in: directCommentsId } });
+  await Post.findByIdAndDelete(req.params.id);
+  res.redirect("/");
+});
+
+//POST post creation page
 exports.post_detail = asyncHandler(async (req, res, next) => {
   const post = await Post.findById(req.params.id)
     .populate({ path: "user", options: { retainNullValues: true } })
