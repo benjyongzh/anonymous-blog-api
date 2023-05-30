@@ -5,9 +5,8 @@ Practice project for MongoDB, ExpressJS and OAuth. This is a project based on an
 Things to work on:
 
 - like/dislike system.
-- delete button for admins.
+- delete post button for admins.
 - password confirmation for login and signup pages.
-- add OP badge for original poster of post. for comments.
 
 Learning points:
 
@@ -17,3 +16,4 @@ Learning points:
 - Mongoose recursive modelling.
 - Conditional rendering in Pug.
 - Escaping vs unescaping data in Pug.
+- Using conditional middlewares alongside express-validator.
