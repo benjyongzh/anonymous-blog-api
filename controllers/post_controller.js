@@ -52,12 +52,15 @@ exports.post_create_post = [
 //POST post creation page
 exports.post_detail = asyncHandler(async (req, res, next) => {
   const post = await Post.findById(req.params.id)
-    .populate("user")
+    .populate("user", { retainNullValues: true })
     .populate({
       path: "comments",
       populate: [
-        { path: "user" },
-        { path: "replies", populate: [{ path: "user" }] },
+        { path: "user", options: { retainNullValues: true } },
+        {
+          path: "replies",
+          populate: [{ path: "user", options: { retainNullValues: true } }],
+        },
       ],
     })
     .exec();
