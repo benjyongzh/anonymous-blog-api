@@ -72,10 +72,9 @@ exports.post_delete_get = asyncHandler(async (req, res, next) => {
   //get all related comments and replies in this post. will need recursion to find replies
   const directCommentsId = currentPost.comments.map((comment) => comment._id);
   const indirectCommentsId = currentPost.comments
-    .map((comment) => {
-      return comment.replies._id;
-    })
-    .flat();
+    .map((comment) => comment.replies)
+    .flat()
+    .map((reply) => reply._id);
 
   await Comment.deleteMany({ _id: { $in: indirectCommentsId } });
   await Comment.deleteMany({ _id: { $in: directCommentsId } });
