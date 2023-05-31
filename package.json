@@ -3,7 +3,9 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "nodemon ./bin/www --ext js,pug,json"
+    "start": "node ./bin/www",
+    "devstart": "nodemon ./bin/www --ext js,pug,css,json",
+    "serverstart": "DEBUG=Inventory-Application:* npm run devstart"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
