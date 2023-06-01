@@ -49,8 +49,8 @@ exports.post_create_post = [
   }),
 ];
 
-//POST post creation page
-exports.post_delete_get = asyncHandler(async (req, res, next) => {
+//POST post deletion page
+exports.post_delete_post = asyncHandler(async (req, res, next) => {
   //get poster
   const currentPost = await Post.findById(req.params.id)
     .populate({

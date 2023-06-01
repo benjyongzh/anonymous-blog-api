@@ -17,8 +17,9 @@ block content
 
       //- delete button for admins
       if user && user.member_status.toString() === "Admin"
-        a(class="btn btn-outline-danger ms-auto btn-sm text-center align-top" href=`/post/${post._id}/delete` style="border-width: 0px; max-width:250px" type="button")
-          i(class='bx bxs-trash align-bottom mb-1')
+        form(class="ms-auto" method="POST" action =`/post/${post._id}/delete`)
+          button(class="btn btn-outline-danger btn-sm text-center align-top" style="border-width: 0px; max-width:250px" type="submit")
+            i(class='bx bxs-trash align-bottom mb-1')
 
     //- post content
     h3(class="mt-2") #{post.title_unescaped}
