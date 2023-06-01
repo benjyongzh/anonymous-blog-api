@@ -23,3 +23,4 @@ Learning points:
 - Escaping vs unescaping data in Pug.
 - Using conditional middlewares alongside express-validator.
 - Mongoose multi-level deletion of linked database objects.
+- CSRF prevention by sticking to REST rules.
