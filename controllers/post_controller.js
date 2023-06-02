@@ -10,9 +10,8 @@ const { postValidation } = require("../middleware/postValidation");
 
 //GET post creation page
 exports.post_create_get = asyncHandler(async (req, res, next) => {
-  res.render("post_create_page", {
+  res.send({
     user: req.user,
-    backURL: req.header.renderer || "/",
   });
 });
 
@@ -36,15 +35,15 @@ exports.post_create_post = [
     const results = validationResult(req);
     if (!results.isEmpty()) {
       // there are validation errors
-      res.render("post_create_page", {
-        user: req.user,
-        post: post,
+      res.send({
         errors: results.array(),
-        backURL: req.header.renderer || "/",
       });
     } else {
       await post.save();
-      res.redirect(post.url);
+      res.send({
+        user: req.user,
+        post,
+      });
     }
   }),
 ];
@@ -64,9 +63,7 @@ exports.post_delete_post = asyncHandler(async (req, res, next) => {
     .exec();
 
   if (currentPost === null) {
-    const err = new Error("Post could not be found");
-    err.status = 404;
-    return next(err);
+    res.status(404).json({ error: "Post could not be found" });
   }
 
   //get all related comments and replies in this post. will need recursion to find replies
@@ -79,7 +76,7 @@ exports.post_delete_post = asyncHandler(async (req, res, next) => {
   await Comment.deleteMany({ _id: { $in: indirectCommentsId } });
   await Comment.deleteMany({ _id: { $in: directCommentsId } });
   await Post.findByIdAndDelete(req.params.id);
-  res.redirect("/");
+  res.send({ post: currentPost, directCommentsId, indirectCommentsId });
 });
 
 //POST post creation page
@@ -99,13 +96,11 @@ exports.post_detail = asyncHandler(async (req, res, next) => {
     .exec();
 
   if (post === null) {
-    const err = new Error("Post could not be found");
-    err.status = 404;
-    return next(err);
+    res.status(404).json({ error: "Post could not be found" });
   }
 
-  res.render("post_detail_page", {
+  res.send({
     user: req.user,
-    post: post,
+    post,
   });
 });

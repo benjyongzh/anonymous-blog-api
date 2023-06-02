@@ -23,19 +23,14 @@ exports.comment_create_post = [
       .exec();
 
     if (post === null) {
-      const err = new Error("Post could not be found");
-      err.status = 404;
-      return next(err);
+      res.status(404).json({ error: "Post could not be found" });
     }
 
     //check if validation is okay
     const results = validationResult(req);
     if (!results.isEmpty()) {
       //there are errors in validation
-      res.render("post_detail_page", {
-        user: req.user,
-        post: post,
-        new_comment: req.body.new_comment,
+      res.send({
         errors: results.array(),
       });
     } else {
@@ -48,7 +43,7 @@ exports.comment_create_post = [
       await newComment.save();
       post.comments.push(newComment);
       await post.save();
-      res.redirect(post.url);
+      res.send({ newComment, post, user: req.user });
     }
   }),
 ];
@@ -65,25 +60,18 @@ exports.reply_create_post = [
     ]);
 
     if (currentPost === null) {
-      const err = new Error("Post could not be found");
-      err.status = 404;
-      return next(err);
+      res.status(404).json({ error: "Post could not be found" });
     }
 
     if (currentComment === null) {
-      const err = new Error("Comment could not be found");
-      err.status = 404;
-      return next(err);
+      res.status(404).json({ error: "Comment could not be found" });
     }
 
     //check if validation is okay
     const results = validationResult(req);
     if (!results.isEmpty()) {
       //there are errors in validation
-      res.render("post_detail_page", {
-        user: req.user,
-        post: currentPost,
-        new_reply: req.body.new_reply,
+      res.send({
         errors: results.array(),
       });
     } else {
@@ -97,6 +85,7 @@ exports.reply_create_post = [
       currentComment.replies.push(newReply);
       await currentComment.save();
       res.redirect(currentPost.url);
+      res.send({ newReply, currentComment, user: req.user });
     }
   }),
 ];

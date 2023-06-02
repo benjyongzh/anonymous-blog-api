@@ -32,12 +32,11 @@ exports.user_login_post = [
 
     if (!validationResults.isEmpty()) {
       //authentication failed
-      let temp_user = new User({
-        username: req.body.username,
-      });
-      res.render("login_page", {
-        page_name: "login_page",
-        signing_user: temp_user,
+      // let temp_user = new User({
+      //   username: req.body.username,
+      // });
+      res.send({
+        // signing_user: temp_user,
         errors: validationResults.array(),
       });
     } else {
@@ -52,15 +51,15 @@ exports.user_login_post = [
   }),
   function (err, req, res, next) {
     //authentication failed
-    let temp_user = new User({
-      username: req.body.username,
-    });
+    // let temp_user = new User({
+    //   username: req.body.username,
+    // });
 
     //error is in validation or make up invalid error
-    return res.render("login_page", {
-      page_name: "login_page",
-      signing_user: temp_user,
-      errors: [{ path: "generic", msg: "Invalid username and/or password" }],
+    return res.send({
+      // page_name: "login_page",
+      // signing_user: temp_user,
+      errors: { path: "generic", msg: "Invalid username and/or password" },
     });
   },
 ];
@@ -78,18 +77,17 @@ exports.user_signup_post = [
       const results = validationResult(req);
       if (!results.isEmpty()) {
         //there are validation errors
-        const temp_user = new User({
-          first_name: req.body.first_name,
-          last_name: req.body.last_name,
-          username: req.body.username,
-          password: "",
-          member_status: req.body.member_status,
-        });
-        // console.log(results.array());
+        // const temp_user = new User({
+        //   first_name: req.body.first_name,
+        //   last_name: req.body.last_name,
+        //   username: req.body.username,
+        //   password: "",
+        //   member_status: req.body.member_status,
+        // });
 
-        res.render("signup_page", {
-          page_name: "signup_page",
-          signing_user: temp_user,
+        res.send({
+          // page_name: "signup_page",
+          // signing_user: temp_user,
           errors: results.array(),
         });
       } else {
@@ -109,7 +107,7 @@ exports.user_signup_post = [
             // if (err) {
             //   return next(err);
             // }
-            return res.redirect("/");
+            return res.send({ result });
           });
         });
       }
@@ -119,29 +117,26 @@ exports.user_signup_post = [
   }),
 ];
 
+//non-existent user page
 exports.user_nonexist = (req, res, next) => {
-  res.render("user_detail_nonexist_page", {
-    user: req.user,
-    backURL: req.header.referer || "/",
-  });
+  res.status(404).json({ error: "User could not be found" });
 };
 
 //display list of all posts of this user
 exports.user_detail = asyncHandler(async (req, res, next) => {
   const userToFind = await User.findById(req.params.id).exec();
   if (userToFind === null) {
-    res.redirect("/user/null");
+    res.status(404).json({ error: "User could not be found" });
   }
 
   const posts = await Post.find({ user: userToFind })
     .sort({ date_of_post: 1 })
     .exec();
 
-  res.render("user_detail_page", {
-    page_name: "user_detail",
+  res.send({
     userToLookAt: userToFind,
     user: req.user,
-    posts: posts,
+    posts,
   });
 });
 
@@ -151,12 +146,10 @@ exports.user_memberstatus_get = asyncHandler(async (req, res, next) => {
   //check for errors
   if (userToLookAt === null) {
     // no such user
-    const err = new Error("User not found");
-    err.status = 404;
-    return next(err);
+    res.status(404).json({ error: "User could not be found" });
   }
 
-  res.render("user_member_status_page", {
+  res.send({
     userToLookAt: userToLookAt,
     user: req.user,
   });
@@ -173,18 +166,14 @@ exports.user_memberstatus_post = [
     //check for errors
     if (userToLookAt === null) {
       // no such user
-      const err = new Error("User not found");
-      err.status = 404;
-      return next(err);
+      res.status(404).json({ error: "User could not be found" });
     }
 
     //check passcode validation
     const results = validationResult(req);
     if (!results.isEmpty()) {
       //wrong passcode input
-      res.render("user_member_status_page", {
-        userToLookAt: userToLookAt,
-        user: req.user,
+      res.send({
         errors: results.array(),
       });
     } else {
@@ -194,7 +183,7 @@ exports.user_memberstatus_post = [
         { member_status: req.body.new_membership },
         {}
       );
-      res.redirect(userToLookAt.url);
+      res.send({ userToLookAt: userToLookAt, user: req.user });
     }
   }),
 ];
