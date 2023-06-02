@@ -9,7 +9,6 @@ const passport = require("passport");
 require("./config/passport-setup")(passport);
 
 var indexRouter = require("./routes/index");
-var authRouter = require("./routes/auth");
 
 // ============================= DB connect
 var mongoose = require("mongoose");
@@ -56,8 +55,10 @@ app.use(function (req, res, next) {
 });
 
 // ============================= routes
-app.use("/", indexRouter);
-app.use("/auth", authRouter);
+app.use("/", indexRouter.indexRouter);
+app.use("/auth", indexRouter.authRouter);
+app.use("/users", userRouter.userRouter);
+app.use("/posts", postRouter.postRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
