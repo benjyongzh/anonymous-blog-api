@@ -20,10 +20,12 @@
     "he": "^1.2.0",
     "helmet": "^7.0.0",
     "http-errors": "~1.6.3",
+    "jsonwebtoken": "^9.0.0",
     "luxon": "^3.3.0",
     "mongoose": "^7.1.2",
     "morgan": "~1.9.1",
     "passport": "^0.6.0",
+    "passport-jwt": "^4.0.1",
     "passport-local": "^1.0.0",
     "pug": "2.0.0-beta11"
   }
