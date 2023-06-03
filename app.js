@@ -6,7 +6,7 @@ var logger = require("morgan");
 
 const session = require("express-session");
 const passport = require("passport");
-require("./config/passport-setup")(passport);
+require("./config/passport-setup");
 
 var indexRouter = require("./routes/index");
 
@@ -25,8 +25,8 @@ db.on("error", console.error.bind(console, "Mongo Connection Error:"));
 var app = express();
 
 // view engine setup
-app.set("views", path.join(__dirname, "views"));
-app.set("view engine", "pug");
+// app.set("views", path.join(__dirname, "views"));
+// app.set("view engine", "pug");
 
 // ============================= middleware
 var compression = require("compression");
@@ -49,16 +49,24 @@ app.use(express.urlencoded({ extended: false }));
 
 // ========================= use locals ============================
 app.use(function (req, res, next) {
-  res.locals.currentUser = req.user;
-  res.locals.mainTitle = "Anon Blog";
+  // res.locals.currentUser = req.user;
+  // res.locals.mainTitle = "Anon Blog";
   next();
 });
 
 // ============================= routes
 app.use("/", indexRouter.indexRouter);
 app.use("/auth", indexRouter.authRouter);
-app.use("/users", userRouter.userRouter);
-app.use("/posts", postRouter.postRouter);
+app.use(
+  "/users",
+  passport.authenticate("jwt", { session: false }),
+  userRouter.userRouter
+);
+app.use(
+  "/posts",
+  passport.authenticate("jwt", { session: false }),
+  postRouter.postRouter
+);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
