@@ -97,14 +97,14 @@ passport.use(
       jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
       secretOrKey: process.env.JWT_SECRET_KEY,
     },
-    function (jwtPayload, cb) {
+    function (jwtPayload, done) {
       //find the user in db if needed. This functionality may be omitted if you store everything you'll need in JWT payload.
       return UserModel.findOneById(jwtPayload.id)
         .then((user) => {
-          return cb(null, user);
+          return done(null, user);
         })
         .catch((err) => {
-          return cb(err);
+          return done(err);
         });
     }
   )
