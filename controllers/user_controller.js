@@ -8,6 +8,7 @@ const { validationResult } = require("express-validator");
 const passport = require("passport");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+require("dotenv").config();
 
 //custom middleware
 const { nameValidation } = require("../middleware/nameValidation");
@@ -61,7 +62,7 @@ exports.user_login_post = [
         }
 
         // generate a signed son web token with the contents of user object and return it in the response
-        const token = jwt.sign(user, "your_jwt_secret");
+        const token = jwt.sign(user, process.env.JWT_SECRET_KEY);
         return res.json({ user, token });
       });
     })(req, res);
