@@ -48,11 +48,11 @@ app.use(passport.initialize());
 app.use(express.urlencoded({ extended: false }));
 
 // ========================= use locals ============================
-app.use(function (req, res, next) {
-  // res.locals.currentUser = req.user;
-  // res.locals.mainTitle = "Anon Blog";
-  next();
-});
+// app.use(function (req, res, next) {
+// res.locals.currentUser = req.user;
+// res.locals.mainTitle = "Anon Blog";
+//   next();
+// });
 
 // ============================= routes
 app.use("/", indexRouter.indexRouter);
@@ -60,12 +60,12 @@ app.use("/auth", indexRouter.authRouter);
 app.use(
   "/users",
   passport.authenticate("jwt", { session: false }),
-  userRouter.userRouter
+  indexRouter.userRouter
 );
 app.use(
   "/posts",
   passport.authenticate("jwt", { session: false }),
-  postRouter.postRouter
+  indexRouter.postRouter
 );
 
 // catch 404 and forward to error handler
@@ -81,7 +81,7 @@ app.use(function (err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
-  res.render("error");
+  res.send(err);
 });
 
 module.exports = app;
