@@ -5,7 +5,7 @@ const userController = require("../controllers/user_controller");
 
 /* GET login page. */
 router.get("/login", (req, res) => {
-  res.render("login_page", { page_name: "login_page" });
+  res.send(200, "Login page");
 });
 
 /* POST login page. */
@@ -13,7 +13,7 @@ router.post("/login", userController.user_login_post);
 
 /* GET signup page. */
 router.get("/signup", (req, res) => {
-  res.render("signup_page", { page_name: "signup_page" });
+  res.send(200, "sign up page");
 });
 
 /* POST signup page. */
@@ -31,7 +31,7 @@ router.get("/loggingout", (req, res, next) => {
 
 /* GET logged out page. */
 router.get("/logout", (req, res, next) => {
-  res.render("logout_page");
+  res.send(200, "logout page");
 });
 
 module.exports = router;
