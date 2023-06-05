@@ -53,35 +53,43 @@ exports.post_create_post = [
 ];
 
 //POST post deletion page
-exports.post_delete_post = asyncHandler(async (req, res, next) => {
-  //get poster
-  const currentPost = await Post.findById(req.params.id)
-    .populate({
-      path: "comments",
-      populate: [
-        {
-          path: "replies",
-        },
-      ],
-    })
-    .exec();
+exports.post_delete_post = [
+  verifyToken,
+  asyncHandler(async (req, res, next) => {
+    //get poster
+    const currentPost = await Post.findById(req.params.id)
+      .populate({
+        path: "comments",
+        populate: [
+          {
+            path: "replies",
+          },
+        ],
+      })
+      .exec();
 
-  if (currentPost === null) {
-    return res.status(404).json({ error: "Post could not be found" });
-  }
+    if (currentPost === null) {
+      return res.status(404).json({ error: "Post could not be found" });
+    }
 
-  //get all related comments and replies in this post. will need recursion to find replies
-  const directCommentsId = currentPost.comments.map((comment) => comment._id);
-  const indirectCommentsId = currentPost.comments
-    .map((comment) => comment.replies)
-    .flat()
-    .map((reply) => reply._id);
+    //get all related comments and replies in this post. will need recursion to find replies
+    const directCommentsId = currentPost.comments.map((comment) => comment._id);
+    const indirectCommentsId = currentPost.comments
+      .map((comment) => comment.replies)
+      .flat()
+      .map((reply) => reply._id);
 
-  await Comment.deleteMany({ _id: { $in: indirectCommentsId } });
-  await Comment.deleteMany({ _id: { $in: directCommentsId } });
-  await Post.findByIdAndDelete(req.params.id);
-  return res.json({ post: currentPost, directCommentsId, indirectCommentsId });
-});
+    await Comment.deleteMany({ _id: { $in: indirectCommentsId } });
+    await Comment.deleteMany({ _id: { $in: directCommentsId } });
+    await Post.findByIdAndDelete(req.params.id);
+    return res.json({
+      user: req.user,
+      post: currentPost,
+      directCommentsId,
+      indirectCommentsId,
+    });
+  }),
+];
 
 //POST post creation page
 exports.post_detail = asyncHandler(async (req, res, next) => {

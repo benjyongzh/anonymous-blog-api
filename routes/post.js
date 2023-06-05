@@ -10,7 +10,7 @@ router.get("/create", post_controller.post_create_get);
 router.post("/create", post_controller.post_create_post);
 
 /* GET post deleting method. */
-router.post("/:id/delete", post_controller.post_delete_post);
+router.delete("/:id/delete", post_controller.post_delete_post);
 
 /* GET post page. */
 router.get("/:id", post_controller.post_detail);
