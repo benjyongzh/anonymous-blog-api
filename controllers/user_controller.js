@@ -226,14 +226,11 @@ exports.user_memberstatus_post = [
       });
     } else {
       //update user object into db
-      await User.findByIdAndUpdate(
-        req.params.id,
-        { member_status: req.body.new_membership },
-        {}
-      );
+      userToLookAt.member_status = req.body.new_membership;
+      const updatedUser = await userToLookAt.save();
       return res
         .status(201)
-        .json({ userToLookAt: userToLookAt, user: req.user });
+        .json({ userToLookAt: updatedUser, user: req.user });
     }
   }),
 ];
