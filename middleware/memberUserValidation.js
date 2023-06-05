@@ -12,8 +12,8 @@ async function memberUserValidation(req, res, next) {
   }
 
   //check for errors
-  if (userToLookAt._id !== req.user._id) {
-    // no such user
+  if (userToLookAt._id.toString() !== req.user._id.toString()) {
+    // authorized user and userToLookAt are not the same accounts
     return res.status(403).json({
       user: req.user,
       error: "Page is forbidden to user",
