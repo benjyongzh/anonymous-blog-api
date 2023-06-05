@@ -10,7 +10,7 @@ exports.main_page_get = asyncHandler(async (req, res, next) => {
     .sort({ date_of_post: 1 })
     .exec();
 
-  res.send({
+  return res.json({
     user: req.user,
     posts: allPosts,
   });
