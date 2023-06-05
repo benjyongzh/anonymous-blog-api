@@ -10,10 +10,12 @@ const {
   replyValidation,
 } = require("../middleware/commentValidation");
 const { validationResult } = require("express-validator");
+const { verifyToken } = require("../middleware/jwtVerification");
 
 //POST comment creation
 exports.comment_create_post = [
   //validation of comment
+  verifyToken,
   commentValidation,
 
   asyncHandler(async (req, res, next) => {
@@ -23,16 +25,16 @@ exports.comment_create_post = [
       .exec();
 
     if (post === null) {
-      res.status(404).json({ error: "Post could not be found" });
+      res
+        .status(404)
+        .json({ user: req.user, error: "Post could not be found" });
     }
 
     //check if validation is okay
     const results = validationResult(req);
     if (!results.isEmpty()) {
       //there are errors in validation
-      res.send({
-        errors: results.array(),
-      });
+      return res.json({ user: req.user, errors: results.array() });
     } else {
       //add comment to post's comment array
       const newComment = new Comment({
@@ -43,13 +45,14 @@ exports.comment_create_post = [
       await newComment.save();
       post.comments.push(newComment);
       await post.save();
-      res.send({ newComment, post, user: req.user });
+      return res.status(201).json({ newComment, post, user: req.user });
     }
   }),
 ];
 
 //POST comment creation
 exports.reply_create_post = [
+  verifyToken,
   //validation of comment reply
   replyValidation,
 
@@ -60,18 +63,23 @@ exports.reply_create_post = [
     ]);
 
     if (currentPost === null) {
-      res.status(404).json({ error: "Post could not be found" });
+      res
+        .status(404)
+        .json({ user: req.user, error: "Post could not be found" });
     }
 
     if (currentComment === null) {
-      res.status(404).json({ error: "Comment could not be found" });
+      res
+        .status(404)
+        .json({ user: req.user, error: "Comment could not be found" });
     }
 
     //check if validation is okay
     const results = validationResult(req);
     if (!results.isEmpty()) {
       //there are errors in validation
-      res.send({
+      res.json({
+        user: req.user,
         errors: results.array(),
       });
     } else {
@@ -85,7 +93,7 @@ exports.reply_create_post = [
       currentComment.replies.push(newReply);
       await currentComment.save();
       res.redirect(currentPost.url);
-      res.send({ newReply, currentComment, user: req.user });
+      return res.status(201).json({ newReply, currentComment, user: req.user });
     }
   }),
 ];
