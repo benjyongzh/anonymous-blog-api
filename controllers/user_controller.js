@@ -21,6 +21,10 @@ const {
   memberStatusValidation,
 } = require("../middleware/memberStatusValidation");
 const { passcodeCheck } = require("../middleware/membershipCodeValidation");
+const {
+  verifyToken,
+  verifyTokenOptional,
+} = require("../middleware/jwtVerification");
 
 //membership status upgrade codes
 require("dotenv").config();
@@ -151,45 +155,60 @@ exports.user_signup_post = [
 ];
 
 //non-existent user page
-exports.user_nonexist = (req, res, next) => {
-  res.status(404).json({ error: "User could not be found" });
-};
+exports.user_nonexist = [
+  verifyTokenOptional,
+  (req, res, next) => {
+    res.status(404).json({ user: req.user, error: "User could not be found" });
+  },
+];
 
 //display list of all posts of this user
-exports.user_detail = asyncHandler(async (req, res, next) => {
-  const userToFind = await User.findById(req.params.id).exec();
-  if (userToFind === null) {
-    res.status(404).json({ error: "User could not be found" });
-  }
+exports.user_detail = [
+  verifyTokenOptional,
+  asyncHandler(async (req, res, next) => {
+    const userToFind = await User.findById(req.params.id).exec();
+    if (userToFind === null) {
+      res
+        .status(404)
+        .json({ user: req.user, error: "User could not be found" });
+    }
 
-  const posts = await Post.find({ user: userToFind })
-    .sort({ date_of_post: 1 })
-    .exec();
+    const posts = await Post.find({ user: userToFind })
+      .sort({ date_of_post: 1 })
+      .exec();
 
-  return res.json({
-    userToLookAt: userToFind,
-    user: req.user,
-    posts,
-  });
-});
+    return res.json({
+      userToLookAt: userToFind,
+      user: req.user,
+      posts,
+    });
+  }),
+];
 
 //GET membership status option
-exports.user_memberstatus_get = asyncHandler(async (req, res, next) => {
-  const userToLookAt = await User.findById(req.params.id).exec();
-  //check for errors
-  if (userToLookAt === null) {
-    // no such user
-    res.status(404).json({ error: "User could not be found" });
-  }
+exports.user_memberstatus_get = [
+  verifyToken,
+  asyncHandler(async (req, res, next) => {
+    const userToLookAt = await User.findById(req.params.id).exec();
+    //check for errors
+    if (userToLookAt === null) {
+      // no such user
+      res.status(404).json({
+        user: req.user,
+        error: "User could not be found",
+      });
+    }
 
-  return res.json({
-    userToLookAt: userToLookAt,
-    user: req.user,
-  });
-});
+    return res.json({
+      userToLookAt: userToLookAt,
+      user: req.user,
+    });
+  }),
+];
 
 //POST membership status option
 exports.user_memberstatus_post = [
+  verifyToken,
   //validate passcodes
   passcodeCheck,
 
@@ -199,7 +218,10 @@ exports.user_memberstatus_post = [
     //check for errors
     if (userToLookAt === null) {
       // no such user
-      res.status(404).json({ error: "User could not be found" });
+      res.status(404).json({
+        user: req.user,
+        error: "User could not be found",
+      });
     }
 
     //check passcode validation
@@ -207,6 +229,7 @@ exports.user_memberstatus_post = [
     if (!results.isEmpty()) {
       //wrong passcode input
       return res.json({
+        user: req.user,
         errors: results.array(),
       });
     } else {
