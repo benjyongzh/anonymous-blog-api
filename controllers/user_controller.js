@@ -75,9 +75,14 @@ exports.user_login_post = [
           }
 
           // generate a signed son web token with the contents of user object and return it in the response
-          jwt.sign({ user }, process.env.JWT_SECRET_KEY, (err, token) => {
-            return res.json({ user, token });
-          });
+          jwt.sign(
+            { user },
+            process.env.JWT_SECRET_KEY,
+            { expiresIn: "1d" },
+            (err, token) => {
+              return res.json({ user, token });
+            }
+          );
         });
       }
     )(req, res);
