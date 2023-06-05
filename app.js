@@ -59,12 +59,12 @@ app.use("/", indexRouter.indexRouter);
 app.use("/auth", indexRouter.authRouter);
 app.use(
   "/users",
-  passport.authenticate("jwt", { session: false }),
+  // passport.authenticate("jwt", { session: false }),
   indexRouter.userRouter
 );
 app.use(
   "/posts",
-  passport.authenticate("jwt", { session: false }),
+  // passport.authenticate("jwt", { session: false }),
   indexRouter.postRouter
 );
 

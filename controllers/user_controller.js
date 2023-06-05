@@ -62,17 +62,16 @@ exports.user_login_post = [
           });
         }
 
-        // req.login(user, { session: false }, (err) => {
-        //   if (err) {
-        //     return res.json(err);
-        //   }
+        req.login(user, { session: false }, (err) => {
+          if (err) {
+            return res.json(err);
+          }
 
-        // generate a signed son web token with the contents of user object and return it in the response
-        jwt.sign({ user }, process.env.JWT_SECRET_KEY, (err, token) => {
-          return res.json({ user, token });
+          // generate a signed son web token with the contents of user object and return it in the response
+          jwt.sign({ user }, process.env.JWT_SECRET_KEY, (err, token) => {
+            return res.json({ user, token });
+          });
         });
-
-        // });
       }
     )(req, res);
   },

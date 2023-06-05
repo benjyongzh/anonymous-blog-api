@@ -7,13 +7,16 @@ const { body, validationResult } = require("express-validator");
 
 //custom middlware
 const { postValidation } = require("../middleware/postValidation");
+const { verifyToken } = require("../middleware/jwtVerification");
 
 //GET post creation page
-exports.post_create_get = asyncHandler(async (req, res, next) => {
-  return res.json({
-    user: req.user,
-  });
-});
+exports.post_create_get = [
+  verifyToken,
+
+  asyncHandler(async (req, res, next) => {
+    return res.json(req.user);
+  }),
+];
 
 //POST post creation page
 exports.post_create_post = [
