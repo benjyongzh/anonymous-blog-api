@@ -25,7 +25,7 @@ exports.comment_create_post = [
       .exec();
 
     if (post === null) {
-      res
+      return res
         .status(404)
         .json({ user: req.user, error: "Post could not be found" });
     }
@@ -63,13 +63,13 @@ exports.reply_create_post = [
     ]);
 
     if (currentPost === null) {
-      res
+      return res
         .status(404)
         .json({ user: req.user, error: "Post could not be found" });
     }
 
     if (currentComment === null) {
-      res
+      return res
         .status(404)
         .json({ user: req.user, error: "Comment could not be found" });
     }
@@ -78,7 +78,7 @@ exports.reply_create_post = [
     const results = validationResult(req);
     if (!results.isEmpty()) {
       //there are errors in validation
-      res.json({
+      return res.json({
         user: req.user,
         errors: results.array(),
       });
@@ -92,7 +92,6 @@ exports.reply_create_post = [
       await newReply.save();
       currentComment.replies.push(newReply);
       await currentComment.save();
-      res.redirect(currentPost.url);
       return res.status(201).json({ newReply, currentComment, user: req.user });
     }
   }),
