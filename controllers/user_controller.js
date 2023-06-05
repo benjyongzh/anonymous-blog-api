@@ -21,6 +21,9 @@ const {
   memberStatusValidation,
 } = require("../middleware/memberStatusValidation");
 const { passcodeCheck } = require("../middleware/membershipCodeValidation");
+const { memberUserValidation } = require("../middleware/memberUserValidation");
+
+//JWT
 const {
   verifyToken,
   verifyTokenOptional,
@@ -192,16 +195,9 @@ exports.user_detail = [
 //GET membership status option
 exports.user_memberstatus_get = [
   verifyToken,
+  memberUserValidation,
   asyncHandler(async (req, res, next) => {
     const userToLookAt = await User.findById(req.params.id).exec();
-    //check for errors
-    if (userToLookAt === null) {
-      // no such user
-      res.status(404).json({
-        user: req.user,
-        error: "User could not be found",
-      });
-    }
 
     return res.status(200).json({
       userToLookAt: userToLookAt,
@@ -215,18 +211,10 @@ exports.user_memberstatus_post = [
   verifyToken,
   //validate passcodes
   passcodeCheck,
+  memberUserValidation,
 
   asyncHandler(async (req, res, next) => {
     const userToLookAt = await User.findById(req.params.id).exec();
-
-    //check for errors
-    if (userToLookAt === null) {
-      // no such user
-      res.status(404).json({
-        user: req.user,
-        error: "User could not be found",
-      });
-    }
 
     //check passcode validation
     const results = validationResult(req);
@@ -244,7 +232,7 @@ exports.user_memberstatus_post = [
         {}
       );
       return res
-        .status(200)
+        .status(201)
         .json({ userToLookAt: userToLookAt, user: req.user });
     }
   }),
