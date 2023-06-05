@@ -181,7 +181,7 @@ exports.user_detail = [
       .sort({ date_of_post: 1 })
       .exec();
 
-    return res.json({
+    return res.status(200).json({
       userToLookAt: userToFind,
       user: req.user,
       posts,
@@ -203,7 +203,7 @@ exports.user_memberstatus_get = [
       });
     }
 
-    return res.json({
+    return res.status(200).json({
       userToLookAt: userToLookAt,
       user: req.user,
     });
@@ -243,7 +243,9 @@ exports.user_memberstatus_post = [
         { member_status: req.body.new_membership },
         {}
       );
-      return res.json({ userToLookAt: userToLookAt, user: req.user });
+      return res
+        .status(200)
+        .json({ userToLookAt: userToLookAt, user: req.user });
     }
   }),
 ];
