@@ -16,11 +16,11 @@ router.delete("/:id/delete", post_controller.post_delete_post);
 router.get("/:id", post_controller.post_detail);
 
 /* POST creating comments on post page. */
-router.post("/:id/comment/create", comment_controller.comment_create_post);
+router.post("/:id/comments/create", comment_controller.comment_create_post);
 
 /* POST creating replies to a particular comment. */
 router.post(
-  "/:postid/comment/:commentid/reply",
+  "/:postid/comments/:commentid/reply",
   comment_controller.reply_create_post
 );
 
