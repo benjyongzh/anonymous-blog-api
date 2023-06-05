@@ -17,7 +17,7 @@ exports.post_create_get = [
   verifyToken,
 
   asyncHandler(async (req, res, next) => {
-    return res.json({ user: req.user });
+    return res.status(200).json({ user: req.user });
   }),
 ];
 
@@ -47,7 +47,7 @@ exports.post_create_post = [
       });
     } else {
       await post.save();
-      return res.json({
+      return res.status(200).json({
         user: req.user,
         post,
       });
@@ -118,7 +118,7 @@ exports.post_detail = [
         .json({ user: req.user, error: "Post could not be found" });
     }
 
-    return res.json({
+    return res.status(200).json({
       user: req.user,
       post,
     });
