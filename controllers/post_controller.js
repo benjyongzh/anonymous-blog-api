@@ -7,7 +7,10 @@ const { body, validationResult } = require("express-validator");
 
 //custom middlware
 const { postValidation } = require("../middleware/postValidation");
-const { verifyToken } = require("../middleware/jwtVerification");
+const {
+  verifyToken,
+  verifyTokenOptional,
+} = require("../middleware/jwtVerification");
 
 //GET post creation page
 exports.post_create_get = [
@@ -92,27 +95,32 @@ exports.post_delete_post = [
 ];
 
 //POST post creation page
-exports.post_detail = asyncHandler(async (req, res, next) => {
-  const post = await Post.findById(req.params.id)
-    .populate({ path: "user", options: { retainNullValues: true } })
-    .populate({
-      path: "comments",
-      populate: [
-        { path: "user", options: { retainNullValues: true } },
-        {
-          path: "replies",
-          populate: [{ path: "user", options: { retainNullValues: true } }],
-        },
-      ],
-    })
-    .exec();
+exports.post_detail = [
+  verifyTokenOptional,
+  asyncHandler(async (req, res, next) => {
+    const post = await Post.findById(req.params.id)
+      .populate({ path: "user", options: { retainNullValues: true } })
+      .populate({
+        path: "comments",
+        populate: [
+          { path: "user", options: { retainNullValues: true } },
+          {
+            path: "replies",
+            populate: [{ path: "user", options: { retainNullValues: true } }],
+          },
+        ],
+      })
+      .exec();
 
-  if (post === null) {
-    return res.status(404).json({ error: "Post could not be found" });
-  }
+    if (post === null) {
+      return res
+        .status(404)
+        .json({ user: req.user, error: "Post could not be found" });
+    }
 
-  return res.json({
-    user: req.user,
-    post,
-  });
-});
+    return res.json({
+      user: req.user,
+      post,
+    });
+  }),
+];
