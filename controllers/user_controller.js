@@ -95,7 +95,8 @@ exports.user_signup_post = [
   usernameValidation,
   passwordCheck,
   memberStatusValidation,
-
+  usernameSanitize,
+  usernameAlreadyInUse,
   asyncHandler(async (req, res, next) => {
     try {
       const results = validationResult(req);
