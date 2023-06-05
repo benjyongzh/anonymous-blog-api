@@ -2,6 +2,7 @@ var express = require("express");
 var router = express.Router();
 
 const userController = require("../controllers/user_controller");
+const { verifyToken } = require("../middleware/jwtVerification");
 
 /* GET login page. */
 router.get("/login", (req, res) => {
@@ -20,12 +21,12 @@ router.get("/signup", (req, res) => {
 router.post("/signup", userController.user_signup_post);
 
 /* GET logging out page. */
-router.get("/loggingout", (req, res, next) => {
+router.get("/loggingout", verifyToken, (req, res, next) => {
   req.logout((err) => {
     if (err) {
-      return next(err);
+      return res.json("logging out error");
     }
-    res.redirect("/auth/logout");
+    return res.redirect("/auth/logout");
   });
 });
 
