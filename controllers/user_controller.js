@@ -37,7 +37,7 @@ exports.user_login_post = [
       // let temp_user = new User({
       //   username: req.body.username,
       // });
-      res.send({
+      return res.json({
         // signing_user: temp_user,
         errors: validationResults.array(),
       });
@@ -58,7 +58,7 @@ exports.user_login_post = [
 
       req.login(user, { session: false }, (err) => {
         if (err) {
-          res.send(err);
+          return res.json(err);
         }
 
         // generate a signed son web token with the contents of user object and return it in the response
@@ -109,7 +109,7 @@ exports.user_signup_post = [
         //   member_status: req.body.member_status,
         // });
 
-        res.send({
+        return res.json({
           // page_name: "signup_page",
           // signing_user: temp_user,
           errors: results.array(),
@@ -131,7 +131,7 @@ exports.user_signup_post = [
             // if (err) {
             //   return next(err);
             // }
-            return res.send({ result });
+            return res.json(result);
           });
         });
       }
@@ -157,7 +157,7 @@ exports.user_detail = asyncHandler(async (req, res, next) => {
     .sort({ date_of_post: 1 })
     .exec();
 
-  res.send({
+  return res.json({
     userToLookAt: userToFind,
     user: req.user,
     posts,
@@ -173,7 +173,7 @@ exports.user_memberstatus_get = asyncHandler(async (req, res, next) => {
     res.status(404).json({ error: "User could not be found" });
   }
 
-  res.send({
+  return res.json({
     userToLookAt: userToLookAt,
     user: req.user,
   });
@@ -197,7 +197,7 @@ exports.user_memberstatus_post = [
     const results = validationResult(req);
     if (!results.isEmpty()) {
       //wrong passcode input
-      res.send({
+      return res.json({
         errors: results.array(),
       });
     } else {
@@ -207,7 +207,7 @@ exports.user_memberstatus_post = [
         { member_status: req.body.new_membership },
         {}
       );
-      res.send({ userToLookAt: userToLookAt, user: req.user });
+      return res.json({ userToLookAt: userToLookAt, user: req.user });
     }
   }),
 ];
