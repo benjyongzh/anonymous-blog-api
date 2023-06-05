@@ -14,12 +14,13 @@ exports.post_create_get = [
   verifyToken,
 
   asyncHandler(async (req, res, next) => {
-    return res.json(req.user);
+    return res.json({ user: req.user });
   }),
 ];
 
 //POST post creation page
 exports.post_create_post = [
+  verifyToken,
   //validation of form inputs
   postValidation,
 
