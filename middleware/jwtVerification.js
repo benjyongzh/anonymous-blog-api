@@ -27,7 +27,13 @@ function checkToken(req, res, next) {
     //valid token
     jwt.verify(bearerToken, process.env.JWT_SECRET_KEY, (err, authData) => {
       if (err) {
-        res.status(403).json(err);
+        return res.status(403).json(err);
+        //this runs if the token has expired, returning err as:
+        // {
+        //   "name": "TokenExpiredError",
+        //   "message": "jwt expired",
+        //   "expiredAt": <expiry Date()>
+        // }
       }
       req.user = authData.user;
       next();
