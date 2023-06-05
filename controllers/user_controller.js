@@ -10,7 +10,10 @@ const bcrypt = require("bcryptjs");
 
 //custom middleware
 const { nameValidation } = require("../middleware/nameValidation");
-const { usernameValidation } = require("../middleware/usernameValidation");
+const {
+  usernameValidation,
+  usernameAlreadyExists,
+} = require("../middleware/usernameValidation");
 const { passwordCheck } = require("../middleware/passwordValidation");
 const {
   memberStatusValidation,
@@ -70,6 +73,7 @@ exports.user_signup_post = [
   //validate and sanitize form here
   nameValidation,
   usernameValidation,
+  usernameAlreadyExists,
   passwordCheck,
   memberStatusValidation,
 
