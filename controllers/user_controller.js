@@ -12,7 +12,10 @@ require("dotenv").config();
 
 //custom middleware
 const { nameValidation } = require("../middleware/nameValidation");
-const { usernameValidation } = require("../middleware/usernameValidation");
+const {
+  usernameAlreadyInUse,
+  usernameSanitize,
+} = require("../middleware/usernameValidation");
 const { passwordCheck } = require("../middleware/passwordValidation");
 const {
   memberStatusValidation,
@@ -25,7 +28,7 @@ require("dotenv").config();
 //POST log-in of user
 exports.user_login_post = [
   //validate and sanitize form here
-  usernameValidation,
+  usernameSanitize,
   passwordCheck,
 
   //check for errors before passport steps in
@@ -48,24 +51,30 @@ exports.user_login_post = [
 
   //JWT
   (req, res, next) => {
-    passport.authenticate("local", { session: false }, (err, user, info) => {
-      if (err || !user) {
-        return res.status(400).json({
-          message: "Something is not right",
-          user: user,
-        });
-      }
-
-      req.login(user, { session: false }, (err) => {
-        if (err) {
-          return res.json(err);
+    passport.authenticate(
+      "local",
+      { session: false, failWithError: true, failureMessage: true },
+      (err, user, info) => {
+        if (err || !user) {
+          return res.json({
+            errors: { message: "Invalid username and/or password" },
+            user: user,
+          });
         }
 
+        // req.login(user, { session: false }, (err) => {
+        //   if (err) {
+        //     return res.json(err);
+        //   }
+
         // generate a signed son web token with the contents of user object and return it in the response
-        const token = jwt.sign(user, process.env.JWT_SECRET_KEY);
-        return res.json({ user, token });
-      });
-    })(req, res);
+        jwt.sign(user, process.env.JWT_SECRET_KEY, (err, token) => {
+          return res.json({ user, token });
+        });
+
+        // });
+      }
+    )(req, res);
   },
 
   /* passport.authenticate("local", {
@@ -92,11 +101,11 @@ exports.user_login_post = [
 exports.user_signup_post = [
   //validate and sanitize form here
   nameValidation,
-  usernameValidation,
-  passwordCheck,
-  memberStatusValidation,
   usernameSanitize,
   usernameAlreadyInUse,
+  passwordCheck,
+  memberStatusValidation,
+
   asyncHandler(async (req, res, next) => {
     try {
       const results = validationResult(req);
