@@ -69,22 +69,46 @@ exports.user_login_post = [
           });
         }
 
-        req.login(user, { session: false }, (err) => {
-          if (err) {
-            return res.json(err);
-          }
+        // req.login(user, { session: false }, (err) => {
+        //   if (err) {
+        //     return res.json(err);
+        //   }
 
-          // generate a signed son web token with the contents of user object and return it in the response
-          jwt.sign(
-            { user },
-            process.env.JWT_SECRET_KEY,
-            { expiresIn: "1d" },
-            (err, token) => {
-              //user.token.add(token)
-              return res.json({ user, token });
+        // generate a signed son web token with the contents of user object and return it in the response
+        jwt.sign(
+          {
+            _id: user._id,
+            first_name: user.first_name,
+            last_name: user.last_name,
+            username: user.username,
+            member_status: user.member_status,
+          },
+          process.env.JWT_SECRET_KEY,
+          { expiresIn: "1d" },
+          async (err, token) => {
+            let oldTokens = user.auth_tokens || [];
+            if (oldTokens.length > 0) {
+              oldTokens = oldTokens.filter((t) => {
+                const timeDiff = (Date.now() - parseInt(t.signedAt)) / 1000;
+                console.log(timeDiff);
+                return timeDiff < 60;
+                // if (timeDiff < 60) {
+                //   //token is less than 1 day old. keep token. otherwise, filter out
+                //   return t;
+                // }
+              });
             }
-          );
-        });
+
+            //add new token to user document
+            await User.findByIdAndUpdate(user._id, {
+              auth_tokens: [
+                ...oldTokens,
+                { token, signedAt: Date.now().toString() },
+              ],
+            }).then((user) => res.json({ user, token }));
+          }
+        );
+        // });
       }
     )(req, res);
   },
