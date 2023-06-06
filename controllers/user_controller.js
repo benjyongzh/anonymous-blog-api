@@ -78,10 +78,10 @@ exports.user_login_post = [
         jwt.sign(
           {
             _id: user._id,
-            first_name: user.first_name,
-            last_name: user.last_name,
-            username: user.username,
-            member_status: user.member_status,
+            first_name: user.first_name, //should remove for production
+            last_name: user.last_name, //should remove for production
+            username: user.username, //should remove for production
+            member_status: user.member_status, //should remove for production
           },
           process.env.JWT_SECRET_KEY,
           { expiresIn: "1d" },
@@ -170,17 +170,29 @@ exports.user_signup_post = [
           const result = await user.save();
 
           //make sure user stays logged in
-          req.login(user, { session: false }, (err) => {
-            if (err) {
-              return res.json(err);
-            }
+          // req.login(user, { session: false }, (err) => {
+          //   if (err) {
+          //     return res.json(err);
+          //   }
 
-            // generate a signed son web token with the contents of user object and return it in the response
-            jwt.sign({ user }, process.env.JWT_SECRET_KEY, (err, token) => {
-              return res.json({ user, token });
-            });
-          });
+          // generate a signed son web token with the contents of user object and return it in the response
+          jwt.sign(
+            {
+              _id: user._id,
+              first_name: user.first_name, //should remove for production
+              last_name: user.last_name, //should remove for production
+              username: user.username, //should remove for production
+              member_status: user.member_status, //should remove for production
+            },
+            process.env.JWT_SECRET_KEY,
+            async (err, token) => {
+              await User.findByIdAndUpdate(user._id, {
+                auth_tokens: [{ token, signedAt: Date.now().toString() }],
+              }).then((user) => res.json({ user, token }));
+            }
+          );
         });
+        // });
       }
     } catch (err) {
       return next(err);
