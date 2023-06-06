@@ -91,11 +91,8 @@ exports.user_login_post = [
               oldTokens = oldTokens.filter((t) => {
                 const timeDiff = (Date.now() - parseInt(t.signedAt)) / 1000;
                 console.log(timeDiff);
-                return timeDiff < 60;
-                // if (timeDiff < 60) {
-                //   //token is less than 1 day old. keep token. otherwise, filter out
-                //   return t;
-                // }
+                // token is less than 1 day old. keep token. otherwise, filter out
+                return timeDiff < 86400;
               });
             }
 
