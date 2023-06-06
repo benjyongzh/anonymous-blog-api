@@ -1,5 +1,7 @@
 var express = require("express");
 var router = express.Router();
+const asyncHandler = require("express-async-handler");
+const User = require("../models/user");
 
 const userController = require("../controllers/user_controller");
 const { verifyToken } = require("../middleware/jwtVerification");
@@ -21,14 +23,29 @@ router.get("/signup", (req, res) => {
 router.post("/signup", userController.user_signup_post);
 
 /* GET logging out page. */
-router.get("/loggingout", verifyToken, (req, res, next) => {
-  req.logout((err) => {
-    if (err) {
-      return res.json("logging out error");
+router.get(
+  "/loggingout",
+  verifyToken,
+  asyncHandler(async (req, res, next) => {
+    const bearerHeader = req.headers["authorization"];
+    const bearerToken = bearerHeader && bearerHeader.split(" ")[1];
+    if (bearerToken == null) {
+      //auth error
+      return res.status(401).json("Authorization Token Failed");
+    } else {
+      //delete bearerToken from currentTokens
+      const currentTokens = req.user.auth_tokens;
+      console.log(currentTokens);
+      const remainingTokens = currentTokens.filter(
+        (tokenObject) => tokenObject.token !== bearerToken
+      );
+      console.log(remainingTokens);
+      await User.findByIdAndUpdate(req.user._id, {
+        auth_tokens: remainingTokens,
+      }).then((user) => res.status(200).json({ user }));
     }
-    return res.redirect("/auth/logout");
-  });
-});
+  })
+);
 
 /* GET logged out page. */
 router.get("/logout", (req, res, next) => {
