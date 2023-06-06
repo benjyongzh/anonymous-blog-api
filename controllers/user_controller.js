@@ -80,6 +80,7 @@ exports.user_login_post = [
             process.env.JWT_SECRET_KEY,
             { expiresIn: "1d" },
             (err, token) => {
+              //user.token.add(token)
               return res.json({ user, token });
             }
           );

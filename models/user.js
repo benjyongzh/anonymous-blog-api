@@ -15,6 +15,7 @@ const UserSchema = new Schema({
     enum: ["Basic", "Premium", "Admin"],
     default: "Basic",
   },
+  auth_tokens: [{ type: Object }],
 });
 
 //virtual for URL
