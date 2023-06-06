@@ -1,6 +1,7 @@
 //jwt verification
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
+const User = require("../models/user");
 
 function tokenIsOptional(req, res, next) {
   req.body.tokenOptional = true;
@@ -25,19 +26,25 @@ function checkToken(req, res, next) {
     }
   } else {
     //valid token
-    jwt.verify(bearerToken, process.env.JWT_SECRET_KEY, (err, authData) => {
-      if (err) {
-        return res.status(403).json(err);
-        //this runs if the token has expired, returning err as:
-        // {
-        //   "name": "TokenExpiredError",
-        //   "message": "jwt expired",
-        //   "expiredAt": <expiry Date()>
-        // }
+    jwt.verify(
+      bearerToken,
+      process.env.JWT_SECRET_KEY,
+      async (err, authData) => {
+        if (err) {
+          return res.status(403).json(err);
+          //this runs if the token has expired, returning err as:
+          // {
+          //   "name": "TokenExpiredError",
+          //   "message": "jwt expired",
+          //   "expiredAt": <expiry Date()>
+          // }
+        } else {
+          const authUser = await User.findById(authData._id);
+          req.user = authUser;
+          next();
+        }
       }
-      req.user = authData.user;
-      next();
-    });
+    );
   }
 }
 
