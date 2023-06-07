@@ -23,7 +23,7 @@ router.get("/signup", (req, res) => {
 router.post("/signup", userController.user_signup_post);
 
 /* GET logging out page. */
-router.get(
+router.post(
   "/loggingout",
   verifyToken,
   asyncHandler(async (req, res, next) => {
@@ -35,21 +35,35 @@ router.get(
     } else {
       //delete bearerToken from currentTokens
       const currentTokens = req.user.auth_tokens;
-      console.log(currentTokens);
+
+      //check if bearerToken exists in DB
+      const curentTokensTokenOnly = currentTokens.map((t) => t.token);
+      if (!curentTokensTokenOnly.includes(bearerToken)) {
+        return res.status(403).json({
+          message: `Auth token could not be found: ${bearerToken}`,
+          currentTokens,
+        });
+      }
+
+      //set tokens left in DB
       const remainingTokens = currentTokens.filter(
         (tokenObject) => tokenObject.token !== bearerToken
       );
-      console.log(remainingTokens);
+
+      //update user document w ith new array of tokens to exclude current token
       await User.findByIdAndUpdate(req.user._id, {
         auth_tokens: remainingTokens,
-      }).then((user) => res.status(200).json({ user }));
+      }).then((user) =>
+        // res.status(303).json({ user, removedToken: bearerToken })
+        res.status(303).redirect(`/auth/logout/${user._id}`)
+      );
     }
   })
 );
 
 /* GET logged out page. */
-router.get("/logout", (req, res, next) => {
-  return res.status(200).json("Logout page");
+router.get("/logout/:id", (req, res, next) => {
+  return res.status(200).json(`Logout page of user ${req.params.id}`);
 });
 
 module.exports = router;
