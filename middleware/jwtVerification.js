@@ -39,9 +39,21 @@ function checkToken(req, res, next) {
           //   "expiredAt": <expiry Date()>
           // }
         } else {
-          const authUser = await User.findById(authData._id);
-          req.user = authUser;
-          next();
+          //check if token is in user's db document
+          let authUser = await User.findById(authData._id).exec();
+          let authTokensInUse = authUser.auth_tokens.map(
+            (tokenObject) => tokenObject.token
+          );
+          if (authTokensInUse.includes(bearerToken)) {
+            //auth token is still in DB
+            req.user = authUser;
+            next();
+          } else {
+            //auth token is no longer in DB
+            return res
+              .status(403)
+              .json({ message: "Auth token no longer valid" });
+          }
         }
       }
     );
