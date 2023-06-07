@@ -47,26 +47,17 @@ app.use(passport.initialize());
 // app.use(passport.session());
 app.use(express.urlencoded({ extended: false }));
 
-// ========================= use locals ============================
-// app.use(function (req, res, next) {
-// res.locals.currentUser = req.user;
-// res.locals.mainTitle = "Anon Blog";
-//   next();
-// });
+// ========================= extra middleware ============================
+app.use(function (req, res, next) {
+  res.locals.mainTitle = "Anon Blog";
+  next();
+});
 
 // ============================= routes
 app.use("/", indexRouter.indexRouter);
 app.use("/auth", indexRouter.authRouter);
-app.use(
-  "/users",
-  // passport.authenticate("jwt", { session: false }),
-  indexRouter.userRouter
-);
-app.use(
-  "/posts",
-  // passport.authenticate("jwt", { session: false }),
-  indexRouter.postRouter
-);
+app.use("/users", indexRouter.userRouter);
+app.use("/posts", indexRouter.postRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
