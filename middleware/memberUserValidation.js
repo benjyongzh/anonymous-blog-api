@@ -7,7 +7,7 @@ async function memberUserValidation(req, res, next) {
     // no such user
     return res.status(404).json({
       user: req.user,
-      error: "User could not be found",
+      errors: [{ message: "User could not be found" }],
     });
   }
 
@@ -16,7 +16,7 @@ async function memberUserValidation(req, res, next) {
     // authorized user and userToLookAt are not the same accounts
     return res.status(403).json({
       user: req.user,
-      error: "Page is forbidden to user",
+      errors: [{ message: "Page is forbidden to user" }],
     });
   }
 

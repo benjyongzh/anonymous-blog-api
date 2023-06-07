@@ -64,15 +64,10 @@ exports.user_login_post = [
       (err, user, info) => {
         if (err || !user) {
           return res.json({
-            errors: { message: "Invalid username and/or password" },
+            errors: [{ message: "Invalid username and/or password" }],
             user: user,
           });
         }
-
-        // req.login(user, { session: false }, (err) => {
-        //   if (err) {
-        //     return res.json(err);
-        //   }
 
         // generate a signed son web token with the contents of user object and return it in the response
         jwt.sign(
@@ -86,6 +81,9 @@ exports.user_login_post = [
           process.env.JWT_SECRET_KEY,
           { expiresIn: "1d" },
           async (err, token) => {
+            if (err) {
+              return res.status(401).json({ errors: [err] });
+            }
             let oldTokens = user.auth_tokens || [];
             if (oldTokens.length > 0) {
               oldTokens = oldTokens.filter((t) => {
@@ -105,29 +103,9 @@ exports.user_login_post = [
             }).then((user) => res.json({ user, token }));
           }
         );
-        // });
       }
     )(req, res);
   },
-
-  /* passport.authenticate("local", {
-    successRedirect: "/",
-    failWithError: true,
-    failureMessage: true,
-  }),
-  function (err, req, res, next) {
-    //authentication failed
-    // let temp_user = new User({
-    //   username: req.body.username,
-    // });
-
-    //error is in validation or make up invalid error
-    return res.send({
-      // page_name: "login_page",
-      // signing_user: temp_user,
-      errors: { path: "generic", msg: "Invalid username and/or password" },
-    });
-  }, */
 ];
 
 //POST sign-up of user
@@ -143,18 +121,7 @@ exports.user_signup_post = [
     try {
       const results = validationResult(req);
       if (!results.isEmpty()) {
-        //there are validation errors
-        // const temp_user = new User({
-        //   first_name: req.body.first_name,
-        //   last_name: req.body.last_name,
-        //   username: req.body.username,
-        //   password: "",
-        //   member_status: req.body.member_status,
-        // });
-
         return res.json({
-          // page_name: "signup_page",
-          // signing_user: temp_user,
           errors: results.array(),
         });
       } else {
@@ -186,6 +153,9 @@ exports.user_signup_post = [
             },
             process.env.JWT_SECRET_KEY,
             async (err, token) => {
+              if (err) {
+                return res.status(401).json({ errors: [err] });
+              }
               await User.findByIdAndUpdate(user._id, {
                 auth_tokens: [{ token, signedAt: Date.now().toString() }],
               }).then((user) => res.json({ user, token }));
@@ -204,7 +174,10 @@ exports.user_signup_post = [
 exports.user_nonexist = [
   verifyTokenOptional,
   (req, res, next) => {
-    res.status(404).json({ user: req.user, error: "User could not be found" });
+    return res.status(404).json({
+      user: req.user,
+      error: [{ message: "User could not be found" }],
+    });
   },
 ];
 
@@ -214,9 +187,12 @@ exports.user_detail = [
   asyncHandler(async (req, res, next) => {
     const userToFind = await User.findById(req.params.id).exec();
     if (userToFind === null) {
-      res
+      return res
         .status(404)
-        .json({ user: req.user, error: "User could not be found" });
+        .json({
+          user: req.user,
+          error: [{ message: "User could not be found" }],
+        });
     }
 
     const posts = await Post.find({ user: userToFind })

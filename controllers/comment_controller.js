@@ -27,7 +27,10 @@ exports.comment_create_post = [
     if (post === null) {
       return res
         .status(404)
-        .json({ user: req.user, error: "Post could not be found" });
+        .json({
+          user: req.user,
+          errors: [{ message: "Post could not be found" }],
+        });
     }
 
     //check if validation is okay
@@ -65,13 +68,19 @@ exports.reply_create_post = [
     if (currentPost === null) {
       return res
         .status(404)
-        .json({ user: req.user, error: "Post could not be found" });
+        .json({
+          user: req.user,
+          errors: [{ message: "Post could not be found" }],
+        });
     }
 
     if (currentComment === null) {
       return res
         .status(404)
-        .json({ user: req.user, error: "Comment could not be found" });
+        .json({
+          user: req.user,
+          errors: [{ message: "Comment could not be found" }],
+        });
     }
 
     //check if validation is okay

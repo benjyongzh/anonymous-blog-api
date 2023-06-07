@@ -22,7 +22,9 @@ function checkToken(req, res, next) {
     if (req.body.tokenOptional) {
       next();
     } else {
-      return res.status(401).json("Must log in first");
+      return res
+        .status(401)
+        .json({ errors: [{ message: "Must log in first" }] });
     }
   } else {
     //valid token
@@ -31,7 +33,7 @@ function checkToken(req, res, next) {
       process.env.JWT_SECRET_KEY,
       async (err, authData) => {
         if (err) {
-          return res.status(403).json(err);
+          return res.status(403).json({ errors: [err] });
           //this runs if the token has expired, returning err as:
           // {
           //   "name": "TokenExpiredError",
@@ -52,7 +54,7 @@ function checkToken(req, res, next) {
             //auth token is no longer in DB
             return res
               .status(403)
-              .json({ message: "Auth token no longer valid" });
+              .json({ errors: [{ message: "Auth token no longer valid" }] });
           }
         }
       }

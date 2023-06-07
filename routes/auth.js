@@ -8,7 +8,7 @@ const { verifyToken } = require("../middleware/jwtVerification");
 
 /* GET login page. */
 router.get("/login", (req, res) => {
-  return res.status(200).json("Login page");
+  return res.status(200).json({ message: "Login page" });
 });
 
 /* POST login page. */
@@ -16,7 +16,7 @@ router.post("/login", userController.user_login_post);
 
 /* GET signup page. */
 router.get("/signup", (req, res) => {
-  return res.status(200).json("Sign up page");
+  return res.status(200).json({ message: "Sign up page" });
 });
 
 /* POST signup page. */
@@ -31,7 +31,9 @@ router.post(
     const bearerToken = bearerHeader && bearerHeader.split(" ")[1];
     if (bearerToken == null) {
       //auth error
-      return res.status(401).json("Authorization Token Failed");
+      return res
+        .status(401)
+        .json({ errors: [{ message: "Authorization Token Failed" }] });
     } else {
       //delete bearerToken from currentTokens
       const currentTokens = req.user.auth_tokens;
@@ -40,7 +42,9 @@ router.post(
       const curentTokensTokenOnly = currentTokens.map((t) => t.token);
       if (!curentTokensTokenOnly.includes(bearerToken)) {
         return res.status(403).json({
-          message: `Auth token could not be found: ${bearerToken}`,
+          errors: [
+            { message: `Auth token could not be found: ${bearerToken}` },
+          ],
           currentTokens,
         });
       }
@@ -63,7 +67,9 @@ router.post(
 
 /* GET logged out page. */
 router.get("/logout/:id", (req, res, next) => {
-  return res.status(200).json(`Logout page of user ${req.params.id}`);
+  return res
+    .status(200)
+    .json({ message: `Logout page of user ${req.params.id}` });
 });
 
 module.exports = router;

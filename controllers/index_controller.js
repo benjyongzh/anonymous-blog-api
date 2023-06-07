@@ -15,7 +15,7 @@ exports.main_page_get = [
       .sort({ date_of_post: 1 })
       .exec();
 
-    return res.json({
+    return res.status(200).json({
       user: req.user,
       posts: allPosts,
     });
