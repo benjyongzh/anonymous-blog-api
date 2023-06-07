@@ -11,7 +11,7 @@ This project has been deployed on Railway, [here](http://anonymous-blog-producti
 
 Things to work on:
 
-- like/dislike system(?).
+- API/frontend structure.
 
 Learning points:
 
@@ -24,3 +24,4 @@ Learning points:
 - Using conditional middlewares alongside express-validator.
 - Mongoose multi-level deletion of linked database objects.
 - CSRF prevention by sticking to REST rules.
+- Splitting project into React front-end vs ExpressJS API back-end.
