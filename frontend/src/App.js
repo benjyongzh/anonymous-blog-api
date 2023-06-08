@@ -7,6 +7,7 @@ function App() {
   const [pageName, setPageName] = useState("");
   const [user, setUser] = useState(null);
   const [navBarButtons, setNavBarButtons] = useState(<></>);
+  const [tempContent, setTempContent] = useState("");
 
   //use useEffect to alter mainTitle, pageName and user. use fetch to get res.json
   //make sure log out button is using POST instead of just GET href
@@ -65,10 +66,10 @@ function App() {
     const url = `${process.env.REACT_APP_API_INDEX_URL}${process.env.REACT_APP_BACKEND_PORT}`;
     console.log(url);
     const response = await fetch(url);
-    console.log(response);
+    setMainTitle("Anon Blog");
     const items = await response.json();
-    setMainTitle(url);
     console.log(items);
+    setTempContent(items);
   };
 
   //componentOnMount
@@ -111,6 +112,9 @@ function App() {
           </nav>
           <div className="container-fluid">
             <div className="border-top border-secondary py-1">
+              {/* {tempContent.posts.map((post) => {
+                return <div>{post.text}</div>;
+              })} */}
               <Routes>
                 {/*
                 <Route path="/" element={<HomePage />} />
