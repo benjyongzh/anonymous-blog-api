@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+// require("dotenv");
 
 function App() {
   const [mainTitle, setMainTitle] = useState("");
@@ -60,9 +61,18 @@ function App() {
     }
   };
 
+  const fetchData = async () => {
+    const url = `${process.env.REACT_APP_API_INDEX_URL}${process.env.REACT_APP_BACKEND_PORT}`;
+    console.log(url);
+    const response = await fetch(url);
+    const items = await response.json();
+    setMainTitle(url);
+  };
+
   //componentOnMount
   useEffect(() => {
     //do fetching
+    fetchData();
     configureNavbarItemsBasedOnLogIn();
   }, []);
 
@@ -100,6 +110,7 @@ function App() {
           <div className="container-fluid">
             <div className="border-top border-secondary py-1">
               <Routes>
+                {/*
                 <Route path="/" element={<HomePage />} />
                 <Route path="auth" element={<ProductsPage />}>
                   <Route
@@ -184,6 +195,7 @@ function App() {
                     </Route>
                   </Route>
                 </Route>
+                      */}
               </Routes>
             </div>
           </div>
