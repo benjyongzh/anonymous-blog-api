@@ -2,19 +2,22 @@ import { useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 // require("dotenv");
 
+//components
+import Homepage from "./Components/Homepage";
+
 function App() {
   const [mainTitle, setMainTitle] = useState("");
   const [pageName, setPageName] = useState("");
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(undefined);
   const [navBarButtons, setNavBarButtons] = useState(<></>);
-  const [tempContent, setTempContent] = useState("");
+  const [content, setContent] = useState("");
 
   //use useEffect to alter mainTitle, pageName and user. use fetch to get res.json
   //make sure log out button is using POST instead of just GET href
   //likely need react router inside block content
 
   const configureNavbarItemsBasedOnLogIn = () => {
-    if (user !== null) {
+    if (user !== undefined) {
       setNavBarButtons(
         <ul className="nav navbar-nav" style={{ gap: "1rem" }}>
           <li className="nav-item">
@@ -69,7 +72,7 @@ function App() {
     setMainTitle("Anon Blog");
     const items = await response.json();
     console.log(items);
-    setTempContent(items);
+    setContent(items.posts);
   };
 
   //componentOnMount
@@ -116,8 +119,11 @@ function App() {
                 return <div>{post.text}</div>;
               })} */}
               <Routes>
+                <Route
+                  path="/"
+                  element={<Homepage posts={content.posts} user={user} />}
+                />
                 {/*
-                <Route path="/" element={<HomePage />} />
                 <Route path="auth" element={<ProductsPage />}>
                   <Route
                     path="login"
