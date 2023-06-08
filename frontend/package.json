@@ -4,8 +4,9 @@
   "description": "Made using Create-React-App.",
   "main": "webpack.config.js",
   "scripts": {
-    "build": "rm -rf dist && webpack --mode development",
-    "start": "npm run build && react-scripts start"
+    "devbuild": "rm -rf dist && webpack --mode development",
+    "devstart": "npm run devbuild && react-scripts start",
+    "start": "react-scripts build && react-scripts start"
   },
   "keywords": [],
   "author": "",
