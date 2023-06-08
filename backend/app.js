@@ -4,6 +4,10 @@ var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 
+// ============================= CORS
+var cors = require("cors");
+var corsOptions = { origin: "http://localhost:3000" };
+
 const session = require("express-session");
 const passport = require("passport");
 require("./config/passport-setup");
@@ -39,6 +43,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
+// app.options("*", cors(corsOptions));
+app.use(cors(corsOptions));
 
 // ============================= passportJS
 // app.use(session({ secret: "cats", resave: false, saveUninitialized: true }));
