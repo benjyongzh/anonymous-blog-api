@@ -6,7 +6,9 @@ var logger = require("morgan");
 
 // ============================= CORS
 var cors = require("cors");
-var corsOptions = { origin: "http://localhost:3000" };
+var corsOptions = {
+  /* origin: "http://localhost:3000"  */
+};
 
 const session = require("express-session");
 const passport = require("passport");
@@ -54,10 +56,10 @@ app.use(passport.initialize());
 app.use(express.urlencoded({ extended: false }));
 
 // ========================= extra middleware ============================
-app.use(function (req, res, next) {
-  res.locals.mainTitle = "Anon Blog";
-  next();
-});
+// app.use(function (req, res, next) {
+//   res.body.mainTitle = "Anon Blog";
+//   next();
+// });
 
 // ============================= routes
 app.use("/", indexRouter.indexRouter);

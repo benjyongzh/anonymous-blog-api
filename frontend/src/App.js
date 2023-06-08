@@ -65,8 +65,10 @@ function App() {
     const url = `${process.env.REACT_APP_API_INDEX_URL}${process.env.REACT_APP_BACKEND_PORT}`;
     console.log(url);
     const response = await fetch(url);
+    console.log(response);
     const items = await response.json();
     setMainTitle(url);
+    console.log(items);
   };
 
   //componentOnMount
