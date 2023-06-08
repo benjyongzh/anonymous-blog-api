@@ -4,7 +4,8 @@
   "description": "Practice project for MongoDB, ExpressJS and OAuth. This is a project based on an assignment in The Odin Project.",
   "main": "index.js",
   "scripts": {
-    "start": "concurrently \"cd backend && npm run devstart\" \"cd frontend && npm start\" "
+    "start": "concurrently \"cd backend && npm run serverstart\" \"cd frontend && npm start\" ",
+    "devstart": "concurrently \"cd backend && npm run devstart\" \"cd frontend && npm start\" "
   },
   "repository": {
     "type": "git",
