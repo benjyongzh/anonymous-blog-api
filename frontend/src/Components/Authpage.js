@@ -11,6 +11,7 @@ function Authpage(props) {
   const authTitles = {
     login: "Log In",
     signup: "Sign Up",
+    loggingout: "Logging Out",
     logout: "Logged Out",
   };
 
