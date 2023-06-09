@@ -4,26 +4,15 @@ import { useLocation } from "react-router-dom";
 import ErrorList from "./ErrorList";
 
 function FormInput(props) {
-  const { inputName, inputType, placeholder, inputRequired, labelText } = props;
-  const location = useLocation();
-  const [errors, setErrors] = useState([]);
-
-  const fetchData = async () => {
-    const url = `${process.env.REACT_APP_API_INDEX_URL}${process.env.REACT_APP_BACKEND_PORT}${location.pathname}`;
-    const response = await fetch(url);
-    if (response) {
-      const responseItems = await response.json();
-      setErrors(responseItems.errors || []);
-    } else {
-      setErrors([{ path: "fetching data", msg: "Could not fetch" }]);
-    }
-  };
-
-  //componentOnMount
-  useEffect(() => {
-    //do fetching
-    fetchData();
-  }, []);
+  const {
+    inputName,
+    inputType,
+    placeholder,
+    inputRequired,
+    labelText,
+    errors,
+    handleChange,
+  } = props;
 
   return (
     <div className="mt-3 form-group">
@@ -35,6 +24,7 @@ function FormInput(props) {
           placeholder={placeholder}
           name={inputName}
           required={inputRequired}
+          onChange={(e) => handleChange(e.target.value)}
         ></input>
         <label className="mt-1" htmlFor={inputName}>
           {labelText}
