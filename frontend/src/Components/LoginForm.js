@@ -1,12 +1,30 @@
-import { Link } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
+import { useEffect, useState } from "react";
 
-import ErrorMessage from "./ErrorMessage";
+import ErrorList from "./ErrorList";
 import FormInput from "./FormInput";
 
 function LoginForm(props) {
-  // const { user: currentUser } = props;
-  // let { authType } = useParams();
-  //   const location = useLocation();
+  const [errors, setErrors] = useState([]);
+  const location = useLocation();
+
+  const fetchData = async () => {
+    const url = `${process.env.REACT_APP_API_INDEX_URL}${process.env.REACT_APP_BACKEND_PORT}${location.pathname}`;
+    const response = await fetch(url);
+    if (response) {
+      const responseItems = await response.json();
+      console.log(responseItems);
+      setErrors(responseItems.errors || []);
+    } else {
+      setErrors([{ path: "fetching data", msg: "Could not fetch" }]);
+    }
+  };
+
+  //componentOnMount
+  useEffect(() => {
+    //do fetching
+    fetchData();
+  }, []);
 
   return (
     <form method="POST" action="">
@@ -31,17 +49,7 @@ function LoginForm(props) {
         inputRequired={true}
         labelText="Confirm Password"
       />
-      <p className="mt-1">
-        {/*need to use redux to get error messages 
-                if errors 
-                    for error in errors 
-                        if error.path==="username"
-                            span(class='text-danger') #{error.msg}
-                        else
-                            span &nbsp;
-                    else
-                        span &nbsp;*/}
-      </p>
+      <ErrorList errors={errors} includePaths={["generic"]} />
       <div className="mt-2 text-center form-group">
         <button className="w-100 btn btn-primary" type="submit">
           Submit

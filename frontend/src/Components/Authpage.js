@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { useLocation, Outlet } from "react-router-dom";
 
-import ErrorMessage from "./ErrorMessage";
+// import ErrorMessage from "./ErrorMessage";
 
 function Authpage(props) {
-  const { user: currentUser } = props;
+  // const { user: currentUser } = props;
   const location = useLocation();
   const [title, setTitle] = useState("");
 

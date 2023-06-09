@@ -151,8 +151,8 @@ function App() {
                     element={<SignupForm user={content && content.user} />}
                   />
                   {/*
-                  <Route path="loggingout" />
-                  <Route path="logout/:userId" element={<LogoutPage />} />*/}
+                  <Route path="loggingout" />*/}
+                  <Route path="logout/:userId" element={<LogoutPage />} />
                 </Route>
                 {/*
                 <Route path="users" element={<ProductsPage />}>

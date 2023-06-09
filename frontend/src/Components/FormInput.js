@@ -1,7 +1,30 @@
+import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
+
 import ErrorMessage from "./ErrorMessage";
+import ErrorList from "./ErrorList";
 
 function FormInput(props) {
   const { inputName, inputType, placeholder, inputRequired, labelText } = props;
+  const location = useLocation();
+  const [errors, setErrors] = useState([]);
+
+  const fetchData = async () => {
+    const url = `${process.env.REACT_APP_API_INDEX_URL}${process.env.REACT_APP_BACKEND_PORT}${location.pathname}`;
+    const response = await fetch(url);
+    if (response) {
+      const responseItems = await response.json();
+      setErrors(responseItems.errors || []);
+    } else {
+      setErrors([{ path: "fetching data", msg: "Could not fetch" }]);
+    }
+  };
+
+  //componentOnMount
+  useEffect(() => {
+    //do fetching
+    fetchData();
+  }, []);
 
   return (
     <div className="mt-3 form-group">
@@ -18,29 +41,9 @@ function FormInput(props) {
           {labelText}
         </label>
       </div>
-      <p className="mt-1">
-        {/*need to use redux to get error messages 
-                if errors 
-                    for error in errors 
-                        if error.path==="username"
-                            span(class='text-danger') #{error.msg}
-                        else
-                            span &nbsp;
-                    else
-                        span &nbsp;*/}
-      </p>
+      <ErrorList errors={errors} includePaths={[inputName]} />
     </div>
   );
-
-  // return (
-  //   <div
-  //     className="d-flex flex-column align-items-stretch justify-content-center container"
-  //     style={{ maxWidth: "380px" }}
-  //   >
-  //     <h3 className="text-center m-4">{authType}</h3>
-  //     <Outlet />
-  //   </div>
-  // );
 }
 
 export default FormInput;
