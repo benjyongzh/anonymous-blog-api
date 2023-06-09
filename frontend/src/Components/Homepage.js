@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 
 import PostListItem from "./PostListItem";
 import ErrorMessage from "./ErrorMessage";
+import LoadingMessage from "./LoadingMessage";
 
 function Homepage(props) {
   const { allPosts, user: currentUser } = props;
@@ -27,7 +28,7 @@ function Homepage(props) {
       <ul className="list-group mt-3 gap-3">
         {/* posts here */}
         {allPosts === undefined ? (
-          <ErrorMessage path="Async Props" message={"Posts are undefined"} /> //this is where to put the loading text
+          <LoadingMessage path="Async Props" message={"blog posts"} /> //this is where to put the loading text
         ) : allPosts.length > 0 ? (
           allPosts.map((post) => {
             return (

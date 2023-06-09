@@ -1,4 +1,4 @@
-function HomePage(props) {
+function ErrorMessage(props) {
   return (
     <p className="text-danger">
       Error{props.path ? ` in ${props.path}` : ""}: {props.message}
@@ -6,4 +6,4 @@ function HomePage(props) {
   );
 }
 
-export default HomePage;
+export default ErrorMessage;
