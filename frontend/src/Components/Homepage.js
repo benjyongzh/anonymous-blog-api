@@ -28,7 +28,7 @@ function Homepage(props) {
       <ul className="list-group mt-3 gap-3">
         {/* posts here */}
         {allPosts === undefined ? (
-          <LoadingMessage path="Async Props" message={"blog posts"} /> //this is where to put the loading text
+          <LoadingMessage path="Async Props" message={"blog posts"} />
         ) : allPosts.length > 0 ? (
           allPosts.map((post) => {
             return (
