@@ -10,13 +10,13 @@ function ErrorList(props) {
         <ErrorMessage id={error.path} path={error.path} message={error.msg} />
       );
     } else {
-      return <span> </span>;
+      return <span>&nbsp;</span>;
     }
   });
 
   return (
     <p className="mt-1">
-      {props.errors.length ? { errorComponent } : <span> </span>}
+      {props.errors.length ? { errorComponent } : <span>&nbsp;</span>}
     </p>
   );
 }
