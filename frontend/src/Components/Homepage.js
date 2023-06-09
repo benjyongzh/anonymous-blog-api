@@ -4,7 +4,28 @@ import PostListItem from "./PostListItem";
 import LoadingMessage from "./LoadingMessage";
 
 function Homepage(props) {
-  const { allPosts, user: currentUser } = props;
+  // const { allPosts, user: currentUser } = props;
+  const [allPosts, setAllPosts] = useState(undefined);
+  const [currentUser, setCurrentUser] = useState(undefined);
+
+  const fetchData = async () => {
+    const url = `${process.env.REACT_APP_API_INDEX_URL}${process.env.REACT_APP_BACKEND_PORT}`;
+    const response = await fetch(url);
+    if (response) {
+      const responseItems = await response.json();
+      console.log(responseItems);
+      setAllPosts(responseItems.posts || []);
+      setCurrentUser(responseItems.user || undefined);
+    } /* else {
+      setContent({ message: "Error fetching content" });
+    } */
+  };
+
+  //componentOnMount
+  useEffect(() => {
+    //do fetching
+    fetchData();
+  }, []);
 
   return (
     <div

@@ -74,10 +74,10 @@ function App() {
     if (response) {
       const responseItems = await response.json();
       console.log(responseItems);
-      setContent(responseItems);
-    } else {
+      setUser(responseItems.user || undefined);
+    } /* else {
       setContent({ message: "Error fetching content" });
-    }
+    } */
   };
 
   //componentOnMount
@@ -125,8 +125,8 @@ function App() {
                   path="/"
                   element={
                     <Homepage
-                      allPosts={content && content.posts}
-                      user={content && content.user}
+                    // allPosts={content && content.posts}
+                    // user={content && content.user}
                     />
                   }
                 />
