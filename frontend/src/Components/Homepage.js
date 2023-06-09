@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 
 import PostListItem from "./PostListItem";
-import ErrorMessage from "./ErrorMessage";
 import LoadingMessage from "./LoadingMessage";
 
 function Homepage(props) {

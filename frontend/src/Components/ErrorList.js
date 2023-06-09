@@ -1,5 +1,3 @@
-import { useEffect, useState } from "react";
-
 import ErrorMessage from "./ErrorMessage";
 
 function ErrorList(props) {

@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-// require("dotenv");
 
 //components
 import Homepage from "./Components/Homepage";
@@ -16,9 +15,7 @@ function App() {
   const [navBarButtons, setNavBarButtons] = useState(<></>);
   const [content, setContent] = useState({});
 
-  //use useEffect to alter mainTitle, pageName and user. use fetch to get res.json
   //make sure log out button is using POST instead of just GET href
-  //likely need react router inside block content
 
   const configureNavbarItemsBasedOnLogIn = () => {
     if (user !== undefined) {
@@ -123,9 +120,6 @@ function App() {
           </nav>
           <div className="container-fluid">
             <div className="border-top border-secondary py-1">
-              {/* {tempContent.posts.map((post) => {
-                return <div>{post.text}</div>;
-              })} */}
               <Routes>
                 <Route
                   path="/"

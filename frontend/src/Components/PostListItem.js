@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-// import { useEffect, useState } from "react";
 
 function PostListItem(props) {
   const { post: currentPost, currentUser } = props;

@@ -25,7 +25,7 @@ function LogoutPage(props) {
 
   return (
     <div>
-      <p className="text-center">{setLoggedOutText}</p>
+      <p className="text-center">{loggedOutText}</p>
       <Link className="btn btn-primary mt-3" to="/">
         Go back home
       </Link>
