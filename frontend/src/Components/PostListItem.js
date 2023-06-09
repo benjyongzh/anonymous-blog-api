@@ -1,12 +1,12 @@
 import { Link } from "react-router-dom";
-import { useEffect, useState } from "react";
+// import { useEffect, useState } from "react";
 
 function PostListItem(props) {
   const { post: currentPost, currentUser } = props;
 
   return (
-    <a
-      href={currentPost.url} //need to solve how to get virtuals from mongoose object
+    <Link
+      to={currentPost.url} //need to solve how to get virtuals from mongoose object
       className="list-group-item list-group-item-action bg-light bg-gradient border border-2 border-secondary rounded-3"
     >
       <div className="mb-1">
@@ -30,7 +30,7 @@ function PostListItem(props) {
       ) : (
         <p className="mb-0">{currentPost.comments.length} Comments</p>
       )}
-    </a>
+    </Link>
   );
 }
 

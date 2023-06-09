@@ -4,6 +4,10 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 //components
 import Homepage from "./Components/Homepage";
+import Authpage from "./Components/Authpage";
+import LoginForm from "./Components/LoginForm";
+import SignupForm from "./Components/SignupForm";
+import LogoutPage from "./Components/LogoutPage";
 
 function App() {
   const [mainTitle, setMainTitle] = useState("");
@@ -132,27 +136,24 @@ function App() {
                     />
                   }
                 />
-                {/*
-                <Route path="auth" element={<ProductsPage />}>
+
+                <Route
+                  path="auth"
+                  element={<Authpage user={content && content.user} />}
+                >
                   <Route
                     path="login"
-                    element={
-                      <PokeballProducts addItemToCart={updateCartItems} />
-                    }
+                    element={<LoginForm user={content && content.user} />}
                   />
+                  {/*
                   <Route
                     path="signup"
-                    element={<PotionProducts addItemToCart={updateCartItems} />}
+                    element={<SignupForm user={content && content.user} />}
                   />
-                  <Route
-                    path="loggingout"
-                    element={<ProductDetails addItemToCart={updateCartItems} />}
-                  />
-                  <Route
-                    path="logout/:userId"
-                    element={<ProductDetails addItemToCart={updateCartItems} />}
-                  />
+                  <Route path="loggingout" />
+                  <Route path="logout/:userId" element={<LogoutPage />} />*/}
                 </Route>
+                {/*
                 <Route path="users" element={<ProductsPage />}>
                   <Route
                     index

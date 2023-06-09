@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import PostListItem from "./PostListItem";
 import ErrorMessage from "./ErrorMessage";
 
-function HomePage(props) {
+function Homepage(props) {
   const { allPosts, user: currentUser } = props;
 
   return (
@@ -46,4 +46,4 @@ function HomePage(props) {
   );
 }
 
-export default HomePage;
+export default Homepage;
