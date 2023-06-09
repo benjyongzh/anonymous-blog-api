@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, NavLink } from "react-router-dom";
 
 //components
 import Homepage from "./Components/Homepage";
@@ -22,19 +22,19 @@ function App() {
       setNavBarButtons(
         <ul className="nav navbar-nav" style={{ gap: "1rem" }}>
           <li className="nav-item">
-            <a
+            <NavLink
               className={`fs-6 nav-link text-end ${
                 pageName === "user_detail" ? "active text-primary fw-bold" : ""
               }`}
-              //href={`/users/${user._id}`}
+              to={`/users/${user._id}`}
             >
-              {/*user.first_name*/}
-            </a>
+              {user.first_name}
+            </NavLink>
           </li>
           <li className="nav-item">
-            <a className="fs-6 nav-link text-end " href="/auth/loggingout">
+            <NavLink className="fs-6 nav-link text-end " to="/auth/loggingout">
               Log Out
-            </a>
+            </NavLink>
           </li>
         </ul>
       );
@@ -42,24 +42,24 @@ function App() {
       setNavBarButtons(
         <ul className="nav navbar-nav" style={{ gap: "1rem" }}>
           <li className="nav-item">
-            <a
+            <NavLink
               className={`fs-6 nav-link text-end ${
                 pageName === "login_page" ? "active text-primary fw-bold" : ""
               }`}
-              href="/auth/login"
+              to="/auth/login"
             >
               Log In
-            </a>
+            </NavLink>
           </li>
           <li className="nav-item">
-            <a
+            <NavLink
               className={`fs-6 nav-link text-end ${
                 pageName === "signup_page" ? "active text-primary fw-bold" : ""
               }`}
-              href="/auth/signup"
+              to="/auth/signup"
             >
               Sign Up
-            </a>
+            </NavLink>
           </li>
         </ul>
       );
@@ -94,9 +94,9 @@ function App() {
         <div className="container-fluid p-0">
           <nav className="navbar navbar-expand-sm navbar-light bg-light">
             <div className="container-fluid">
-              <a className="navbar-brand text-uppercase fw-bold" href="/">
+              <NavLink className="navbar-brand text-uppercase fw-bold" to="/">
                 {mainTitle}
-              </a>
+              </NavLink>
               <button
                 className="navbar-toggler mb-3"
                 type="button"
