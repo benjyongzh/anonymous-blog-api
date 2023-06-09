@@ -4,13 +4,7 @@ import PostListItem from "./PostListItem";
 import ErrorMessage from "./ErrorMessage";
 
 function HomePage(props) {
-  const [posts, setPosts] = useState(props.posts);
-  const [currentUser, setCurrentUser] = useState(props.user);
-
-  //componentOnMount
-  useEffect(() => {
-    console.log(props);
-  }, []);
+  const { allPosts, user: currentUser } = props;
 
   return (
     <div
@@ -32,11 +26,17 @@ function HomePage(props) {
 
       <ul className="list-group mt-3 gap-3">
         {/* posts here */}
-        {posts === undefined ? (
-          <ErrorMessage path="Async Props" message={"Posts are undefined"} />
-        ) : posts.length ? (
-          posts.map((post) => {
-            return <PostListItem post={post} user={currentUser} />;
+        {allPosts === undefined ? (
+          <ErrorMessage path="Async Props" message={"Posts are undefined"} /> //this is where to put the loading text
+        ) : allPosts.length > 0 ? (
+          allPosts.map((post) => {
+            return (
+              <PostListItem
+                post={post}
+                currentUser={currentUser}
+                key={post._id}
+              />
+            );
           })
         ) : (
           <p>There are no posts yet.</p>

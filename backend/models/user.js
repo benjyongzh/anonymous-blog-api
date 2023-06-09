@@ -4,23 +4,26 @@ const decoder = require("he");
 
 const Schema = mongoose.Schema;
 
-const UserSchema = new Schema({
-  first_name: { type: String, required: true },
-  last_name: { type: String, required: true },
-  username: { type: String, required: true },
-  password: { type: String, required: true },
-  member_status: {
-    type: String,
-    required: true,
-    enum: ["Basic", "Premium", "Admin"],
-    default: "Basic",
+const UserSchema = new Schema(
+  {
+    first_name: { type: String, required: true },
+    last_name: { type: String, required: true },
+    username: { type: String, required: true },
+    password: { type: String, required: true },
+    member_status: {
+      type: String,
+      required: true,
+      enum: ["Basic", "Premium", "Admin"],
+      default: "Basic",
+    },
+    auth_tokens: [{ type: Object }],
   },
-  auth_tokens: [{ type: Object }],
-});
+  { toObject: { virtuals: true }, toJSON: { virtuals: true } }
+);
 
 //virtual for URL
 UserSchema.virtual("url").get(function () {
-  return `/user/${this._id}`;
+  return `/users/${this._id}`;
 });
 
 //virtual for full name

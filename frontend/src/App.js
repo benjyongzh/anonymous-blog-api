@@ -10,7 +10,7 @@ function App() {
   const [pageName, setPageName] = useState("");
   const [user, setUser] = useState(undefined);
   const [navBarButtons, setNavBarButtons] = useState(<></>);
-  const [content, setContent] = useState("");
+  const [content, setContent] = useState({});
 
   //use useEffect to alter mainTitle, pageName and user. use fetch to get res.json
   //make sure log out button is using POST instead of just GET href
@@ -66,13 +66,17 @@ function App() {
   };
 
   const fetchData = async () => {
-    const url = `${process.env.REACT_APP_API_INDEX_URL}${process.env.REACT_APP_BACKEND_PORT}`;
-    console.log(url);
-    const response = await fetch(url);
     setMainTitle("Anon Blog");
-    const items = await response.json();
-    console.log(items);
-    setContent(items.posts);
+    const url = `${process.env.REACT_APP_API_INDEX_URL}${process.env.REACT_APP_BACKEND_PORT}`;
+    // console.log(url);
+    const response = await fetch(url);
+    if (response) {
+      const responseItems = await response.json();
+      console.log(responseItems);
+      setContent(responseItems);
+    } else {
+      setContent({ message: "Error fetching content" });
+    }
   };
 
   //componentOnMount
@@ -121,7 +125,12 @@ function App() {
               <Routes>
                 <Route
                   path="/"
-                  element={<Homepage posts={content.posts} user={user} />}
+                  element={
+                    <Homepage
+                      allPosts={content && content.posts}
+                      user={content && content.user}
+                    />
+                  }
                 />
                 {/*
                 <Route path="auth" element={<ProductsPage />}>

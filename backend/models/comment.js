@@ -4,11 +4,14 @@ const decoder = require("he");
 
 const Schema = mongoose.Schema;
 
-const CommentSchema = new Schema({
-  text: { type: String, required: true },
-  user: { type: Schema.Types.ObjectId, ref: "User", required: true },
-  date_of_comment: { type: Date, required: true, default: Date.now() },
-});
+const CommentSchema = new Schema(
+  {
+    text: { type: String, required: true },
+    user: { type: Schema.Types.ObjectId, ref: "User", required: true },
+    date_of_comment: { type: Date, required: true, default: Date.now() },
+  },
+  { toObject: { virtuals: true }, toJSON: { virtuals: true } }
+);
 
 //add recursive comments
 CommentSchema.add({
@@ -17,7 +20,7 @@ CommentSchema.add({
 
 //virtual for URL
 CommentSchema.virtual("url").get(function () {
-  return `/post/${this._id}`;
+  return `/posts/${this._id}`;
 });
 
 //virtual for escaped text
