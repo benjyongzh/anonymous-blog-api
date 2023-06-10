@@ -15,7 +15,7 @@ function FormInput(props) {
   } = props;
 
   return (
-    <div className="mt-3 form-group">
+    <div className="mt-1 form-group">
       <div className="form-floating mb-1">
         <input
           id={inputName}
