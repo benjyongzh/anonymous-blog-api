@@ -64,7 +64,9 @@ exports.user_login_post = [
       (err, user, info) => {
         if (err || !user) {
           return res.json({
-            errors: [{ message: "Invalid username and/or password" }],
+            errors: [
+              { path: "generic", message: "Invalid username and/or password" },
+            ],
             user: user,
           });
         }
@@ -176,7 +178,7 @@ exports.user_nonexist = [
   (req, res, next) => {
     return res.status(404).json({
       user: req.user,
-      error: [{ message: "User could not be found" }],
+      errors: [{ path: "generic", message: "User could not be found" }],
     });
   },
 ];
@@ -187,12 +189,10 @@ exports.user_detail = [
   asyncHandler(async (req, res, next) => {
     const userToFind = await User.findById(req.params.id).exec();
     if (userToFind === null) {
-      return res
-        .status(404)
-        .json({
-          user: req.user,
-          error: [{ message: "User could not be found" }],
-        });
+      return res.status(404).json({
+        user: req.user,
+        errors: [{ path: "generic", message: "User could not be found" }],
+      });
     }
 
     const posts = await Post.find({ user: userToFind })

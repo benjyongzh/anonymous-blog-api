@@ -2,7 +2,7 @@ import ErrorMessage from "./ErrorMessage";
 
 function ErrorList(props) {
   return (
-    <p className="mt-1 mb-1" style={{ height: "45px" }}>
+    <p className="mt-1 mb-1" style={{ height: "35px" }}>
       {props.errors.length ? (
         props.errors.map((error) => {
           if (error.path) {
@@ -13,26 +13,29 @@ function ErrorList(props) {
             ) {
               return (
                 <ErrorMessage
-                  id={error.path}
+                  key={props.errors.indexOf(error)}
                   path={error.path}
                   message={error.msg || error.message}
                 />
               );
             } else {
-              return <span>&nbsp;</span>;
+              return <span key={props.errors.indexOf(error)}>&nbsp;</span>;
             }
           } else {
-            return (
-              <ErrorMessage
-                id={error.msg || error.message}
-                path={"generic"}
-                message={error.msg || error.message}
-              />
-            );
+            if (props.includes("generic")) {
+              return (
+                <ErrorMessage
+                  key={props.errors.indexOf(error)}
+                  message={error.msg || error.message}
+                />
+              );
+            } else {
+              return <span key={props.errors.indexOf(error)}>&nbsp;</span>;
+            }
           }
         })
       ) : (
-        <span>&nbsp;</span>
+        <span key="0">&nbsp;</span>
       )}
     </p>
   );
