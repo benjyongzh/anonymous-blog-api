@@ -35,8 +35,12 @@ function LoginForm(props) {
       body: JSON.stringify({ username, password, confirmpassword }),
     });
     const responseObject = await response.json();
-    // console.log(responseObject);
-    setErrors(responseObject.errors || []);
+    if (responseObject.errors) {
+      //there are still errors in the form
+      setErrors(responseObject.errors);
+    } else {
+      //get redirect? find out how to go to index page upon successful sign in. maybe server has to do redirecting. what about different port?
+    }
   };
 
   //componentOnMount

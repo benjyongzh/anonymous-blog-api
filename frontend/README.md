@@ -4,4 +4,4 @@ Made using Create-React-App.
 
 to-do:
 
-- solve error paths for generic. answer relies in sending props in error list.
+- solve successful login.

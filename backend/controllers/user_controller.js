@@ -102,7 +102,7 @@ exports.user_login_post = [
                 ...oldTokens,
                 { token, signedAt: Date.now().toString() },
               ],
-            }).then((user) => res.json({ user, token }));
+            }).then((user) => res.json({ user, token })); //this is where a redirect would need to happen. after successful login
           }
         );
       }
