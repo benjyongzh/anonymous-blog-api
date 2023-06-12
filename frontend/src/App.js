@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route, NavLink } from "react-router-dom";
+import { fetchData } from "./Utils/fetch";
 
 //components
 import Homepage from "./Components/Homepage";
@@ -66,24 +67,17 @@ function App() {
     }
   };
 
-  const fetchData = async () => {
-    setMainTitle("Anon Blog");
-    const url = `${process.env.REACT_APP_API_INDEX_URL}${process.env.REACT_APP_BACKEND_PORT}`;
-    // console.log(url);
-    const response = await fetch(url);
-    if (response) {
-      const responseItems = await response.json();
-      console.log(responseItems);
-      setUser(responseItems.user || undefined);
-    } /* else {
-      setContent({ message: "Error fetching content" });
-    } */
+  const getData = async () => {
+    const data = await fetchData("/");
+    console.log(data);
+    setUser(data.user || undefined);
   };
 
   //componentOnMount
   useEffect(() => {
     //do fetching
-    fetchData();
+    setMainTitle("Anon Blog");
+    getData();
     configureNavbarItemsBasedOnLogIn();
   }, []);
 
