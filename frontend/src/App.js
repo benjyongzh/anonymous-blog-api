@@ -68,7 +68,9 @@ function App() {
   };
 
   const getData = async () => {
-    const data = await fetchDataGet("/");
+    const data = await fetchDataGet("/", {
+      Authorization: localStorage.getItem("auth_token"),
+    });
     console.log(data);
     if (data) {
       setUser(data.user || undefined);
@@ -82,6 +84,11 @@ function App() {
     getData();
     configureNavbarItemsBasedOnLogIn();
   }, []);
+
+  //check if user changed
+  useEffect(() => {
+    configureNavbarItemsBasedOnLogIn();
+  }, [user]);
 
   return (
     <div className="App bg-light p-2">

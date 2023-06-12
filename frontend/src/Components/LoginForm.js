@@ -19,7 +19,7 @@ function LoginForm(props) {
       return;
     }
     console.log(data);
-    setErrors(responseItems.errors || []);
+    setErrors(data.errors || []);
   };
 
   const handleSubmit = async (event) => {
@@ -44,7 +44,7 @@ function LoginForm(props) {
       //get redirect? find out how to go to index page upon successful sign in. maybe server has to do redirecting. what about different port?
       console.log(responseObject);
       // save token to localstorage as "token"
-      localStorage.setItem("token", "Bearer " + responseObject.token);
+      localStorage.setItem("auth_token", "Bearer " + responseObject.token);
 
       // fetch pages with header: Authorization: Bearer <token>. use redirect if necessary
     }

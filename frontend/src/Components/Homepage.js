@@ -10,7 +10,9 @@ function Homepage(props) {
   const [currentUser, setCurrentUser] = useState(undefined);
 
   const getData = async () => {
-    const data = await fetchDataGet("/");
+    const data = await fetchDataGet("/", {
+      Authorization: localStorage.getItem("auth_token"),
+    });
     if (data) {
       console.log(data);
       setAllPosts(data.posts || []);
