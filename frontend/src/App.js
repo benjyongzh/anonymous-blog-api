@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route, NavLink } from "react-router-dom";
-import { fetchData } from "./Utils/fetch";
+import { fetchDataGet } from "./Utils/fetch";
 
 //components
 import Homepage from "./Components/Homepage";
@@ -68,9 +68,11 @@ function App() {
   };
 
   const getData = async () => {
-    const data = await fetchData("/");
+    const data = await fetchDataGet("/");
     console.log(data);
-    setUser(data.user || undefined);
+    if (data) {
+      setUser(data.user || undefined);
+    }
   };
 
   //componentOnMount

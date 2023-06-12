@@ -1,5 +1,6 @@
 import { useLocation, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { fetchDataGet, fetchDataPost } from "../Utils/fetch";
 
 import ErrorList from "./ErrorList";
 import FormInput from "./FormInput";
@@ -11,42 +12,48 @@ function LoginForm(props) {
   const [password, setPassword] = useState("");
   const [confirmpassword, setConfirmpassword] = useState("");
 
-  const fetchData = async () => {
-    const url = `${process.env.REACT_APP_API_INDEX_URL}${process.env.REACT_APP_BACKEND_PORT}${location.pathname}`;
-    const response = await fetch(url);
-    if (response) {
-      const responseItems = await response.json();
-      console.log(responseItems);
-      setErrors(responseItems.errors || []);
-    } else {
+  const getData = async () => {
+    const data = await fetchDataGet(`${location.pathname}`);
+    if (!data) {
       setErrors([{ path: "fetching data", msg: "Could not fetch" }]);
+      return;
     }
+    console.log(data);
+    setErrors(responseItems.errors || []);
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const url = `${process.env.REACT_APP_API_INDEX_URL}${process.env.REACT_APP_BACKEND_PORT}${location.pathname}`;
-    const response = await fetch(url, {
-      method: "POST",
-      headers: {
+    const responseObject = await fetchDataPost(
+      `${location.pathname}`,
+      {
         "Content-type": "application/json",
       },
-      // We convert the React state to JSON and send it as the POST body
-      body: JSON.stringify({ username, password, confirmpassword }),
-    });
-    const responseObject = await response.json();
+      { username, password, confirmpassword }
+    );
+
+    if (!responseObject) {
+      setErrors([{ path: "fetching data", msg: "Could not fetch" }]);
+      return;
+    }
+
     if (responseObject.errors) {
       //there are still errors in the form
       setErrors(responseObject.errors);
     } else {
       //get redirect? find out how to go to index page upon successful sign in. maybe server has to do redirecting. what about different port?
+      console.log(responseObject);
+      // save token to localstorage as "token"
+      localStorage.setItem("token", "Bearer " + responseObject.token);
+
+      // fetch pages with header: Authorization: Bearer <token>. use redirect if necessary
     }
   };
 
   //componentOnMount
   useEffect(() => {
     //do fetching
-    fetchData();
+    getData();
   }, []);
 
   return (
