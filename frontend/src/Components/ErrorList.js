@@ -1,39 +1,23 @@
 import ErrorMessage from "./ErrorMessage";
 
 function ErrorList(props) {
+  const filteredErrors = props.errors.filter((error) => {
+    if (error.path) {
+      return (
+        (props.excludePaths && !props.excludePaths.includes(error.path)) ||
+        (props.includePaths && props.includePaths.includes(error.path))
+      );
+    }
+    return props.includes("generic");
+  });
+
   return (
     <p className="mt-1 mb-1" style={{ height: "35px" }}>
-      {props.errors.length ? (
-        props.errors.map((error) => {
-          if (error.path) {
-            if (
-              (props.excludePaths &&
-                !props.excludePaths.includes(error.path)) ||
-              (props.includePaths && props.includePaths.includes(error.path))
-            ) {
-              return (
-                <ErrorMessage
-                  key={props.errors.indexOf(error)}
-                  path={error.path}
-                  message={error.msg || error.message}
-                />
-              );
-            } else {
-              return <span key={props.errors.indexOf(error)}>&nbsp;</span>;
-            }
-          } else {
-            if (props.includes("generic")) {
-              return (
-                <ErrorMessage
-                  key={props.errors.indexOf(error)}
-                  message={error.msg || error.message}
-                />
-              );
-            } else {
-              return <span key={props.errors.indexOf(error)}>&nbsp;</span>;
-            }
-          }
-        })
+      {props.errors.length && filteredErrors.length ? (
+        <ErrorMessage
+          path={filteredErrors[0].path}
+          message={filteredErrors[0].msg || filteredErrors[0].message}
+        />
       ) : (
         <span key="0">&nbsp;</span>
       )}
