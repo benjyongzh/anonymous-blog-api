@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, NavLink } from "react-router-dom";
 import axios from "./api/axios";
 
 //components
+import Navbar from "./Components/Navbar";
 import Homepage from "./Components/Homepage";
 import Authpage from "./Components/Authpage";
 import LoginForm from "./Components/LoginForm";
@@ -13,60 +14,8 @@ function App() {
   const [mainTitle, setMainTitle] = useState("");
   const [pageName, setPageName] = useState("");
   const [user, setUser] = useState(undefined);
-  const [navBarButtons, setNavBarButtons] = useState(<></>);
-  const [content, setContent] = useState({});
 
   //make sure log out button is using POST instead of just GET href
-
-  const configureNavbarItemsBasedOnLogIn = () => {
-    if (user !== undefined) {
-      setNavBarButtons(
-        <ul className="nav navbar-nav" style={{ gap: "1rem" }}>
-          <li className="nav-item">
-            <NavLink
-              className={`fs-6 nav-link text-end ${
-                pageName === "user_detail" ? "active text-primary fw-bold" : ""
-              }`}
-              to={`/users/${user._id}`}
-            >
-              {user.first_name}
-            </NavLink>
-          </li>
-          <li className="nav-item">
-            <NavLink className="fs-6 nav-link text-end " to="/auth/loggingout">
-              Log Out
-            </NavLink>
-          </li>
-        </ul>
-      );
-    } else {
-      setNavBarButtons(
-        <ul className="nav navbar-nav" style={{ gap: "1rem" }}>
-          <li className="nav-item">
-            <NavLink
-              className={`fs-6 nav-link text-end ${
-                pageName === "login_page" ? "active text-primary fw-bold" : ""
-              }`}
-              to="/auth/login"
-            >
-              Log In
-            </NavLink>
-          </li>
-          <li className="nav-item">
-            <NavLink
-              className={`fs-6 nav-link text-end ${
-                pageName === "signup_page" ? "active text-primary fw-bold" : ""
-              }`}
-              to="/auth/signup"
-            >
-              Sign Up
-            </NavLink>
-          </li>
-        </ul>
-      );
-    }
-  };
-
   const getData = async () => {
     return await axios
       .get(`/`)
@@ -82,45 +31,13 @@ function App() {
     //do fetching
     setMainTitle("Anon Blog");
     getData();
-    configureNavbarItemsBasedOnLogIn();
   }, []);
-
-  //check if user changed
-  useEffect(() => {
-    configureNavbarItemsBasedOnLogIn();
-  }, [user]);
 
   return (
     <div className="App bg-light p-2">
       <BrowserRouter>
-        <header className="App-header">Some text here. front end only.</header>
         <div className="container-fluid p-0">
-          <nav className="navbar navbar-expand-sm navbar-light bg-light">
-            <div className="container-fluid">
-              <NavLink className="navbar-brand text-uppercase fw-bold" to="/">
-                {mainTitle}
-              </NavLink>
-              <button
-                className="navbar-toggler mb-3"
-                type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#navbarSupportedContent"
-                aria-controls="navbarSupportedContent"
-                aria-expanded="false"
-                aria-label="Toggle navigation"
-                style={{ padding: "1px 4px" }}
-              >
-                <i className="bx bx-md bx-menu-alt-right"></i>
-              </button>
-
-              <div
-                className="navbar-collapse collapse justify-content-end"
-                id="navbarSupportedContent"
-              >
-                {navBarButtons}
-              </div>
-            </div>
-          </nav>
+          <Navbar mainTitle={mainTitle} user={user} pageName={pageName} />
           <div className="container-fluid">
             <div className="border-top border-secondary py-1">
               <Routes>
@@ -134,19 +51,10 @@ function App() {
                   }
                 />
 
-                <Route
-                  path="auth"
-                  element={<Authpage user={content && content.user} />}
-                >
-                  <Route
-                    path="login"
-                    element={<LoginForm user={content && content.user} />}
-                  />
+                <Route path="auth" element={<Authpage />}>
+                  <Route path="login" element={<LoginForm />} />
 
-                  <Route
-                    path="signup"
-                    element={<SignupForm user={content && content.user} />}
-                  />
+                  <Route path="signup" element={<SignupForm />} />
                   {/*
                   <Route path="loggingout" />*/}
                   <Route path="logout/:userId" element={<LogoutPage />} />
