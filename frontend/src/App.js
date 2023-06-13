@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route, NavLink } from "react-router-dom";
-import { fetchDataGet } from "./Utils/fetch";
+import axios from "./api/axios";
 
 //components
 import Homepage from "./Components/Homepage";
@@ -68,13 +68,13 @@ function App() {
   };
 
   const getData = async () => {
-    const data = await fetchDataGet("/", {
-      Authorization: localStorage.getItem("auth_token"),
-    });
-    console.log(data);
-    if (data) {
-      setUser(data.user || undefined);
-    }
+    return await axios
+      .get(`/`)
+      .then((response) => {
+        console.log(response.data);
+        setUser(response.data.user || undefined);
+      })
+      .catch((error) => {});
   };
 
   //componentOnMount

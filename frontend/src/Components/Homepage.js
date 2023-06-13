@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { fetchDataGet } from "../Utils/fetch";
+import axios from "../api/axios";
 
 import PostListItem from "./PostListItem";
 import LoadingMessage from "./LoadingMessage";
@@ -10,16 +10,14 @@ function Homepage(props) {
   const [currentUser, setCurrentUser] = useState(undefined);
 
   const getData = async () => {
-    const data = await fetchDataGet("/", {
-      Authorization: localStorage.getItem("auth_token"),
-    });
-    if (data) {
-      console.log(data);
-      setAllPosts(data.posts || []);
-      setCurrentUser(data.user || undefined);
-    } /* else {
-      setContent({ message: "Error fetching content" });
-    } */
+    return await axios
+      .get(`/`)
+      .then((response) => {
+        console.log(response.data);
+        setAllPosts(response.data.posts || []);
+        setCurrentUser(response.data.user || undefined);
+      })
+      .catch((error) => {});
   };
 
   //componentOnMount

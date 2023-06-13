@@ -1,20 +1,20 @@
 import { useLocation, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
+import axios from "../api/axios";
 
 function LogoutPage(props) {
   const [loggedOutText, setLoggedOutText] = useState("Logging you out");
   const location = useLocation("");
 
   const fetchData = async () => {
-    const url = `${process.env.REACT_APP_API_INDEX_URL}${process.env.REACT_APP_BACKEND_PORT}${location}`;
-    const response = await fetch(url);
-    if (response) {
-      const responseItems = await response.json();
-      const username = responseItems.user.username;
-      setLoggedOutText(`${username}, you have been logged out successfully.`);
-    } else {
-      setLoggedOutText("Error logging out");
-    }
+    return await axios
+      .get(`${location.pathname}`)
+      .then((response) => {
+        console.log(response.data);
+        const username = response.data.user.username;
+        setLoggedOutText(`${username}, you have been logged out successfully.`);
+      })
+      .catch((error) => setLoggedOutText(error.message));
   };
 
   //componentOnMount

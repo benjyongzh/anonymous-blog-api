@@ -1,6 +1,6 @@
 import { useLocation, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { fetchDataGet, fetchDataPost } from "../Utils/fetch";
+import axios from "../api/axios";
 
 import ErrorList from "./ErrorList";
 import FormInput from "./FormInput";
@@ -13,29 +13,26 @@ function LoginForm(props) {
   const [confirmpassword, setConfirmpassword] = useState("");
 
   const getData = async () => {
-    const data = await fetchDataGet(`${location.pathname}`);
-    if (!data) {
-      setErrors([{ path: "fetching data", msg: "Could not fetch" }]);
-      return;
-    }
-    console.log(data);
-    setErrors(data.errors || []);
+    return await axios
+      .get(`${location.pathname}`)
+      .then((response) => {
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+        setErrors([{ path: "fetching data", msg: error.message }]);
+      });
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const responseObject = await fetchDataPost(
-      `${location.pathname}`,
-      {
-        "Content-type": "application/json",
-      },
-      { username, password, confirmpassword }
-    );
-
-    if (!responseObject) {
-      setErrors([{ path: "fetching data", msg: "Could not fetch" }]);
-      return;
-    }
+    const responseObject = await axios
+      .post(`${location.pathname}`, { username, password, confirmpassword })
+      .then((response) => response.data)
+      .catch((error) => {
+        console.log(error);
+        setErrors([{ path: "fetching data", msg: error.message }]);
+      });
 
     if (responseObject.errors) {
       //there are still errors in the form
@@ -55,6 +52,10 @@ function LoginForm(props) {
     //do fetching
     getData();
   }, []);
+  useEffect(() => {
+    //do fetching
+    console.log("errors: ", errors);
+  }, [errors]);
 
   return (
     <form onSubmit={handleSubmit}>
