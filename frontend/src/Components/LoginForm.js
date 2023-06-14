@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import axios from "../api/axios";
 
 import { useDispatch, useSelector } from "react-redux";
-import { loggedIn, loggedOut } from "./Features/auth/authSlice";
+import { loggedIn, loggedOut } from "../Features/auth/authSlice";
 
 import ErrorList from "./ErrorList";
 import FormInput from "./FormInput";
@@ -52,7 +52,7 @@ function LoginForm(props) {
       //get redirect? find out how to go to index page upon successful sign in. maybe server has to do redirecting. what about different port?
       console.log(responseObject);
       // save token to localstorage as "token"
-      localStorage.setItem("auth_token", "Bearer " + responseObject.token);
+      // localStorage.setItem("auth_token", "Bearer " + responseObject.token);
       dispatch(
         loggedIn({
           auth_token: responseObject.token,

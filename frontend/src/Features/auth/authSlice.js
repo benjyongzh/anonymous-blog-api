@@ -60,7 +60,7 @@ const authSlice = createSlice({
     //createSlice automatically creates action creators according to the names of each of the reducer's inputs
     //syntax: actionName: (state,action => {})
     //can directly mutate the state argument, because createSlice uses immer library
-    loggedIn: (state) => {
+    loggedIn: (state, action) => {
       state.authToken = action.payload.auth_token;
       state.user = action.payload.user;
     },
