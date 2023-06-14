@@ -1,21 +1,24 @@
-import { useLocation, Link } from "react-router-dom";
-import { useEffect, useState } from "react";
-import axios from "../api/axios";
+import { Link } from "react-router-dom";
+import { useEffect } from "react";
+// import axios from "../api/axios";
+
+// import { useDispatch, useSelector } from "react-redux";
+// import { loggedIn, loggedOut } from "../Features/auth/authSlice";
 
 function LogoutPage(props) {
-  const [loggedOutText, setLoggedOutText] = useState("Logging you out");
-  const location = useLocation("");
+  const { username } = props;
+  // const location = useLocation();
 
-  const fetchData = async () => {
-    return await axios
-      .get(`${location.pathname}`)
-      .then((response) => {
-        console.log(response.data);
-        const username = response.data.user.username;
-        setLoggedOutText(`${username}, you have been logged out successfully.`);
-      })
-      .catch((error) => setLoggedOutText(error.message));
-  };
+  // const fetchData = async () => {
+  //   return await axios
+  //     .get(`${location.pathname}`)
+  //     .then((response) => {
+  //       console.log(response.data);
+  //       const username = response.data.user.username;
+  //       setLoggedOutText(`${username}, you have been logged out successfully.`);
+  //     })
+  //     .catch((error) => setLoggedOutText(error.message));
+  // };
 
   //componentOnMount
   useEffect(() => {
@@ -25,7 +28,9 @@ function LogoutPage(props) {
 
   return (
     <div>
-      <p className="text-center">{loggedOutText}</p>
+      <p className="text-center">
+        `${username}, you have been logged out successfully.`
+      </p>
       <Link className="btn btn-primary mt-3" to="/">
         Go back home
       </Link>
