@@ -27,7 +27,10 @@ function LoginForm(props) {
   const handleSubmit = async (event) => {
     event.preventDefault();
     const responseObject = await axios
-      .post(`${location.pathname}`, { username, password, confirmpassword })
+      .post(
+        `${location.pathname}`,
+        JSON.stringify({ username, password, confirmpassword })
+      )
       .then((response) => response.data)
       .catch((error) => {
         console.log(error);
