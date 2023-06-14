@@ -2,6 +2,9 @@ import { useLocation, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "../api/axios";
 
+import { useDispatch, useSelector } from "react-redux";
+import { loggedIn, loggedOut } from "./Features/auth/authSlice";
+
 import ErrorList from "./ErrorList";
 import FormInput from "./FormInput";
 
@@ -12,6 +15,8 @@ function LoginForm(props) {
   const [password, setPassword] = useState("");
   const [confirmpassword, setConfirmpassword] = useState("");
 
+  const dispatch = useDispatch();
+
   const getData = async () => {
     return await axios
       .get(`${location.pathname}`)
@@ -20,7 +25,7 @@ function LoginForm(props) {
       })
       .catch((error) => {
         console.log(error);
-        setErrors([{ path: "fetching data", msg: error.message }]);
+        setErrors([{ path: "generic", msg: "Connection to server failed" }]);
       });
   };
 
@@ -37,7 +42,7 @@ function LoginForm(props) {
       })
       .catch((error) => {
         console.log(error);
-        setErrors([{ path: "fetching data", msg: error.message }]);
+        setErrors([{ path: "generic", msg: "Connection to server failed" }]);
       });
 
     if (responseObject.errors) {
@@ -48,6 +53,12 @@ function LoginForm(props) {
       console.log(responseObject);
       // save token to localstorage as "token"
       localStorage.setItem("auth_token", "Bearer " + responseObject.token);
+      dispatch(
+        loggedIn({
+          auth_token: responseObject.token,
+          user: responseObject.user,
+        })
+      );
 
       // fetch pages with header: Authorization: Bearer <token>. use redirect if necessary
     }

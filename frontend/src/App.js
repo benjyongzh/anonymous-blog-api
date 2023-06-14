@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
-import { BrowserRouter, Routes, Route, NavLink } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import axios from "./api/axios";
+
+import { useSelector } from "react-redux";
+// import { loggedIn, loggedOut } from "./Features/auth/authSlice";
 
 //components
 import Navbar from "./Components/Navbar";
@@ -21,7 +24,8 @@ function App() {
       .get(`/`)
       .then((response) => {
         console.log(response.data);
-        setUser(response.data.user || undefined);
+        // setUser(response.data.user || undefined);
+        setUser(useSelector((state) => state.auth.user));
       })
       .catch((error) => {});
   };
