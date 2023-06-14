@@ -24,7 +24,7 @@ router.post("/signup", userController.user_signup_post);
 
 /* GET logging out page. */
 router.post(
-  "/loggingout",
+  "/loggingout/:id",
   verifyToken,
   asyncHandler(async (req, res, next) => {
     const bearerHeader = req.headers["authorization"];
@@ -55,7 +55,7 @@ router.post(
       );
 
       //update user document w ith new array of tokens to exclude current token
-      await User.findByIdAndUpdate(req.user._id, {
+      await User.findByIdAndUpdate(req.params.id, {
         auth_tokens: remainingTokens,
       }).then((user) =>
         // res.status(303).json({ user, removedToken: bearerToken })
