@@ -22,7 +22,10 @@ function Navbar(props) {
             </NavLink>
           </li>
           <li className="nav-item">
-            <NavLink className="fs-6 nav-link text-end " to="/auth/loggingout">
+            <NavLink
+              className="fs-6 nav-link text-end"
+              to={`/auth/loggingout/${user._id}`}
+            >
               Log Out
             </NavLink>
           </li>
