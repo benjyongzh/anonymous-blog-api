@@ -60,10 +60,10 @@ function App() {
                   <Route path="login" element={<LoginForm />} />
                   <Route path="signup" element={<SignupForm />} />
                   <Route
-                    path="loggingout/:userId"
+                    path="loggingout/:userid"
                     element={<LoggingOutPage />}
                   />
-                  <Route path="logout/:userId" element={<LogoutPage />} />
+                  <Route path="logout" element={<LogoutPage />} />
                 </Route>
                 {/*
                 <Route path="users" element={<ProductsPage />}>
