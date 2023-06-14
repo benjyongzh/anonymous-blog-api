@@ -1,4 +1,4 @@
-import { useLocation, Link } from "react-router-dom";
+import { useLocation, Link, Navigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "../api/axios";
 
@@ -14,6 +14,7 @@ function LoginForm(props) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [confirmpassword, setConfirmpassword] = useState("");
+  const [loginSuccess, setLoginSuccess] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -43,11 +44,13 @@ function LoginForm(props) {
       .catch((error) => {
         console.log(error);
         setErrors([{ path: "generic", msg: "Connection to server failed" }]);
+        setLoginSuccess(false);
       });
 
     if (responseObject.errors) {
       //there are still errors in the form
       setErrors(responseObject.errors);
+      setLoginSuccess(false);
     } else {
       //get redirect? find out how to go to index page upon successful sign in. maybe server has to do redirecting. what about different port?
       console.log(responseObject);
@@ -61,6 +64,7 @@ function LoginForm(props) {
       );
 
       // fetch pages with header: Authorization: Bearer <token>. use redirect if necessary
+      setLoginSuccess(true);
     }
   };
 
@@ -69,12 +73,15 @@ function LoginForm(props) {
     //do fetching
     getData();
   }, []);
+
   useEffect(() => {
     //do fetching
     console.log("errors: ", errors);
   }, [errors]);
 
-  return (
+  return loginSuccess ? (
+    <Navigate to="/" replace={true} />
+  ) : (
     <form onSubmit={handleSubmit}>
       <FormInput
         inputName="username"

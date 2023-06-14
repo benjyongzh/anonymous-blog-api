@@ -11,7 +11,7 @@ export default axios.create({
             //Authorization: localStorage.getItem("auth_token")
             //use redux store for this:
 
-            Authorization: store.getState().auth.authToken,
+            Authorization: "Bearer " + store.getState().auth.authToken,
           },
     post: { "Content-Type": "application/json" },
   },

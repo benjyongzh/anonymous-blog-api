@@ -16,16 +16,16 @@ import LogoutPage from "./Components/LogoutPage";
 function App() {
   const [mainTitle, setMainTitle] = useState("");
   const [pageName, setPageName] = useState("");
-  const [user, setUser] = useState(undefined);
+
+  const user = useSelector((state) => state.auth.user);
 
   //make sure log out button is using POST instead of just GET href
   const getData = async () => {
     return await axios
       .get(`/`)
       .then((response) => {
-        console.log(response.data);
-        // setUser(response.data.user || undefined);
-        setUser(useSelector((state) => state.auth.user));
+        console.log("app.js response: ", response.data);
+        console.log("store user: ", user);
       })
       .catch((error) => {});
   };
