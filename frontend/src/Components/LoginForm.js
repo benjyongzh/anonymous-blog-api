@@ -31,7 +31,10 @@ function LoginForm(props) {
         `${location.pathname}`,
         JSON.stringify({ username, password, confirmpassword })
       )
-      .then((response) => response.data)
+      .then((response) => {
+        // console.log("response: ", response);
+        return response.data;
+      })
       .catch((error) => {
         console.log(error);
         setErrors([{ path: "fetching data", msg: error.message }]);
