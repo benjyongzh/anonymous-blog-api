@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { isEmpty } from "lodash";
 
 function PostListItem(props) {
   const { post: currentPost, currentUser } = props;
@@ -12,7 +13,7 @@ function PostListItem(props) {
         {currentPost.user !== null ? (
           <span className="fw-bold text-primary">
             {currentPost.user.username}
-            {currentUser && currentUser.member_status !== "Basic" ? (
+            {!isEmpty(currentUser) && currentUser.member_status !== "Basic" ? (
               <span> ({currentPost.user.full_name})</span>
             ) : (
               ""

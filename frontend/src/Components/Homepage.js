@@ -38,7 +38,7 @@ function Homepage(props) {
       <div className="text-end">
         <Link
           className={`btn ${
-            currentUser ? "btn-primary" : "btn-secondary disabled"
+            !isEmpty(currentUser) ? "btn-primary" : "btn-secondary disabled"
           }`}
           to="/posts/create"
           aria-disabled={isEmpty(currentUser)}
