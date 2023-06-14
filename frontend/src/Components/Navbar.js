@@ -1,15 +1,14 @@
-import { useEffect, useState } from "react";
+// import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 
 function Navbar(props) {
   const { user, pageName, mainTitle } = props;
-  const [navBarButtons, setNavBarButtons] = useState(<></>);
 
   //make sure log out button is using POST instead of just GET href
 
-  const configureNavbarItemsBasedOnLogIn = () => {
+  const navBarButtons = () => {
     if (user !== undefined) {
-      setNavBarButtons(
+      return (
         <ul className="nav navbar-nav" style={{ gap: "1rem" }}>
           <li className="nav-item">
             <NavLink
@@ -29,7 +28,7 @@ function Navbar(props) {
         </ul>
       );
     } else {
-      setNavBarButtons(
+      return (
         <ul className="nav navbar-nav" style={{ gap: "1rem" }}>
           <li className="nav-item">
             <NavLink
@@ -56,18 +55,10 @@ function Navbar(props) {
     }
   };
 
-  //componentOnMount
-  //   useEffect(() => {
-  //     //do fetching
-  //     setMainTitle("Anon Blog");
-  //     getData();
-  // configureNavbarItemsBasedOnLogIn();
-  //   }, []);
-
   //check if user changed
-  useEffect(() => {
-    configureNavbarItemsBasedOnLogIn();
-  }, [user]);
+  // useEffect(() => {
+  //   configureNavbarItemsBasedOnLogIn();
+  // }, []);
 
   return (
     <nav className="navbar navbar-expand-sm navbar-light bg-light">
@@ -92,7 +83,7 @@ function Navbar(props) {
           className="navbar-collapse collapse justify-content-end"
           id="navbarSupportedContent"
         >
-          {navBarButtons}
+          {navBarButtons()}
         </div>
       </div>
     </nav>
