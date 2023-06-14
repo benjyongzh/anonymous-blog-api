@@ -54,22 +54,25 @@ router.post(
         (tokenObject) => tokenObject.token !== bearerToken
       );
 
-      //update user document w ith new array of tokens to exclude current token
+      //update user document with new array of tokens to exclude current token
       await User.findByIdAndUpdate(req.params.id, {
         auth_tokens: remainingTokens,
       }).then((user) =>
-        // res.status(303).json({ user, removedToken: bearerToken })
-        res.status(303).redirect(`/auth/logout/${user._id}`)
+        res.status(303).json({
+          message: `Logging out ${user.username}`,
+          user,
+          removedToken: bearerToken,
+        })
       );
     }
   })
 );
 
 /* GET logged out page. */
-router.get("/logout/:id", (req, res, next) => {
-  return res
-    .status(200)
-    .json({ message: `Logout page of user ${req.params.id}` });
+router.get("/logout", (req, res, next) => {
+  return res.status(200).json({
+    message: `Logout page`,
+  });
 });
 
 module.exports = router;
