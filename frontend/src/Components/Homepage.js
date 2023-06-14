@@ -1,21 +1,24 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+
 import axios from "../api/axios";
+import { isEmpty } from "lodash";
+
+import { useSelector } from "react-redux";
 
 import PostListItem from "./PostListItem";
 import LoadingMessage from "./LoadingMessage";
 
 function Homepage(props) {
-  // const { allPosts, user: currentUser } = props;
   const [allPosts, setAllPosts] = useState(undefined);
-  const [currentUser, setCurrentUser] = useState(undefined);
+  const currentUser = useSelector((state) => state.auth.user);
 
   const getData = async () => {
-    return await axios
+    await axios
       .get(`/`)
       .then((response) => {
-        console.log(response.data);
+        console.log("Home page response: ", response);
         setAllPosts(response.data.posts || []);
-        setCurrentUser(response.data.user || undefined);
       })
       .catch((error) => {});
   };
@@ -33,15 +36,15 @@ function Homepage(props) {
     >
       <h3 className="text-center m-4">Home</h3>
       <div className="text-end">
-        <a
+        <Link
           className={`btn ${
             currentUser ? "btn-primary" : "btn-secondary disabled"
           }`}
-          href="/post/create"
-          aria-disabled={currentUser === undefined}
+          to="/posts/create"
+          aria-disabled={isEmpty(currentUser)}
         >
           Create Post
-        </a>
+        </Link>
       </div>
 
       <ul className="list-group mt-3 gap-3">

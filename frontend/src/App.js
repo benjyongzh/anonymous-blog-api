@@ -11,6 +11,7 @@ import Homepage from "./Components/Homepage";
 import Authpage from "./Components/Authpage";
 import LoginForm from "./Components/LoginForm";
 import SignupForm from "./Components/SignupForm";
+import LoggingOutPage from "./Components/LoggingOutPage";
 import LogoutPage from "./Components/LogoutPage";
 
 function App() {
@@ -20,21 +21,21 @@ function App() {
   const user = useSelector((state) => state.auth.user);
 
   //make sure log out button is using POST instead of just GET href
-  const getData = async () => {
-    return await axios
-      .get(`/`)
-      .then((response) => {
-        console.log("app.js response: ", response.data);
-        console.log("store user: ", user);
-      })
-      .catch((error) => {});
-  };
+  // const getData = async () => {
+  //   return await axios
+  //     .get(`/`)
+  //     .then((response) => {
+  //       console.log("app.js response: ", response.data);
+  //       console.log("store user: ", user);
+  //     })
+  //     .catch((error) => {});
+  // };
 
   //componentOnMount
   useEffect(() => {
     //do fetching
     setMainTitle("Anon Blog");
-    getData();
+    // getData();
   }, []);
 
   return (
@@ -57,10 +58,11 @@ function App() {
 
                 <Route path="auth" element={<Authpage />}>
                   <Route path="login" element={<LoginForm />} />
-
                   <Route path="signup" element={<SignupForm />} />
-                  {/*
-                  <Route path="loggingout" />*/}
+                  <Route
+                    path="loggingout/:userId"
+                    element={<LoggingOutPage />}
+                  />
                   <Route path="logout/:userId" element={<LogoutPage />} />
                 </Route>
                 {/*
