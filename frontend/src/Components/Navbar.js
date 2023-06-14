@@ -1,5 +1,6 @@
 // import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
+import { isEmpty } from "lodash";
 
 function Navbar(props) {
   const { user, pageName, mainTitle } = props;
@@ -7,7 +8,7 @@ function Navbar(props) {
   //make sure log out button is using POST instead of just GET href
 
   const navBarButtons = () => {
-    if (user !== undefined) {
+    if (!isEmpty(user)) {
       return (
         <ul className="nav navbar-nav" style={{ gap: "1rem" }}>
           <li className="nav-item">
