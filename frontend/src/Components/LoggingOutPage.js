@@ -22,7 +22,7 @@ function LoggingOutPage(props) {
       })
       .catch((error) => {
         console.log("Logging out page error caught: ", error);
-        console.log("Request header: ", error.request._header);
+        console.log("Request header: ", error.request.header);
       });
   };
 

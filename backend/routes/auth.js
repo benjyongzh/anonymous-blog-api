@@ -59,7 +59,7 @@ router.post(
       await User.findByIdAndUpdate(req.params.id, {
         auth_tokens: remainingTokens,
       }).then((user) =>
-        res.status(303).json({
+        res.status(200).json({
           message: `Logging out ${user.username}`,
           user,
           removedToken: bearerToken,
