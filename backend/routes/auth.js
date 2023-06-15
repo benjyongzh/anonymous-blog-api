@@ -2,6 +2,7 @@ var express = require("express");
 var router = express.Router();
 const asyncHandler = require("express-async-handler");
 const User = require("../models/user");
+const isEmpty = require("lodash").isEmpty;
 
 const userController = require("../controllers/user_controller");
 const { verifyToken } = require("../middleware/jwtVerification");
@@ -29,7 +30,7 @@ router.post(
   asyncHandler(async (req, res, next) => {
     const bearerHeader = req.headers["authorization"];
     const bearerToken = bearerHeader && bearerHeader.split(" ")[1];
-    if (bearerToken == null) {
+    if (isEmpty(bearerToken)) {
       //auth error
       return res
         .status(401)

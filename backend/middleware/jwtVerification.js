@@ -3,6 +3,8 @@ const jwt = require("jsonwebtoken");
 require("dotenv").config();
 const User = require("../models/user");
 
+const isEmpty = require("lodash").isEmpty;
+
 function tokenIsOptional(req, res, next) {
   req.body.tokenOptional = true;
   next();
@@ -18,7 +20,7 @@ function checkToken(req, res, next) {
   //split at space
   const bearerToken = bearerHeader && bearerHeader.split(" ")[1];
   //check if logged in or forbidden
-  if (bearerToken == null) {
+  if (isEmpty(bearerToken)) {
     if (req.body.tokenOptional) {
       next();
     } else {
