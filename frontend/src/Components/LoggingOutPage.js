@@ -3,10 +3,11 @@ import { useEffect, useState } from "react";
 import axiosInstance from "../api/axios";
 
 import { useDispatch, useSelector } from "react-redux";
-import { loggedIn, loggedOut } from "../Features/auth/authSlice";
+import { loggedOut } from "../Features/auth/authSlice";
 
 function LoggingOutPage(props) {
   const [logoutSuccess, setLogoutSuccess] = useState(false);
+  const [username, setUsername] = useState("");
   const location = useLocation();
   const dispatch = useDispatch();
   const currentUser = useSelector((state) => state.auth.user);
@@ -15,14 +16,15 @@ function LoggingOutPage(props) {
     await axiosInstance
       .post(`${location.pathname}`)
       .then((response) => {
-        console.log("logging out response: ", response);
-        console.log(response.data.message);
+        // console.log("logging out response: ", response);
+        // console.log(response.data.message);
+        setUsername(currentUser.username);
         dispatch(loggedOut());
         setLogoutSuccess(true);
       })
       .catch((error) => {
-        console.log("Logging out page error caught: ", error);
-        console.log("Request header: ", error.request.header);
+        // console.log("Logging out page error caught: ", error);
+        // console.log("Request header: ", error.request.header);
       });
   };
 
@@ -37,14 +39,14 @@ function LoggingOutPage(props) {
     //do fetching
     if (identicalUserId()) {
       getData();
-    } else
+    } /* else
       console.log(
         "LoggingOutPage detects different userIDs between URL and storeData"
-      );
+      ); */
   }, []);
 
   return logoutSuccess ? (
-    <Navigate to="/auth/logout" replace={true} />
+    <Navigate to="/auth/logout" replace={true} state={{ username: username }} />
   ) : (
     <div>
       <p className="text-center">Logging you out...</p>
