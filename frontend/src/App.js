@@ -1,9 +1,4 @@
-import { useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import axiosInstance from "./api/axios";
-
-import { useSelector } from "react-redux";
-// import { loggedIn, loggedOut } from "./Features/auth/authSlice";
 
 //components
 import Navbar from "./Components/Navbar";
@@ -15,46 +10,15 @@ import LoggingOutPage from "./Components/LoggingOutPage";
 import LogoutPage from "./Components/LogoutPage";
 
 function App() {
-  const [mainTitle, setMainTitle] = useState("");
-  const [pageName, setPageName] = useState("");
-
-  const user = useSelector((state) => state.auth.user);
-
-  //make sure log out button is using POST instead of just GET href
-  // const getData = async () => {
-  //   return await axios
-  //     .get(`/`)
-  //     .then((response) => {
-  //       console.log("app.js response: ", response.data);
-  //       console.log("store user: ", user);
-  //     })
-  //     .catch((error) => {});
-  // };
-
-  //componentOnMount
-  useEffect(() => {
-    //do fetching
-    setMainTitle("Anon Blog");
-    // getData();
-  }, []);
-
   return (
     <div className="App bg-light p-2">
       <BrowserRouter>
         <div className="container-fluid p-0">
-          <Navbar mainTitle={mainTitle} user={user} pageName={pageName} />
+          <Navbar />
           <div className="container-fluid">
             <div className="border-top border-secondary py-1">
               <Routes>
-                <Route
-                  path="/"
-                  element={
-                    <Homepage
-                    // allPosts={content && content.posts}
-                    // user={content && content.user}
-                    />
-                  }
-                />
+                <Route path="/" element={<Homepage />} />
 
                 <Route path="auth" element={<Authpage />}>
                   <Route path="login" element={<LoginForm />} />

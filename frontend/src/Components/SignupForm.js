@@ -1,12 +1,16 @@
 import { useLocation, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 
+import { useDispatch } from "react-redux";
+import { setPageName } from "../Features/page/pageSlice";
+
 import ErrorList from "./ErrorList";
 import FormInput from "./FormInput";
 
 function SignupForm(props) {
   const [errors, setErrors] = useState([]);
   const location = useLocation();
+  const dispatch = useDispatch();
 
   const fetchData = async () => {
     const url = `${process.env.REACT_APP_API_INDEX_URL}${process.env.REACT_APP_BACKEND_PORT}${location.pathname}`;
@@ -21,6 +25,7 @@ function SignupForm(props) {
 
   //componentOnMount
   useEffect(() => {
+    dispatch(setPageName("signup"));
     //do fetching
     fetchData();
   }, []);

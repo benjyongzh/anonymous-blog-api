@@ -2,8 +2,9 @@ import { useLocation, Link, Navigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axiosInstance from "../api/axios";
 
-import { useDispatch, useSelector } from "react-redux";
-import { loggedIn, loggedOut } from "../Features/auth/authSlice";
+import { useDispatch } from "react-redux";
+import { loggedIn } from "../Features/auth/authSlice";
+import { setPageName } from "../Features/page/pageSlice";
 
 import ErrorList from "./ErrorList";
 import FormInput from "./FormInput";
@@ -67,6 +68,7 @@ function LoginForm(props) {
 
   //componentOnMount
   useEffect(() => {
+    dispatch(setPageName("login"));
     //do fetching
     getData();
   }, []);

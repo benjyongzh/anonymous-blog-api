@@ -1,11 +1,11 @@
-// import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 import { isEmpty } from "lodash";
 
-function Navbar(props) {
-  const { user, pageName, mainTitle } = props;
-
-  //make sure log out button is using POST instead of just GET href
+function Navbar() {
+  const user = useSelector((state) => state.auth.user);
+  const pageName = useSelector((state) => state.page.pageName);
+  const mainTitle = useSelector((state) => state.page.mainTitle);
 
   const navBarButtons = () => {
     if (!isEmpty(user)) {
@@ -37,7 +37,7 @@ function Navbar(props) {
           <li className="nav-item">
             <NavLink
               className={`fs-6 nav-link text-end ${
-                pageName === "login_page" ? "active text-primary fw-bold" : ""
+                pageName === "login" ? "active text-primary fw-bold" : ""
               }`}
               to="/auth/login"
             >
@@ -47,7 +47,7 @@ function Navbar(props) {
           <li className="nav-item">
             <NavLink
               className={`fs-6 nav-link text-end ${
-                pageName === "signup_page" ? "active text-primary fw-bold" : ""
+                pageName === "signup" ? "active text-primary fw-bold" : ""
               }`}
               to="/auth/signup"
             >
@@ -58,11 +58,6 @@ function Navbar(props) {
       );
     }
   };
-
-  //check if user changed
-  // useEffect(() => {
-  //   configureNavbarItemsBasedOnLogIn();
-  // }, []);
 
   return (
     <nav className="navbar navbar-expand-sm navbar-light bg-light">

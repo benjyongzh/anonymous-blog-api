@@ -4,6 +4,7 @@ import axiosInstance from "../api/axios";
 
 import { useDispatch, useSelector } from "react-redux";
 import { loggedOut } from "../Features/auth/authSlice";
+import { setPageName } from "../Features/page/pageSlice";
 
 function LoggingOutPage(props) {
   const [logoutSuccess, setLogoutSuccess] = useState(false);
@@ -36,6 +37,7 @@ function LoggingOutPage(props) {
 
   //componentOnMount
   useEffect(() => {
+    dispatch(setPageName("loggingout"));
     //do fetching
     if (identicalUserId()) {
       getData();

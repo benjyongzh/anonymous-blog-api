@@ -4,7 +4,8 @@ import { Link } from "react-router-dom";
 import axiosInstance from "../api/axios";
 import { isEmpty } from "lodash";
 
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { setPageName, pageNameList } from "../Features/page/pageSlice";
 
 import PostListItem from "./PostListItem";
 import LoadingMessage from "./LoadingMessage";
@@ -12,6 +13,9 @@ import LoadingMessage from "./LoadingMessage";
 function Homepage(props) {
   const [allPosts, setAllPosts] = useState(undefined);
   const currentUser = useSelector((state) => state.auth.user);
+  const pageName = useSelector((state) => state.page.pageName);
+
+  const dispatch = useDispatch();
 
   const getData = async () => {
     await axiosInstance
@@ -26,6 +30,7 @@ function Homepage(props) {
   //componentOnMount
   useEffect(() => {
     //do fetching
+    dispatch(setPageName("home"));
     getData();
   }, []);
 
@@ -34,7 +39,7 @@ function Homepage(props) {
       className="d-flex flex-column align-items-stretch justify-content-center container"
       style={{ maxWidth: "900px" }}
     >
-      <h3 className="text-center m-4">Home</h3>
+      <h3 className="text-center m-4">{pageNameList[pageName]}</h3>
       <div className="text-end">
         <Link
           className={`btn ${

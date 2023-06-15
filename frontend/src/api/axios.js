@@ -8,17 +8,6 @@ const defaultOptions = {
   },
 };
 
-// export default axios.create({
-//   baseURL: `${process.env.REACT_APP_API_INDEX_URL}${process.env.REACT_APP_BACKEND_PORT}`,
-//   headers: {
-//     Authorization:
-//       store.getState().auth.authToken === ""
-//         ? null
-//         : `Bearer ${store.getState().auth.authToken}`,
-//     "Content-Type": "application/json",
-//   },
-// });
-
 const axiosInstance = axios.create(defaultOptions);
 
 axiosInstance.interceptors.request.use((config) => {
