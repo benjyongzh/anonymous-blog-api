@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import axios from "./api/axios";
+import axiosInstance from "./api/axios";
 
 import { useSelector } from "react-redux";
 // import { loggedIn, loggedOut } from "./Features/auth/authSlice";

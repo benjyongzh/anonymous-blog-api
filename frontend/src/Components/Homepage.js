@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
-import axios from "../api/axios";
+import axiosInstance from "../api/axios";
 import { isEmpty } from "lodash";
 
 import { useSelector } from "react-redux";
@@ -14,13 +14,13 @@ function Homepage(props) {
   const currentUser = useSelector((state) => state.auth.user);
 
   const getData = async () => {
-    await axios
+    await axiosInstance
       .get(`/`)
       .then((response) => {
         console.log("Home page response: ", response);
         setAllPosts(response.data.posts || []);
       })
-      .catch((error) => {});
+      .catch((error) => console.log("Home page error caught: ", error));
   };
 
   //componentOnMount

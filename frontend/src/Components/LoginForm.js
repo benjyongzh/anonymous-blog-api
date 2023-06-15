@@ -1,6 +1,6 @@
 import { useLocation, Link, Navigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import axios from "../api/axios";
+import axiosInstance from "../api/axios";
 
 import { useDispatch, useSelector } from "react-redux";
 import { loggedIn, loggedOut } from "../Features/auth/authSlice";
@@ -19,7 +19,7 @@ function LoginForm(props) {
   const dispatch = useDispatch();
 
   const getData = async () => {
-    return await axios
+    return await axiosInstance
       .get(`${location.pathname}`)
       .then((response) => {
         console.log(response.data);
@@ -32,7 +32,7 @@ function LoginForm(props) {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const responseObject = await axios
+    const responseObject = await axiosInstance
       .post(
         `${location.pathname}`,
         JSON.stringify({ username, password, confirmpassword })
