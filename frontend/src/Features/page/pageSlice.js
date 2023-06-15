@@ -7,7 +7,8 @@ export const pageNameList = {
   loggingout: "Logging Out",
   loggedout: "Logged Out",
   home: "Home",
-  member_status: "Oops!",
+  member_status: "Membership",
+  error: "Oops!",
 };
 
 const initialState = {
