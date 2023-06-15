@@ -29,23 +29,11 @@ function App() {
                   />
                   <Route path="logout" element={<LogoutPage />} />
                 </Route>
-                {/*
-                <Route path="users" element={<ProductsPage />}>
+                <Route path="users">
+                  <Route index path="null" element={<UserNotFound />} />
+                  <Route path=":userId" element={<UserDetailpage />} />
                   <Route
-                    index
-                    path="null"
-                    element={
-                      <PokeballProducts addItemToCart={updateCartItems} />
-                    }
-                  />
-                  <Route
-                    path=":userId"
-                    element={
-                      <PokeballProducts addItemToCart={updateCartItems} />
-                    }
-                  >
-                    <Route
-                      path=":userId/memberstatus"
+                    path=":userId/memberstatus"
                       element={
                         <PokeballProducts addItemToCart={updateCartItems} />
                       }
