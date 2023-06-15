@@ -1,4 +1,4 @@
-import { useLocation, Link } from "react-router-dom";
+import { useLocation, Link, Navigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axiosInstance from "../api/axios";
 
@@ -9,7 +9,7 @@ import { setPageName } from "../Features/page/pageSlice";
 import ErrorList from "./ErrorList";
 import FormInput from "./FormInput";
 
-function SignupForm(props) {
+function SignupForm() {
   const [errors, setErrors] = useState([]);
   const location = useLocation();
   const [firstName, setFirstName] = useState("");
@@ -37,8 +37,8 @@ function SignupForm(props) {
       .post(
         `${location.pathname}`,
         JSON.stringify({
-          firstName,
-          lastName,
+          first_name: firstName,
+          last_name: lastName,
           username,
           password,
           confirmpassword,
@@ -48,7 +48,7 @@ function SignupForm(props) {
         return response.data;
       })
       .catch((error) => {
-        console.log(error);
+        // console.log(error);
         setErrors([{ path: "generic", msg: "Connection to server failed" }]);
         setSignupSuccess(false);
       });
@@ -58,7 +58,7 @@ function SignupForm(props) {
       setErrors(responseObject.errors);
       setSignupSuccess(false);
     } else {
-      console.log(responseObject);
+      // console.log(responseObject);
       dispatch(
         loggedIn({
           auth_token: responseObject.token,
@@ -78,9 +78,9 @@ function SignupForm(props) {
   }, []);
 
   //for testing errors
-  useEffect(() => {
-    console.log("errors: ", errors);
-  }, [errors]);
+  // useEffect(() => {
+  //   console.log("errors: ", errors);
+  // }, [errors]);
 
   return signupSuccess ? (
     <Navigate to="/" replace={true} />

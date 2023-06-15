@@ -9,7 +9,7 @@ import { setPageName } from "../Features/page/pageSlice";
 import ErrorList from "./ErrorList";
 import FormInput from "./FormInput";
 
-function LoginForm(props) {
+function LoginForm() {
   const [errors, setErrors] = useState([]);
   const location = useLocation();
   const [username, setUsername] = useState("");
