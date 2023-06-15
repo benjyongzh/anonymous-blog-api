@@ -1,6 +1,6 @@
 import { Navigate } from "react-router-dom";
 
-function userNotFoundpage() {
+function UserNotFoundpage() {
   return (
     <Navigate
       to="/error"
@@ -10,4 +10,4 @@ function userNotFoundpage() {
   );
 }
 
-export default userNotFoundpage;
+export default UserNotFoundpage;
