@@ -1,7 +1,9 @@
 import { useLocation, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
+import axiosInstance from "../api/axios";
 
 import { useDispatch } from "react-redux";
+import { loggedIn } from "../Features/auth/authSlice";
 import { setPageName } from "../Features/page/pageSlice";
 
 import ErrorList from "./ErrorList";
@@ -10,16 +12,61 @@ import FormInput from "./FormInput";
 function SignupForm(props) {
   const [errors, setErrors] = useState([]);
   const location = useLocation();
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmpassword, setConfirmpassword] = useState("");
+  const [signupSuccess, setSignupSuccess] = useState(false);
+
   const dispatch = useDispatch();
 
-  const fetchData = async () => {
-    const url = `${process.env.REACT_APP_API_INDEX_URL}${process.env.REACT_APP_BACKEND_PORT}${location.pathname}`;
-    const response = await fetch(url);
-    if (response) {
-      const responseItems = await response.json();
-      setErrors(responseItems.errors || []);
+  const getData = async () => {
+    return await axiosInstance
+      .get(`${location.pathname}`)
+      .then((response) => {})
+      .catch((error) => {
+        console.log(error);
+        setErrors([{ path: "generic", msg: "Connection to server failed" }]);
+      });
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const responseObject = await axiosInstance
+      .post(
+        `${location.pathname}`,
+        JSON.stringify({
+          firstName,
+          lastName,
+          username,
+          password,
+          confirmpassword,
+        })
+      )
+      .then((response) => {
+        return response.data;
+      })
+      .catch((error) => {
+        console.log(error);
+        setErrors([{ path: "generic", msg: "Connection to server failed" }]);
+        setSignupSuccess(false);
+      });
+
+    if (responseObject.errors) {
+      //there are still errors in the form
+      setErrors(responseObject.errors);
+      setSignupSuccess(false);
     } else {
-      setErrors([{ path: "fetching data", msg: "Could not fetch" }]);
+      console.log(responseObject);
+      dispatch(
+        loggedIn({
+          auth_token: responseObject.token,
+          user: responseObject.user,
+        })
+      );
+
+      setSignupSuccess(true);
     }
   };
 
@@ -27,17 +74,26 @@ function SignupForm(props) {
   useEffect(() => {
     dispatch(setPageName("signup"));
     //do fetching
-    fetchData();
+    getData();
   }, []);
 
-  return (
-    <form method="POST" action="">
+  //for testing errors
+  useEffect(() => {
+    console.log("errors: ", errors);
+  }, [errors]);
+
+  return signupSuccess ? (
+    <Navigate to="/" replace={true} />
+  ) : (
+    <form onSubmit={handleSubmit}>
       <FormInput
         inputName="first_name"
         inputType="text"
         placeholder="Jacky"
         inputRequired={true}
         labelText="First Name"
+        handleChange={setFirstName}
+        errors={errors}
       />
 
       <FormInput
@@ -46,6 +102,8 @@ function SignupForm(props) {
         placeholder="Chan"
         inputRequired={true}
         labelText="Last Name"
+        handleChange={setLastName}
+        errors={errors}
       />
       <FormInput
         inputName="username"
@@ -53,6 +111,8 @@ function SignupForm(props) {
         placeholder="username123"
         inputRequired={true}
         labelText="Username"
+        handleChange={setUsername}
+        errors={errors}
       />
       <FormInput
         inputName="password"
@@ -60,6 +120,8 @@ function SignupForm(props) {
         placeholder="password123"
         inputRequired={true}
         labelText="Password"
+        handleChange={setPassword}
+        errors={errors}
       />
       <FormInput
         inputName="confirmpassword"
@@ -67,6 +129,8 @@ function SignupForm(props) {
         placeholder="password123"
         inputRequired={true}
         labelText="Confirm Password"
+        handleChange={setConfirmpassword}
+        errors={errors}
       />
       <ErrorList
         errors={errors}
