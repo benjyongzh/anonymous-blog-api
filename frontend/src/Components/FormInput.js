@@ -1,6 +1,3 @@
-import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
-
 import ErrorList from "./ErrorList";
 
 function FormInput(props) {

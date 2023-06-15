@@ -27,12 +27,12 @@ axiosInstance.interceptors.request.use((config) => {
   return config;
 });
 
-axiosInstance.interceptors.response.use(
-  (res) => {
-    console.log("axios request used: ", res.request);
-    return res;
-  },
-  (error) => Promise.reject(error)
-);
+// axiosInstance.interceptors.response.use(
+//   (res) => {
+//     console.log("axios request used: ", res.request);
+//     return res;
+//   },
+//   (error) => Promise.reject(error)
+// );
 
 export default axiosInstance;

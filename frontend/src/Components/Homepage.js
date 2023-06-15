@@ -17,7 +17,7 @@ function Homepage(props) {
     await axiosInstance
       .get(`/`)
       .then((response) => {
-        console.log("Home page response: ", response);
+        // console.log("Home page response: ", response);
         setAllPosts(response.data.posts || []);
       })
       .catch((error) => console.log("Home page error caught: ", error));

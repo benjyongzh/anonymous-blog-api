@@ -22,7 +22,7 @@ function LoginForm(props) {
     return await axiosInstance
       .get(`${location.pathname}`)
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
       })
       .catch((error) => {
         console.log(error);
@@ -52,10 +52,7 @@ function LoginForm(props) {
       setErrors(responseObject.errors);
       setLoginSuccess(false);
     } else {
-      //get redirect? find out how to go to index page upon successful sign in. maybe server has to do redirecting. what about different port?
-      console.log(responseObject);
-      // save token to localstorage as "token"
-      // localStorage.setItem("auth_token", "Bearer " + responseObject.token);
+      // console.log(responseObject);
       dispatch(
         loggedIn({
           auth_token: responseObject.token,
@@ -74,10 +71,10 @@ function LoginForm(props) {
     getData();
   }, []);
 
-  useEffect(() => {
-    //do fetching
-    console.log("errors: ", errors);
-  }, [errors]);
+  // useEffect(() => {
+  //   //do fetching
+  //   console.log("errors: ", errors);
+  // }, [errors]);
 
   return loginSuccess ? (
     <Navigate to="/" replace={true} />
