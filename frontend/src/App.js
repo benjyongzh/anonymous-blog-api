@@ -2,18 +2,20 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 //components
 import Navbar from "./Components/Navbar";
-import Homepage from "./Components/Homepage";
-import Errorpage from "./Components/Errorpage";
+import Homepage from "./Layouts/Homepage";
+import Errorpage from "./Layouts/Errorpage";
 //auth components
-import Authpage from "./Components/Authpage";
-import LoginForm from "./Components/LoginForm";
-import SignupForm from "./Components/SignupForm";
-import LoggingOutPage from "./Components/LoggingOutPage";
-import LogoutPage from "./Components/LogoutPage";
+import Authpage from "./Layouts/Authpage";
+import LoginForm from "./Layouts/LoginForm";
+import SignupForm from "./Layouts/SignupForm";
+import LoggingOutPage from "./Layouts/LoggingOutPage";
+import LogoutPage from "./Layouts/LogoutPage";
 //user components
-import UserNotFoundpage from "./Components/UserNotFoundpage";
-import UserDetailpage from "./Components/UserDetailpage";
-import UserMemberStatuspage from "./Components/UserMemberStatuspage";
+import UserNotFoundpage from "./Layouts/UserNotFoundpage";
+import UserDetailpage from "./Layouts/UserDetailpage";
+import UserMemberStatuspage from "./Layouts/UserMemberStatuspage";
+//post components
+import PostDetailpage from "./Layouts/PostDetailpage";
 
 function App() {
   return (
@@ -44,49 +46,35 @@ function App() {
                     element={<UserMemberStatuspage />}
                   />
                 </Route>
-                {/*
-                <Route path="posts" element={<ProductsPage />}>
+
+                <Route path="posts">
                   <Route
                     path="create"
-                    element={
+                    /* element={
                       <PokeballProducts addItemToCart={updateCartItems} />
-                    }
+                    } */
                   />
-                  <Route
-                    path=":postId"
-                    element={
-                      <PokeballProducts addItemToCart={updateCartItems} />
-                    }
-                  >
-                    <Route
+                  <Route path=":postId" element={<PostDetailpage />}>
+                    {/* <Route
                       path="delete"
                       element={
                         <PokeballProducts addItemToCart={updateCartItems} />
                       }
                     />
                     <Route
-                      path="comments"
+                      path="comments/create"
                       element={
                         <PokeballProducts addItemToCart={updateCartItems} />
                       }
-                    >
-                      <Route
-                        index
-                        path="create"
-                        element={
-                          <PokeballProducts addItemToCart={updateCartItems} />
-                        }
-                      />
-                      <Route
-                        path=":commentId/reply"
-                        element={
-                          <PokeballProducts addItemToCart={updateCartItems} />
-                        }
-                      />
-                    </Route>
+                    />
+                    <Route
+                      path="comments/:commentid/reply"
+                      element={
+                        <PokeballProducts addItemToCart={updateCartItems} />
+                      }
+                    /> */}
                   </Route>
                 </Route>
-                      */}
               </Routes>
             </div>
           </div>
