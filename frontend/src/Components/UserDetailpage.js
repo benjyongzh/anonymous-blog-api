@@ -21,6 +21,8 @@ const UserDetailpage = () => {
       .get(`${location.pathname}`)
       .then((response) => {
         console.log("User Detail page response: ", response.data);
+        console.log("Posts: ", response.data.posts);
+        console.log("UserToLookAt: ", response.data.userToLookAt);
         setPosts(response.data.posts);
         setUserToLookAt(response.data.userToLookAt);
       })
@@ -36,19 +38,22 @@ const UserDetailpage = () => {
     getData();
   }, []);
 
-  const accountName = () => {
-    return userToLookAt._id.toString() === currentUser._id.toString() ? (
-      <p className="text-center mb-1">(You)</p>
-    ) : currentUser.member_status !== "Basic" ? (
-      <p className="text-center mb-1">
-        ({userToLookAt.first_name} {userToLookAt.last_name})
-      </p>
+  const accountName =
+    !isEmpty(currentUser) && !isEmpty(userToLookAt) ? (
+      userToLookAt._id.toString() === currentUser._id.toString() ? (
+        <p className="text-center mb-1">(You)</p>
+      ) : currentUser.member_status !== "Basic" ? (
+        <p className="text-center mb-1">
+          ({userToLookAt.first_name} {userToLookAt.last_name})
+        </p>
+      ) : (
+        <p className="text-center mb-1">&nbsp;</p>
+      )
     ) : (
       <p className="text-center mb-1">&nbsp;</p>
     );
-  };
 
-  const memberStatus = (
+  const memberStatus = !isEmpty(userToLookAt) ? (
     <div className="d-flex justify-content-center">
       <p
         className={`badge text-center ${
@@ -62,10 +67,11 @@ const UserDetailpage = () => {
         {userToLookAt.member_status}
       </p>
     </div>
-  );
+  ) : null;
 
   const changingMemberStatus =
     !isEmpty(currentUser) &&
+    !isEmpty(userToLookAt) &&
     userToLookAt._id.toString() === currentUser._id.toString() &&
     currentUser.member_status !== "Admin" ? (
       <div className="text-center mb-4">
@@ -80,34 +86,30 @@ const UserDetailpage = () => {
 
   const postHeader =
     !isEmpty(currentUser) &&
+    !isEmpty(userToLookAt) &&
     userToLookAt._id.toString() === currentUser._id.toString() ? (
       <h6 className="text-center">Your posts</h6>
     ) : (
       <h6 className="text-center">Posts by {userToLookAt.username}</h6>
     );
 
-  return !isEmpty(userToLookAt) ? (
+  return (
     <div
       className="d-flex flex-column align-items-stretch justify-content-center container"
       style={{ maxWidth: "900px" }}
     >
-      <LoadingMessage path="Async userToLookAt" message={"user info..."} />
-    </div>
-  ) : (
-    <div
-      className="d-flex flex-column align-items-stretch justify-content-center container"
-      style={{ maxWidth: "900px" }}
-    >
-      <h3 className="text-center mt-2 mb-0">{userToLookAt.username}</h3>
-      {!isEmpty(currentUser) ? (
-        { accountName }
+      {isEmpty(userToLookAt) ? (
+        <LoadingMessage path="Async userToLookAt" message={"user info..."} />
       ) : (
-        <p className="text-center mb-1">&nbsp;</p>
+        <div>
+          <h3 className="text-center mt-2 mb-0">{userToLookAt.username}</h3>
+          {accountName}
+          {memberStatus}
+          {changingMemberStatus}
+          <hr className="mt-0" />
+          {postHeader}
+        </div>
       )}
-      {memberStatus}
-      {changingMemberStatus}
-      <hr className="mt-0" />
-      {postHeader}
     </div>
   );
 };
