@@ -4,4 +4,6 @@ Made using Create-React-App.
 
 to-do:
 
-- solve successful login.
+- member status page.
+- post detail page.
+- post creation page.
