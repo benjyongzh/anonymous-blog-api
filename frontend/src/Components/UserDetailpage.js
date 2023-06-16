@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setPageName } from "../Features/page/pageSlice";
 
 import LoadingMessage from "./LoadingMessage";
+import UserDetailPostListItem from "./UserDetailPostListItem";
 
 const UserDetailpage = () => {
   const [posts, setPosts] = useState([]);
@@ -88,7 +89,7 @@ const UserDetailpage = () => {
     !isEmpty(currentUser) &&
     !isEmpty(userToLookAt) &&
     userToLookAt._id.toString() === currentUser._id.toString() ? (
-      <h6 className="text-center">Your posts</h6>
+      <h5 className="text-center">Your posts</h5>
     ) : (
       <h6 className="text-center">Posts by {userToLookAt.username}</h6>
     );
@@ -108,6 +109,24 @@ const UserDetailpage = () => {
           {changingMemberStatus}
           <hr className="mt-0" />
           {postHeader}
+          <ul className="list-group mt-2 mb-3">
+            {posts.length ? (
+              posts.map((post) => (
+                <UserDetailPostListItem key={post._id} post={post} />
+              ))
+            ) : !isEmpty(currentUser) &&
+              userToLookAt._id.toString() === currentUser._id.toString() ? (
+              <p className="text-center">
+                You have not made any posts yet.{" "}
+                <Link className="link-primary" to="/posts/create">
+                  Create one
+                </Link>
+                .
+              </p>
+            ) : (
+              <p>There are no posts by {userToLookAt.username} yet.</p>
+            )}
+          </ul>
         </div>
       )}
     </div>
