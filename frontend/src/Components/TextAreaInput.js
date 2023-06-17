@@ -8,7 +8,8 @@ function TextAreaInput(props) {
     labelText,
     errors,
     handleChange,
-    value,
+    defaultValue,
+    style,
   } = props;
 
   return (
@@ -21,10 +22,9 @@ function TextAreaInput(props) {
           name={inputName}
           required={inputRequired}
           onChange={(e) => handleChange(e.target.value)}
-          style={{ height: "150px" }}
-        >
-          {value}
-        </textarea>
+          style={style}
+          value={defaultValue}
+        ></textarea>
         <label htmlFor={inputName}>{labelText}</label>
       </div>
       <ErrorList errors={errors} includePaths={[inputName]} />

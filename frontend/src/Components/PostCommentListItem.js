@@ -1,11 +1,19 @@
 import { Link } from "react-router-dom";
 import { isEmpty } from "lodash";
+import { useState } from "react";
+import axiosInstance from "../api/axios";
 
-import CommentReplyListItem from "./CommentRepliesListItem";
+import CommentReplyListItem from "./CommentReplyListItem";
+import TextAreaInput from "./TextAreaInput";
 
 function PostCommentListItem(props) {
   const { post, currentUser, comment, isByPoster, showCommenterFullName } =
     props;
+
+  const [errors, setErrors] = useState([]);
+  const [newReply, setNewReply] = useState("");
+
+  const handleSubmitReply = () => {};
 
   return (
     <div className="list-group-item bg-light">
@@ -43,7 +51,7 @@ function PostCommentListItem(props) {
           {!isEmpty(currentUser) ? (
             <button
               className="btn btn-outline-primary btn-sm text-center align-middle px-3"
-              style="border-width: 0px"
+              style={{ borderWidth: "0px" }}
               type="button"
               data-bs-target={`#commentRepliesFor${comment._id}`}
               data-bs-toggle="collapse"
@@ -58,7 +66,7 @@ function PostCommentListItem(props) {
           ) : comment.replies.length > 0 ? (
             <button
               className="btn btn-outline-primary btn-sm text-center align-middle px-3"
-              style="border-width: 0px"
+              style={{ borderWidth: "0px" }}
               type="button"
               data-bs-target={`#commentRepliesFor${comment._id}`}
               data-bs-toggle="collapse"
@@ -73,7 +81,6 @@ function PostCommentListItem(props) {
               to="/auth/login"
               className="btn btn-outline-primary btn-sm text-center align-middle px-3"
               style={{ borderWidth: "0px" }}
-              type="button"
             >
               <i className="bx bxs-comment align-bottom mb-1"></i>
             </Link>
@@ -88,10 +95,38 @@ function PostCommentListItem(props) {
                 key={comment._id}
                 comment={comment}
                 reply={reply}
+                isByPoster={
+                  reply.user._id.toString() === post.user._id.toString()
+                }
               />
             ))}
           </ul>
           {/* form for replying */}
+          <form
+            className="border-start border-secondary border-2 pt-3"
+            method="POST"
+            onSubmit={handleSubmitReply}
+            action={`/posts/${post._id}/comment/${comment._id}/reply`}
+          >
+            <TextAreaInput
+              inputName="new_reply"
+              placeholder="Max. 100 characters"
+              inputRequired={false}
+              labelText="Reply with max. 100 characters"
+              errors={errors}
+              handleChange={setNewReply}
+              defaultValue={newReply}
+            />
+            <div className="d-flex justify-content-end">
+              <button
+                className="btn btn-primary"
+                type="submit"
+                style={{ maxWidth: "250px" }}
+              >
+                Reply
+              </button>
+            </div>
+          </form>
         </div>
       </div>
     </div>

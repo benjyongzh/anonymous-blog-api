@@ -106,53 +106,62 @@ const PostDetailpage = () => {
             <h5>
               {currentPost.comments.length === 1 ? "Comment" : "Comments"}
             </h5>
-
-            {/* comment input section */}
-            {!isEmpty(currentUser) ? (
-              <div>
-                <form
-                  onSubmit={handleSubmitComment}
-                  method="POST"
-                  action={`/posts/${currentPost._id}/comment/create`}
-                >
-                  <TextAreaInput
-                    inputName="new_comment"
-                    placeholder="Max. 300 characters"
-                    inputRequired={false}
-                    labelText={`Comment as ${user.username}`}
-                    errors={errors}
-                    handleChange={setNewComment}
-                    value={newComment}
-                  />
-                  <div className="d-flex justify-content-end">
-                    <button
-                      className="w-100 btn btn-primary"
-                      type="submit"
-                      style={{ maxWidth: "250px" }}
-                    >
-                      Comment
-                    </button>
-                  </div>
-                </form>
-                <hr />
-              </div>
-            ) : null}
-
-            {/* comments section */}
-            {currentPost.comments.length > 0 ? (
-              <ul className="list-group list-group-flush">
-                {currentPost.comments.map((comment) => (
-                  <PostCommentListItem
-                    post={currentPost}
-                    currentUser={currentUser}
-                    comment={comment}
-                  />
-                ))}
-              </ul>
-            ) : (
-              <p>No comments posted yet.</p>
-            )}
           </div>
+
+          {/* comment input section */}
+          {!isEmpty(currentUser) ? (
+            <div>
+              <form
+                onSubmit={handleSubmitComment}
+                method="POST"
+                action={`/posts/${currentPost._id}/comment/create`}
+              >
+                <TextAreaInput
+                  inputName="new_comment"
+                  placeholder="Max. 300 characters"
+                  inputRequired={false}
+                  labelText={`Comment as ${user.username}`}
+                  errors={errors}
+                  handleChange={setNewComment}
+                  defaultValue={newComment}
+                  style={{ height: "150px" }}
+                />
+                <div className="d-flex justify-content-end">
+                  <button
+                    className="w-100 btn btn-primary"
+                    type="submit"
+                    style={{ maxWidth: "250px" }}
+                  >
+                    Comment
+                  </button>
+                </div>
+              </form>
+              <hr />
+            </div>
+          ) : null}
+
+          {/* comments section */}
+          {currentPost.comments.length > 0 ? (
+            <ul className="list-group list-group-flush">
+              {currentPost.comments.map((comment) => (
+                <PostCommentListItem
+                  key={comment._id}
+                  post={currentPost}
+                  currentUser={currentUser}
+                  comment={comment}
+                  isByPoster={
+                    comment.user._id.toString() ===
+                    currentPost.user._id.toString()
+                  }
+                  showCommenterFullName={
+                    currentUser && currentUser.member_status !== "Basic"
+                  }
+                />
+              ))}
+            </ul>
+          ) : (
+            <p>No comments posted yet.</p>
+          )}
         </div>
       )}
     </div>
