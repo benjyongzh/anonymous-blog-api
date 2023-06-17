@@ -19,9 +19,9 @@ CommentSchema.add({
 });
 
 //virtual for URL
-CommentSchema.virtual("url").get(function () {
-  return `/posts/${this._id}`;
-});
+// CommentSchema.virtual("url").get(function () {
+//   return `/posts/${this._id}`;
+// });
 
 //virtual for escaped text
 CommentSchema.virtual("text_unescaped").get(function () {
