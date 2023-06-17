@@ -29,7 +29,7 @@ const checkUpgradeApplicability = [
       if (currentMembership === "Basic" || currentMembership === "Premium") {
         req.body.new_membership = "Admin";
         return true;
-      } else throw new Error("Passcode not applicable");
+      } else throupdatedUserw new Error("Passcode not applicable");
     } else {
       throw new Error("Invalid passcode");
     }

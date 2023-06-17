@@ -67,7 +67,6 @@ exports.user_login_post = [
             errors: [
               { path: "generic", message: "Invalid username and/or password" },
             ],
-            user: user,
           });
         }
 
@@ -75,8 +74,6 @@ exports.user_login_post = [
         jwt.sign(
           {
             _id: user._id,
-            first_name: user.first_name, //should remove for production
-            last_name: user.last_name, //should remove for production
             username: user.username, //should remove for production
             member_status: user.member_status, //should remove for production
           },
@@ -138,18 +135,10 @@ exports.user_signup_post = [
 
           const result = await user.save();
 
-          //make sure user stays logged in
-          // req.login(user, { session: false }, (err) => {
-          //   if (err) {
-          //     return res.json(err);
-          //   }
-
           // generate a signed son web token with the contents of user object and return it in the response
           jwt.sign(
             {
               _id: user._id,
-              first_name: user.first_name, //should remove for production
-              last_name: user.last_name, //should remove for production
               username: user.username, //should remove for production
               member_status: user.member_status, //should remove for production
             },
@@ -177,7 +166,6 @@ exports.user_nonexist = [
   verifyTokenOptional,
   (req, res, next) => {
     return res.status(404).json({
-      user: req.user,
       errors: [{ path: "generic", message: "User could not be found" }],
     });
   },
@@ -190,7 +178,6 @@ exports.user_detail = [
     const userToFind = await User.findById(req.params.id).exec();
     if (userToFind === null) {
       return res.status(404).json({
-        user: req.user,
         errors: [{ path: "generic", message: "User could not be found" }],
       });
     }
@@ -199,11 +186,53 @@ exports.user_detail = [
       .sort({ date_of_post: 1 })
       .exec();
 
-    return res.status(200).json({
-      userToLookAt: userToFind,
-      user: req.user,
-      posts,
-    });
+    //check if req.user exists, and if same as userToLookAt, and member_status to see first_name last_name
+    if (!req.user) {
+      //GET without sign in
+      return res.status(200).json({
+        userToLookAt: {
+          username: userToFind.username,
+          member_status: userToFind.member_status,
+          url: userToFind.url,
+        },
+        sameUser: false,
+        posts,
+      });
+    } else {
+      //GET with sign in
+      //viewing user is looking at own account
+      if (req.user._id === req.params.id) {
+        return res.status(200).json({
+          userToLookAt: {
+            first_name: userToFind.first_name,
+            last_name: userToFind.last_name,
+            full_name: userToFind.full_name,
+            username: userToFind.username,
+            member_status: userToFind.member_status,
+            url: userToFind.url,
+          },
+          sameUser: true,
+          posts,
+        });
+      } else {
+        //signed in, but looking at other users
+        return res.status(200).json({
+          userToLookAt: {
+            first_name:
+              req.user.member_status !== "Basic" ? userToFind.first_name : "",
+            last_name:
+              req.user.member_status !== "Basic" ? userToFind.last_name : "",
+            full_name:
+              req.user.member_status !== "Basic" ? userToFind.full_name : "",
+            username: userToFind.username,
+            member_status: userToFind.member_status,
+            url: userToFind.url,
+          },
+          sameUser: false,
+          posts,
+        });
+      }
+    }
   }),
 ];
 
@@ -214,10 +243,16 @@ exports.user_memberstatus_get = [
   asyncHandler(async (req, res, next) => {
     const userToLookAt = await User.findById(req.params.id).exec();
 
-    return res.status(200).json({
-      userToLookAt: userToLookAt,
-      user: req.user,
-    });
+    //check if req.user is same as userToLookAt. return the form's select controls
+    if (req.user._id === req.params.id) {
+      return res.status(200).json({
+        formChoices: ["Basic", "Premium", "Admin"],
+      });
+    } else {
+      res
+        .status(403)
+        .json({ message: "Unauthorized to alter membership of another user." });
+    }
   }),
 ];
 
@@ -236,16 +271,22 @@ exports.user_memberstatus_post = [
     if (!results.isEmpty()) {
       //wrong passcode input
       return res.json({
-        user: req.user,
         errors: results.array(),
       });
     } else {
-      //update user object into db
-      userToLookAt.member_status = req.body.new_membership;
-      const updatedUser = await userToLookAt.save();
-      return res
-        .status(201)
-        .json({ userToLookAt: updatedUser, user: req.user });
+      //check if req.user is same as userToLookAt
+      if (req.user._id === req.params.id) {
+        //update user object into db
+        userToLookAt.member_status = req.body.new_membership;
+        await userToLookAt.save();
+        return res
+          .status(201)
+          .json({ new_membership_status: req.body.new_membership });
+      } else {
+        res.status(403).json({
+          message: "Unauthorized to alter membership of another user.",
+        });
+      }
     }
   }),
 ];

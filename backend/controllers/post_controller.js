@@ -17,7 +17,7 @@ exports.post_create_get = [
   verifyToken,
 
   asyncHandler(async (req, res, next) => {
-    return res.status(200).json({ user: req.user });
+    return res.status(200).json({});
   }),
 ];
 
@@ -48,7 +48,6 @@ exports.post_create_post = [
     } else {
       await post.save();
       return res.status(200).json({
-        user: req.user,
         post,
       });
     }
@@ -75,6 +74,8 @@ exports.post_delete_post = [
       return res.status(404).json({ error: "Post could not be found" });
     }
 
+    //check if req.user is an admin
+
     //get all related comments and replies in this post. will need recursion to find replies
     const directCommentsId = currentPost.comments.map((comment) => comment._id);
     const indirectCommentsId = currentPost.comments
@@ -86,7 +87,6 @@ exports.post_delete_post = [
     await Comment.deleteMany({ _id: { $in: directCommentsId } });
     await Post.findByIdAndDelete(req.params.id);
     return res.json({
-      user: req.user,
       post: currentPost,
       directCommentsId,
       indirectCommentsId,
@@ -113,13 +113,12 @@ exports.post_detail = [
       .exec();
 
     if (post === null) {
-      return res
-        .status(404)
-        .json({ user: req.user, error: "Post could not be found" });
+      return res.status(404).json({ error: "Post could not be found" });
     }
 
+    //check if req.user and if this is own post, and member_status of req.user to see OP's full name
+
     return res.status(200).json({
-      user: req.user,
       post,
     });
   }),

@@ -16,7 +16,6 @@ exports.main_page_get = [
       .exec();
 
     return res.status(200).json({
-      user: req.user,
       posts: allPosts,
     });
   }),
