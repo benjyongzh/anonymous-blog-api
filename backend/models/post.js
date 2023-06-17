@@ -25,9 +25,19 @@ PostSchema.virtual("title_unescaped").get(function () {
   return decoder.decode(this.title);
 });
 
+//virtual to escape title
+PostSchema.virtual("title_escaped").get(function () {
+  return decoder.encode(this.title);
+});
+
 //virtual for escaped text
 PostSchema.virtual("text_unescaped").get(function () {
   return decoder.decode(this.text);
+});
+
+//virtual to escape text
+PostSchema.virtual("text_escaped").get(function () {
+  return decoder.encode(this.text);
 });
 
 // //virtual for formatted dates
