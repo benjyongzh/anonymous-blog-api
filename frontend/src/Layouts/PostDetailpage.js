@@ -6,7 +6,7 @@ import { isEmpty } from "lodash";
 import { useDispatch, useSelector } from "react-redux";
 import { setPageName } from "../Features/page/pageSlice";
 
-import LoadingMessage from "./LoadingMessage";
+import LoadingMessage from "../Components/LoadingMessage";
 
 const PostDetailpage = () => {
   const [currentPost, setCurrentPost] = useState({});

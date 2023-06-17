@@ -7,8 +7,8 @@ import { isEmpty } from "lodash";
 import { useDispatch, useSelector } from "react-redux";
 import { setPageName, pageNameList } from "../Features/page/pageSlice";
 
-import PostListItem from "./PostListItem";
-import LoadingMessage from "./LoadingMessage";
+import PostListItem from "../Components/PostListItem";
+import LoadingMessage from "../Components/LoadingMessage";
 
 function Homepage(props) {
   const [allPosts, setAllPosts] = useState(undefined);

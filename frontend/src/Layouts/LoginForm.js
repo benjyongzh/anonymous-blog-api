@@ -6,8 +6,8 @@ import { useDispatch } from "react-redux";
 import { loggedIn } from "../Features/auth/authSlice";
 import { setPageName } from "../Features/page/pageSlice";
 
-import ErrorList from "./ErrorList";
-import FormInput from "./FormInput";
+import ErrorList from "../Components/ErrorList";
+import FormInput from "../Components/FormInput";
 
 function LoginForm() {
   const [errors, setErrors] = useState([]);
