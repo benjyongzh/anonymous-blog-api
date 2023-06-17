@@ -1,28 +1,30 @@
 import ErrorList from "./ErrorList";
 
-function FormInput(props) {
+function TextAreaInput(props) {
   const {
     inputName,
-    inputType,
     placeholder,
     inputRequired,
     labelText,
     errors,
     handleChange,
+    value,
   } = props;
 
   return (
-    <div className="mt-1 form-group">
-      <div className="form-floating mb-1">
-        <input
+    <div className="mt-3 form-group">
+      <div className="form-floating mb-0">
+        <textarea
           id={inputName}
           className="form-control"
-          type={inputType}
           placeholder={placeholder}
           name={inputName}
           required={inputRequired}
           onChange={(e) => handleChange(e.target.value)}
-        ></input>
+          style={{ height: "150px" }}
+        >
+          {value}
+        </textarea>
         <label htmlFor={inputName}>{labelText}</label>
       </div>
       <ErrorList errors={errors} includePaths={[inputName]} />
@@ -30,4 +32,4 @@ function FormInput(props) {
   );
 }
 
-export default FormInput;
+export default TextAreaInput;
