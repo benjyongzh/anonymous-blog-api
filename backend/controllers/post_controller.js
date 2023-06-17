@@ -28,9 +28,6 @@ exports.post_create_post = [
   postValidation,
 
   asyncHandler(async (req, res, next) => {
-    //get poster
-    //const poster = User.findById(req.user.id).exec();
-
     const post = new Post({
       title: req.body.title,
       text: req.body.text,
@@ -75,22 +72,29 @@ exports.post_delete_post = [
     }
 
     //check if req.user is an admin
+    if (req.user.member_status === "Admin") {
+      //get all related comments and replies in this post. will need recursion to find replies
+      const directCommentsId = currentPost.comments.map(
+        (comment) => comment._id
+      );
+      const indirectCommentsId = currentPost.comments
+        .map((comment) => comment.replies)
+        .flat()
+        .map((reply) => reply._id);
 
-    //get all related comments and replies in this post. will need recursion to find replies
-    const directCommentsId = currentPost.comments.map((comment) => comment._id);
-    const indirectCommentsId = currentPost.comments
-      .map((comment) => comment.replies)
-      .flat()
-      .map((reply) => reply._id);
-
-    await Comment.deleteMany({ _id: { $in: indirectCommentsId } });
-    await Comment.deleteMany({ _id: { $in: directCommentsId } });
-    await Post.findByIdAndDelete(req.params.id);
-    return res.json({
-      post: currentPost,
-      directCommentsId,
-      indirectCommentsId,
-    });
+      await Comment.deleteMany({ _id: { $in: indirectCommentsId } });
+      await Comment.deleteMany({ _id: { $in: directCommentsId } });
+      await Post.findByIdAndDelete(req.params.id);
+      return res.json({
+        post: currentPost,
+        directCommentsId,
+        indirectCommentsId,
+      });
+    } else {
+      return res
+        .status(403)
+        .json({ message: "Unauthorized to perform this action." });
+    }
   }),
 ];
 
@@ -99,14 +103,40 @@ exports.post_detail = [
   verifyTokenOptional,
   asyncHandler(async (req, res, next) => {
     const post = await Post.findById(req.params.id)
-      .populate({ path: "user", options: { retainNullValues: true } })
+      .populate({
+        path: "user",
+        options: { retainNullValues: true },
+        select: `username url ${
+          req.user && req.user.member_status !== "Basic"
+            ? "first_name last_name full_name"
+            : ""
+        }`,
+      })
       .populate({
         path: "comments",
         populate: [
-          { path: "user", options: { retainNullValues: true } },
+          {
+            path: "user",
+            options: { retainNullValues: true },
+            select: `username url ${
+              req.user && req.user.member_status !== "Basic"
+                ? "first_name last_name full_name"
+                : ""
+            }`,
+          },
           {
             path: "replies",
-            populate: [{ path: "user", options: { retainNullValues: true } }],
+            populate: [
+              {
+                path: "user",
+                options: { retainNullValues: true },
+                select: `username url ${
+                  req.user && req.user.member_status !== "Basic"
+                    ? "first_name last_name full_name"
+                    : ""
+                }`,
+              },
+            ],
           },
         ],
       })
@@ -117,9 +147,10 @@ exports.post_detail = [
     }
 
     //check if req.user and if this is own post, and member_status of req.user to see OP's full name
-
     return res.status(200).json({
       post,
+      ownPost: req.user && req.user._id.toString() === post.user._id,
+      canDelete: req.user && req.user.member_status === "Admin",
     });
   }),
 ];
