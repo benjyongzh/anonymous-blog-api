@@ -201,7 +201,7 @@ exports.user_detail = [
     } else {
       //GET with sign in
       //viewing user is looking at own account
-      if (req.user._id === req.params.id) {
+      if (req.user._id.toString() === req.params.id) {
         return res.status(200).json({
           userToLookAt: {
             first_name: userToFind.first_name,
@@ -244,12 +244,12 @@ exports.user_memberstatus_get = [
     const userToLookAt = await User.findById(req.params.id).exec();
 
     //check if req.user is same as userToLookAt. return the form's select controls
-    if (req.user._id === req.params.id) {
+    if (req.user._id.toString() === req.params.id) {
       return res.status(200).json({
         formChoices: ["Basic", "Premium", "Admin"],
       });
     } else {
-      res
+      return res
         .status(403)
         .json({ message: "Unauthorized to alter membership of another user." });
     }
@@ -283,7 +283,7 @@ exports.user_memberstatus_post = [
           .status(201)
           .json({ new_membership_status: req.body.new_membership });
       } else {
-        res.status(403).json({
+        return res.status(403).json({
           message: "Unauthorized to alter membership of another user.",
         });
       }

@@ -6,14 +6,15 @@ import { isEmpty } from "lodash";
 import { useDispatch, useSelector } from "react-redux";
 import { setPageName } from "../Features/page/pageSlice";
 
-import LoadingMessage from "./LoadingMessage";
-import UserDetailPostListItem from "./UserDetailPostListItem";
+import LoadingMessage from "../Components/LoadingMessage";
+import UserDetailPostListItem from "../Components/UserDetailPostListItem";
 
 const UserDetailpage = () => {
   const [posts, setPosts] = useState([]);
   const [userToLookAt, setUserToLookAt] = useState({});
+  const [sameUser, setSameUser] = useState(false);
   const currentUser = useSelector((state) => state.auth.user);
-  const pageName = useSelector((state) => state.page.pageName);
+  // const pageName = useSelector((state) => state.page.pageName);
 
   const dispatch = useDispatch();
 
@@ -22,10 +23,24 @@ const UserDetailpage = () => {
       .get(`${location.pathname}`)
       .then((response) => {
         console.log("User Detail page response: ", response.data);
-        console.log("Posts: ", response.data.posts);
-        console.log("UserToLookAt: ", response.data.userToLookAt);
+        // response.data will be:
+        // {
+        //   userToLookAt: {
+        //     first_name: userToFind.first_name,
+        //     last_name: userToFind.last_name,
+        //     full_name: userToFind.full_name,
+        //     username: userToFind.username,
+        //     member_status: userToFind.member_status,
+        //     url: userToFind.url,
+        //   },
+        //   sameUser: true/false,
+        //   posts,
+        // }
+        // console.log("Posts: ", response.data.posts);
+        // console.log("UserToLookAt: ", response.data.userToLookAt);
         setPosts(response.data.posts);
         setUserToLookAt(response.data.userToLookAt);
+        setSameUser(response.data.sameUser);
       })
       .catch((error) => {
         console.log(error);
@@ -39,61 +54,6 @@ const UserDetailpage = () => {
     getData();
   }, []);
 
-  const accountName =
-    !isEmpty(currentUser) && !isEmpty(userToLookAt) ? (
-      userToLookAt._id.toString() === currentUser._id.toString() ? (
-        <p className="text-center mb-1">(You)</p>
-      ) : currentUser.member_status !== "Basic" ? (
-        <p className="text-center mb-1">
-          ({userToLookAt.first_name} {userToLookAt.last_name})
-        </p>
-      ) : (
-        <p className="text-center mb-1">&nbsp;</p>
-      )
-    ) : (
-      <p className="text-center mb-1">&nbsp;</p>
-    );
-
-  const memberStatus = !isEmpty(userToLookAt) ? (
-    <div className="d-flex justify-content-center">
-      <p
-        className={`badge text-center ${
-          userToLookAt.member_status === "Basic"
-            ? "text-bg-primary"
-            : userToLookAt.member_status === "Premium"
-            ? "text-bg-warning"
-            : "text-bg-danger"
-        }`}
-      >
-        {userToLookAt.member_status}
-      </p>
-    </div>
-  ) : null;
-
-  const changingMemberStatus =
-    !isEmpty(currentUser) &&
-    !isEmpty(userToLookAt) &&
-    userToLookAt._id.toString() === currentUser._id.toString() &&
-    currentUser.member_status !== "Admin" ? (
-      <div className="text-center mb-4">
-        <Link
-          className="btn btn-warning"
-          to={`/users/${userToLookAt._id}/memberstatus`}
-        >
-          Upgrade Membership
-        </Link>
-      </div>
-    ) : null;
-
-  const postHeader =
-    !isEmpty(currentUser) &&
-    !isEmpty(userToLookAt) &&
-    userToLookAt._id.toString() === currentUser._id.toString() ? (
-      <h5 className="text-center">Your posts</h5>
-    ) : (
-      <h6 className="text-center">Posts by {userToLookAt.username}</h6>
-    );
-
   return (
     <div
       className="d-flex flex-column align-items-stretch justify-content-center container"
@@ -104,18 +64,57 @@ const UserDetailpage = () => {
       ) : (
         <div>
           <h3 className="text-center mt-2 mb-0">{userToLookAt.username}</h3>
-          {accountName}
-          {memberStatus}
-          {changingMemberStatus}
+          {/* accountName */}
+          {sameUser ? (
+            <p className="text-center mb-1">(You)</p>
+          ) : !isEmpty(userToLookAt.full_name) ? (
+            <p className="text-center mb-1">({userToLookAt.full_name})</p>
+          ) : (
+            <p className="text-center mb-1">&nbsp;</p>
+          )}
+
+          {/* memberStatus */}
+          <div className="d-flex justify-content-center">
+            <p
+              className={`badge text-center ${
+                userToLookAt.member_status === "Basic"
+                  ? "text-bg-primary"
+                  : userToLookAt.member_status === "Premium"
+                  ? "text-bg-warning"
+                  : "text-bg-danger"
+              }`}
+            >
+              {userToLookAt.member_status}
+            </p>
+          </div>
+
+          {/* changingMemberStatus */}
+          {sameUser &&
+          !isEmpty(currentUser) &&
+          currentUser.member_status !== "Admin" ? (
+            <div className="text-center mb-4">
+              <Link
+                className="btn btn-warning"
+                to={`/users/${userToLookAt._id}/memberstatus`}
+              >
+                Upgrade Membership
+              </Link>
+            </div>
+          ) : null}
+
           <hr className="mt-0" />
-          {postHeader}
+
+          {/* postHeader */}
+          <h5 className="text-center">
+            {sameUser ? "Your posts" : `Posts by ${userToLookAt.username}`}
+          </h5>
+
           <ul className="list-group mt-2 mb-3">
             {posts.length ? (
               posts.map((post) => (
                 <UserDetailPostListItem key={post._id} post={post} />
               ))
-            ) : !isEmpty(currentUser) &&
-              userToLookAt._id.toString() === currentUser._id.toString() ? (
+            ) : !isEmpty(currentUser) && sameUser ? (
               <p className="text-center">
                 You have not made any posts yet.{" "}
                 <Link className="link-primary" to="/posts/create">
