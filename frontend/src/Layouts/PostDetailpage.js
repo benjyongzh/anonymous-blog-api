@@ -20,6 +20,7 @@ const PostDetailpage = () => {
   const [errors, setErrors] = useState([]);
   const [newComment, setNewComment] = useState("");
   const [newCommentIsLoading, setNewCommentIsLoading] = useState(false);
+  const [deletePostIsLoading, setDeletePostIsLoading] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -44,6 +45,33 @@ const PostDetailpage = () => {
     getData();
   }, []);
 
+  const handleDeletePost = async (event) => {
+    event.preventDefault();
+    setDeletePostIsLoading(true);
+    const responseObject = await axiosInstance
+      .delete(
+        `${location.pathname}/delete`,
+        JSON.stringify({ new_comment: newComment })
+      )
+      .then((response) => {
+        // console.log("response of creating comment: ", response);
+        return response.data;
+      })
+      .catch((error) => {
+        console.log("error from post detail page deleting: ", error);
+        setErrors([{ path: "generic", msg: "Connection to server failed" }]);
+      });
+
+    if (responseObject.errors) {
+      //there are still errors in the form
+      setErrors(responseObject.errors);
+      setDeletePostIsLoading(false);
+    } else {
+      // success: redirect to homepage or backpage
+      setDeletePostIsLoading(false);
+    }
+  };
+
   const handleSubmitComment = async (event) => {
     event.preventDefault();
     setNewCommentIsLoading(true);
@@ -53,11 +81,11 @@ const PostDetailpage = () => {
         JSON.stringify({ new_comment: newComment })
       )
       .then((response) => {
-        console.log("response of creating comment: ", response);
+        // console.log("response of creating comment: ", response);
         return response.data;
       })
       .catch((error) => {
-        console.log(error);
+        console.log("error from post detail page fetching: ", error);
         setErrors([{ path: "generic", msg: "Connection to server failed" }]);
       });
 
@@ -70,6 +98,10 @@ const PostDetailpage = () => {
       setNewComment("");
       getData().then((data) => setNewCommentIsLoading(false));
     }
+  };
+
+  const handleSubmitReply = async () => {
+    await getData();
   };
 
   return (
@@ -112,11 +144,7 @@ const PostDetailpage = () => {
 
             {/* delete button for admins */}
             {canDelete ? (
-              <form
-                className="ms-auto"
-                method="POST"
-                action={`${location.pathname}/delete`}
-              >
+              <form className="ms-auto">
                 <button
                   className="btn btn-outline-danger btn-sm text-center align-top"
                   style={{ borderWidth: "0px", maxWidth: "250px" }}
@@ -187,6 +215,7 @@ const PostDetailpage = () => {
                     !isEmpty(currentUser) &&
                     currentUser.member_status !== "Basic"
                   }
+                  createNewReply={handleSubmitReply}
                 />
               ))}
             </ul>
