@@ -11,9 +11,9 @@ function PostCommentListItem(props) {
     post,
     currentUser,
     comment,
-    isByPoster,
     showCommenterFullName,
     createNewReply,
+    isByPoster,
   } = props;
 
   const [errors, setErrors] = useState([]);
@@ -63,7 +63,7 @@ function PostCommentListItem(props) {
         {showCommenterFullName ? (
           <span>&nbsp;({comment.user.full_name})</span>
         ) : null}
-        {isByPoster ? (
+        {comment.isPoster || isByPoster ? (
           <span className="badge text-bg-primary">&nbsp;&nbsp;OP</span>
         ) : null}
         <span> - {comment.date_of_comment_ago}</span>
@@ -124,7 +124,10 @@ function PostCommentListItem(props) {
                 comment={comment}
                 reply={reply}
                 isByPoster={
-                  reply.user._id.toString() === post.user._id.toString()
+                  reply.isPoster ||
+                  (!isEmpty(reply.user) &&
+                    !isEmpty(post.user) &&
+                    reply.user._id.toString() === post.user._id.toString())
                 }
               />
             ))}

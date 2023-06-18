@@ -41,6 +41,7 @@ exports.comment_create_post = [
         text: req.body.new_comment,
         user: req.user,
         date_of_comment: Date.now(),
+        isPoster: req.user._id.toString() === post.user._id.toString(),
       });
       await newComment.save();
       post.comments.push(newComment);
@@ -87,6 +88,7 @@ exports.reply_create_post = [
         text: req.body.new_reply,
         user: req.user,
         date_of_comment: Date.now(),
+        isPoster: req.user._id.toString() === currentPost.user._id.toString(),
       });
       await newReply.save();
       currentComment.replies.push(newReply);

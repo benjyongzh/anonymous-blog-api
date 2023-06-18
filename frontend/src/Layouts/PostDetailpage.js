@@ -209,8 +209,11 @@ const PostDetailpage = () => {
                   currentUser={currentUser}
                   comment={comment}
                   isByPoster={
-                    comment.user._id.toString() ===
-                    currentPost.user._id.toString()
+                    comment.isPoster ||
+                    (!isEmpty(comment.user) &&
+                      !isEmpty(currentPost.user) &&
+                      comment.user._id.toString() ===
+                        currentPost.user._id.toString())
                   }
                   showCommenterFullName={
                     !isEmpty(currentUser) &&
