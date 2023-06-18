@@ -7,13 +7,46 @@ import CommentReplyListItem from "./CommentReplyListItem";
 import TextAreaInput from "./TextAreaInput";
 
 function PostCommentListItem(props) {
-  const { post, currentUser, comment, isByPoster, showCommenterFullName } =
-    props;
+  const {
+    post,
+    currentUser,
+    comment,
+    isByPoster,
+    showCommenterFullName,
+    createNewReply,
+  } = props;
 
   const [errors, setErrors] = useState([]);
   const [newReply, setNewReply] = useState("");
+  const [newReplyIsLoading, setNewReplyIsLoading] = useState(false);
 
-  const handleSubmitReply = () => {};
+  const handleSubmitReply = async (event) => {
+    event.preventDefault();
+    setNewReplyIsLoading(true);
+    const responseObject = await axiosInstance
+      .post(
+        `${location.pathname}/comments/${comment._id}/reply`,
+        JSON.stringify({ new_reply: newReply })
+      )
+      .then((response) => {
+        // console.log("response: ", response);
+        return response.data;
+      })
+      .catch((error) => {
+        console.log(error);
+        setErrors([{ path: "generic", msg: "Connection to server failed" }]);
+      });
+
+    if (responseObject.errors) {
+      //there are still errors in the form
+      setErrors(responseObject.errors);
+      setNewReplyIsLoading(false);
+    } else {
+      setNewReply("");
+      // success: find a way to clear newReply, and display new reply object
+      createNewReply().then((data) => setNewReplyIsLoading(false));
+    }
+  };
 
   return (
     <div className="list-group-item bg-light">
@@ -37,10 +70,10 @@ function PostCommentListItem(props) {
       </div>
 
       {/* comment text */}
-      <p className="mb-1">{comment.text_escaped}</p>
+      <p className="mb-1">{comment.text}</p>
 
       {/* comment bottom info */}
-      <div className="mb-2">
+      <div className="mb-1">
         {/* comment control buttons */}
         <div className="d-flex gap-3 justify-content-start">
           {!isEmpty(currentUser) ? (
@@ -84,10 +117,10 @@ function PostCommentListItem(props) {
 
         {/* replies section */}
         <div className="ps-4 collapse" id={`commentRepliesFor${comment._id}`}>
-          <ul className="list-group list-group-flush border-start border-secondary border-2">
+          <ul className="list-group list-group-flush border-start border-secondary border-2 pt-0">
             {comment.replies.map((reply) => (
               <CommentReplyListItem
-                key={comment._id}
+                key={reply._id}
                 comment={comment}
                 reply={reply}
                 isByPoster={
@@ -99,10 +132,8 @@ function PostCommentListItem(props) {
           {/* form for replying */}
           {!isEmpty(currentUser) ? (
             <form
-              className="border-start border-secondary border-2 ps-4 pt-2"
-              method="POST"
+              className="border-start border-secondary border-2 ps-3 pt-1"
               onSubmit={handleSubmitReply}
-              action={`/posts/${post._id}/comment/${comment._id}/reply`}
             >
               <TextAreaInput
                 inputName="new_reply"
@@ -115,11 +146,13 @@ function PostCommentListItem(props) {
               />
               <div className="d-flex justify-content-end">
                 <button
-                  className="btn btn-primary"
+                  className={`btn ${
+                    newReplyIsLoading ? "btn-secondary disabled" : "btn-primary"
+                  }`}
                   type="submit"
                   style={{ maxWidth: "250px" }}
                 >
-                  Reply
+                  {newReplyIsLoading ? "Replying..." : "Reply"}
                 </button>
               </div>
             </form>
