@@ -9,6 +9,7 @@ export const pageNameList = {
   home: "Home",
   member_status: "Membership",
   error: "Oops!",
+  post_create: "Create a Post",
 };
 
 const initialState = {
