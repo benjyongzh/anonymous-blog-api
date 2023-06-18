@@ -149,7 +149,7 @@ exports.post_detail = [
     //check if req.user and if this is own post, and member_status of req.user to see OP's full name
     return res.status(200).json({
       post,
-      ownPost: req.user && req.user._id.toString() === post.user._id,
+      ownPost: req.user && req.user._id.toString() === post.user._id.toString(),
       canDelete: req.user && req.user.member_status === "Admin",
     });
   }),
