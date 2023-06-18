@@ -157,8 +157,8 @@ const PostDetailpage = () => {
           </div>
 
           {/* post content */}
-          <h3 className="mt-2">{currentPost.title_escaped}</h3>
-          <p>{currentPost.text_escaped}</p>
+          <h3 className="mt-2">{currentPost.title}</h3>
+          <p>{currentPost.text}</p>
 
           {/* comment input section */}
           {!isEmpty(currentUser) ? (
@@ -188,18 +188,19 @@ const PostDetailpage = () => {
                   </button>
                 </div>
               </form>
-              {/* <hr /> */}
             </div>
           ) : null}
 
           <hr className="mt-0" />
           <h5 className="mb-1">
             {currentPost.comments.length}{" "}
-            {currentPost.comments.length === 1 ? "Comment" : "Comments"}
+            {!isEmpty(currentPost.comments) && currentPost.comments.length === 1
+              ? "Comment"
+              : "Comments"}
           </h5>
 
           {/* comments section */}
-          {currentPost.comments.length > 0 ? (
+          {!isEmpty(currentPost.comments) ? (
             <ul className="list-group list-group-flush">
               {currentPost.comments.map((comment) => (
                 <PostCommentListItem
@@ -219,11 +220,7 @@ const PostDetailpage = () => {
                 />
               ))}
             </ul>
-          ) : (
-            {
-              /* <p>No comments posted yet.</p> */
-            }
-          )}
+          ) : null}
         </div>
       )}
     </div>
