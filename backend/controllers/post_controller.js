@@ -108,7 +108,7 @@ exports.post_detail = [
         options: { retainNullValues: true },
         select: `username url ${
           req.user && req.user.member_status !== "Basic"
-            ? "first_name last_name full_name"
+            ? "first_name last_name"
             : ""
         }`,
       })
@@ -120,7 +120,7 @@ exports.post_detail = [
             options: { retainNullValues: true },
             select: `username url ${
               req.user && req.user.member_status !== "Basic"
-                ? "first_name last_name full_name"
+                ? "first_name last_name"
                 : ""
             }`,
           },
@@ -132,7 +132,7 @@ exports.post_detail = [
                 options: { retainNullValues: true },
                 select: `username url ${
                   req.user && req.user.member_status !== "Basic"
-                    ? "first_name last_name full_name"
+                    ? "first_name last_name"
                     : ""
                 }`,
               },
