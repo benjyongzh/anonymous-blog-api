@@ -15,6 +15,7 @@ function PostCreatePage() {
   const [title, setTitle] = useState("");
   const [text, setText] = useState("");
   const [createSuccess, setCreateSuccess] = useState(false);
+  const [postUrl, setPostUrl] = useState("/");
 
   const dispatch = useDispatch();
   const pageName = useSelector((state) => state.page.pageName);
@@ -51,6 +52,7 @@ function PostCreatePage() {
       setCreateSuccess(false);
     } else {
       //redirect to this new post. use response.data.post.url
+      setPostUrl(responseObject.post.url);
       setCreateSuccess(true);
     }
   };
@@ -63,20 +65,20 @@ function PostCreatePage() {
   }, []);
 
   return createSuccess ? (
-    <Navigate to="/" replace={true} />
+    <Navigate to={postUrl} replace={true} />
   ) : (
     <div
       className="d-flex flex-column align-items-stretch justify-content-center container"
-      style={{ maxWidth: "900px" }}
+      style={{ maxWidth: "380px" }}
     >
-      <h3 classname="text-center m-4">{pageNameList[pageName]}</h3>
+      <h3 className="text-center m-4">{pageNameList[pageName]}</h3>
       <form onSubmit={handleSubmit}>
         <FormInput
           inputName="title"
           inputType="text"
           placeholder="title of post here"
           inputRequired={true}
-          labelText="title"
+          labelText="Title of Post"
           handleChange={setTitle}
           errors={errors}
         />
@@ -84,7 +86,7 @@ function PostCreatePage() {
           inputName="text"
           placeholder="Max. 300 characters"
           inputRequired={false}
-          labelText={`Optional text. Max. 300 characters`}
+          labelText={`Optional text`}
           errors={errors}
           handleChange={setText}
           defaultValue={text}
