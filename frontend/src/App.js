@@ -16,6 +16,7 @@ import UserDetailpage from "./Layouts/UserDetailpage";
 import UserMemberStatuspage from "./Layouts/UserMemberStatuspage";
 //post components
 import PostDetailpage from "./Layouts/PostDetailpage";
+import PostCreatePage from "./Layouts/PostCreatePage";
 
 function App() {
   return (
@@ -48,12 +49,7 @@ function App() {
                 </Route>
 
                 <Route path="posts">
-                  <Route
-                    path="create"
-                    /* element={
-                      <PokeballProducts addItemToCart={updateCartItems} />
-                    } */
-                  />
+                  <Route path="create" element={<PostCreatePage />} />
                   <Route path=":postId" element={<PostDetailpage />}>
                     {/* <Route
                       path="delete"
