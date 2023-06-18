@@ -28,6 +28,11 @@ CommentSchema.virtual("text_unescaped").get(function () {
   return decoder.decode(this.text);
 });
 
+//virtual to escape text
+CommentSchema.virtual("text_escaped").get(function () {
+  return decoder.encode(this.text);
+});
+
 // //virtual for formatted dates
 CommentSchema.virtual("date_of_comment_formatted").get(function () {
   return this.date_of_comment
