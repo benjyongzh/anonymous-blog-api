@@ -4,8 +4,8 @@ const postValidation = [
   //validation and sanitization of fields
   body("title", "Title must not be empty")
     .trim()
-    .isLength({ min: 1 })
-    .withMessage("Title must be at least 1 character long"),
+    .isLength({ min: 1, max: 50 })
+    .withMessage("Title must be 1 to 50 characters long"),
   body("text")
     .trim()
     .isLength({ max: 300 })
