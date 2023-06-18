@@ -6,8 +6,8 @@ const passwordSanitize = [
     .exists()
     .withMessage("Password must not be empty")
     .trim()
-    .isLength({ min: 8 })
-    .withMessage("Password must be at least 8 characters long"),
+    .isLength({ min: 8, max: 20 })
+    .withMessage("Password must be between 8 to 20 characters long"),
 ];
 
 const confirmPasswordSanitize = [
