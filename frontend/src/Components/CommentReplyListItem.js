@@ -6,7 +6,7 @@ function CommentReplyListItem(props) {
 
   return (
     <li
-      className="list-group-item bg-light py-2 border-bottom border-secondary border-2"
+      className="list-group-item bg-light pt-0 pb-2 border-bottom border-secondary border-2"
       style={{ paddingRight: "0px" }}
     >
       {!isEmpty(reply.user) ? (
@@ -20,7 +20,7 @@ function CommentReplyListItem(props) {
       )}
       <span>&nbsp;&nbsp;</span>
       {isByPoster ? <span className="badge text-bg-primary">OP</span> : null}
-      <p className="mb-1 mt-2">{reply.text_escaped}</p>
+      <p className="mb-1 mt-2">{reply.text}</p>
       <p className="mb-0">
         <em>{reply.date_of_comment_ago}</em>
       </p>
