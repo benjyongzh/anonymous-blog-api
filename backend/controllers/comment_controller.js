@@ -25,12 +25,9 @@ exports.comment_create_post = [
       .exec();
 
     if (post === null) {
-      return res
-        .status(404)
-        .json({
-          user: req.user,
-          errors: [{ message: "Post could not be found" }],
-        });
+      return res.status(404).json({
+        errors: [{ message: "Post could not be found" }],
+      });
     }
 
     //check if validation is okay
@@ -48,7 +45,7 @@ exports.comment_create_post = [
       await newComment.save();
       post.comments.push(newComment);
       await post.save();
-      return res.status(201).json({ newComment, post, user: req.user });
+      return res.status(201).json({ newComment, post });
     }
   }),
 ];
@@ -66,21 +63,15 @@ exports.reply_create_post = [
     ]);
 
     if (currentPost === null) {
-      return res
-        .status(404)
-        .json({
-          user: req.user,
-          errors: [{ message: "Post could not be found" }],
-        });
+      return res.status(404).json({
+        errors: [{ message: "Post could not be found" }],
+      });
     }
 
     if (currentComment === null) {
-      return res
-        .status(404)
-        .json({
-          user: req.user,
-          errors: [{ message: "Comment could not be found" }],
-        });
+      return res.status(404).json({
+        errors: [{ message: "Comment could not be found" }],
+      });
     }
 
     //check if validation is okay
@@ -88,7 +79,6 @@ exports.reply_create_post = [
     if (!results.isEmpty()) {
       //there are errors in validation
       return res.json({
-        user: req.user,
         errors: results.array(),
       });
     } else {
@@ -101,7 +91,7 @@ exports.reply_create_post = [
       await newReply.save();
       currentComment.replies.push(newReply);
       await currentComment.save();
-      return res.status(201).json({ newReply, currentComment, user: req.user });
+      return res.status(201).json({ newReply, currentComment });
     }
   }),
 ];
