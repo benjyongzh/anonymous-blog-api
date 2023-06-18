@@ -19,6 +19,7 @@ const PostDetailpage = () => {
 
   const [errors, setErrors] = useState([]);
   const [newComment, setNewComment] = useState("");
+  const [newCommentIsLoading, setNewCommentIsLoading] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -43,7 +44,33 @@ const PostDetailpage = () => {
     getData();
   }, []);
 
-  const handleSubmitComment = () => {};
+  const handleSubmitComment = async (event) => {
+    event.preventDefault();
+    setNewCommentIsLoading(true);
+    const responseObject = await axiosInstance
+      .post(
+        `${location.pathname}/comments/create`,
+        JSON.stringify({ new_comment: newComment })
+      )
+      .then((response) => {
+        console.log("response of creating comment: ", response);
+        return response.data;
+      })
+      .catch((error) => {
+        console.log(error);
+        setErrors([{ path: "generic", msg: "Connection to server failed" }]);
+      });
+
+    if (responseObject.errors) {
+      //there are still errors in the form
+      setErrors(responseObject.errors);
+      setNewCommentIsLoading(false);
+    } else {
+      // success: find a way to clear newComment, and display new comment object
+      setNewComment("");
+      getData().then((data) => setNewCommentIsLoading(false));
+    }
+  };
 
   return (
     <div
@@ -108,11 +135,7 @@ const PostDetailpage = () => {
           {/* comment input section */}
           {!isEmpty(currentUser) ? (
             <div className="mb-3">
-              <form
-                onSubmit={handleSubmitComment}
-                method="POST"
-                action={`/posts/${currentPost._id}/comment/create`}
-              >
+              <form onSubmit={handleSubmitComment}>
                 <TextAreaInput
                   inputName="new_comment"
                   placeholder="Max. 300 characters"
@@ -125,11 +148,15 @@ const PostDetailpage = () => {
                 />
                 <div className="d-flex justify-content-end">
                   <button
-                    className="w-100 btn btn-primary"
+                    className={`w-100 btn ${
+                      newCommentIsLoading
+                        ? "btn-secondary disabled"
+                        : "btn-primary"
+                    }`}
                     type="submit"
                     style={{ maxWidth: "250px" }}
                   >
-                    Comment
+                    {newCommentIsLoading ? "Posting comment..." : "Comment"}
                   </button>
                 </div>
               </form>
