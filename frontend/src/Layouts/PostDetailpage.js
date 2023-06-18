@@ -66,7 +66,8 @@ const PostDetailpage = () => {
                   {currentPost.user.username}
                 </Link>
                 <span>
-                  {!isEmpty(currentPost.user.full_name)
+                  {!isEmpty(currentPost.user.first_name) &&
+                  !isEmpty(currentPost.user.last_name)
                     ? ` (${currentPost.user.full_name})`
                     : ""}
                 </span>
@@ -98,19 +99,15 @@ const PostDetailpage = () => {
                 </button>
               </form>
             ) : null}
-
-            {/* post content */}
-            <h3 className="mt-2">{currentPost.title_escaped}</h3>
-            <p>{currentPost.text_escaped}</p>
-            <hr className="mt-0" />
-            <h5>
-              {currentPost.comments.length === 1 ? "Comment" : "Comments"}
-            </h5>
           </div>
+
+          {/* post content */}
+          <h3 className="mt-2">{currentPost.title_escaped}</h3>
+          <p>{currentPost.text_escaped}</p>
 
           {/* comment input section */}
           {!isEmpty(currentUser) ? (
-            <div>
+            <div className="mb-3">
               <form
                 onSubmit={handleSubmitComment}
                 method="POST"
@@ -120,11 +117,11 @@ const PostDetailpage = () => {
                   inputName="new_comment"
                   placeholder="Max. 300 characters"
                   inputRequired={false}
-                  labelText={`Comment as ${user.username}`}
+                  labelText={`Comment as ${currentUser.username}`}
                   errors={errors}
                   handleChange={setNewComment}
                   defaultValue={newComment}
-                  style={{ height: "150px" }}
+                  style={{ height: "100px" }}
                 />
                 <div className="d-flex justify-content-end">
                   <button
@@ -136,9 +133,15 @@ const PostDetailpage = () => {
                   </button>
                 </div>
               </form>
-              <hr />
+              {/* <hr /> */}
             </div>
           ) : null}
+
+          <hr className="mt-0" />
+          <h5 className="mb-1">
+            {currentPost.comments.length}{" "}
+            {currentPost.comments.length === 1 ? "Comment" : "Comments"}
+          </h5>
 
           {/* comments section */}
           {currentPost.comments.length > 0 ? (
@@ -154,13 +157,16 @@ const PostDetailpage = () => {
                     currentPost.user._id.toString()
                   }
                   showCommenterFullName={
-                    currentUser && currentUser.member_status !== "Basic"
+                    !isEmpty(currentUser) &&
+                    currentUser.member_status !== "Basic"
                   }
                 />
               ))}
             </ul>
           ) : (
-            <p>No comments posted yet.</p>
+            {
+              /* <p>No comments posted yet.</p> */
+            }
           )}
         </div>
       )}

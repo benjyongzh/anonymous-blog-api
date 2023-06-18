@@ -105,7 +105,7 @@ const UserDetailpage = () => {
           <hr className="mt-0" />
 
           {/* postHeader */}
-          <h5 className="text-center">
+          <h5 className="text-center mb-3">
             {sameUser ? "Your posts" : `Posts by ${userToLookAt.username}`}
           </h5>
 
@@ -123,7 +123,9 @@ const UserDetailpage = () => {
                 .
               </p>
             ) : (
-              <p>There are no posts by {userToLookAt.username} yet.</p>
+              <p className="mt-3 text-center">
+                There are no posts by {userToLookAt.username} yet.
+              </p>
             )}
           </ul>
         </div>

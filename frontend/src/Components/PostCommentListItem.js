@@ -19,30 +19,25 @@ function PostCommentListItem(props) {
     <div className="list-group-item bg-light">
       {/* comment info */}
       <div className="mt-2 mb-3">
-        {comment.user !== null ? (
-          <div>
-            <Link className="fw-bold link-primary" to={comment.user.url}>
-              {comment.user.username}
-            </Link>
-            {showCommenterFullName ? (
-              <span>&nbsp;{comment.user.full_name}</span>
-            ) : null}
-            {isByPoster ? (
-              <span className="badge text-bg-primary">
-                &nbsp;{comment.user.full_name}
-              </span>
-            ) : null}
-          </div>
-        ) : (
-          <Link className="fw-bold link-secondary" to="/users/null">
-            Deleted User
-          </Link>
-        )}
+        <Link
+          className={`fw-bold ${
+            !isEmpty(comment.user) ? "link-primary" : "link-secondary"
+          }`}
+          to={!isEmpty(comment.user) ? comment.user.url : "/users/null"}
+        >
+          {!isEmpty(comment.user) ? comment.user.username : "Deleted User"}
+        </Link>
+        {showCommenterFullName ? (
+          <span>&nbsp;({comment.user.full_name})</span>
+        ) : null}
+        {isByPoster ? (
+          <span className="badge text-bg-primary">&nbsp;&nbsp;OP</span>
+        ) : null}
         <span> - {comment.date_of_comment_ago}</span>
       </div>
 
       {/* comment text */}
-      <p className="mb-2">{comment.text_escaped}</p>
+      <p className="mb-1">{comment.text_escaped}</p>
 
       {/* comment bottom info */}
       <div className="mb-2">
@@ -102,31 +97,33 @@ function PostCommentListItem(props) {
             ))}
           </ul>
           {/* form for replying */}
-          <form
-            className="border-start border-secondary border-2 pt-3"
-            method="POST"
-            onSubmit={handleSubmitReply}
-            action={`/posts/${post._id}/comment/${comment._id}/reply`}
-          >
-            <TextAreaInput
-              inputName="new_reply"
-              placeholder="Max. 100 characters"
-              inputRequired={false}
-              labelText="Reply with max. 100 characters"
-              errors={errors}
-              handleChange={setNewReply}
-              defaultValue={newReply}
-            />
-            <div className="d-flex justify-content-end">
-              <button
-                className="btn btn-primary"
-                type="submit"
-                style={{ maxWidth: "250px" }}
-              >
-                Reply
-              </button>
-            </div>
-          </form>
+          {!isEmpty(currentUser) ? (
+            <form
+              className="border-start border-secondary border-2 ps-4 pt-2"
+              method="POST"
+              onSubmit={handleSubmitReply}
+              action={`/posts/${post._id}/comment/${comment._id}/reply`}
+            >
+              <TextAreaInput
+                inputName="new_reply"
+                placeholder="Max. 100 characters"
+                inputRequired={false}
+                labelText="Reply with max. 100 characters"
+                errors={errors}
+                handleChange={setNewReply}
+                defaultValue={newReply}
+              />
+              <div className="d-flex justify-content-end">
+                <button
+                  className="btn btn-primary"
+                  type="submit"
+                  style={{ maxWidth: "250px" }}
+                >
+                  Reply
+                </button>
+              </div>
+            </form>
+          ) : null}
         </div>
       </div>
     </div>

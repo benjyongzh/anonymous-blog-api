@@ -12,7 +12,11 @@ function UserDetailPostListItem(props) {
         {currentPost.date_of_post_formatted} ({currentPost.date_of_post_ago})
       </p>
       <p className="h5">{currentPost.title}</p>
-      <p className="mb-0">{currentPost.comments.length} Comments</p>
+      {currentPost.comments.length === 1 ? (
+        <p className="mb-0">{currentPost.comments.length} Comment</p>
+      ) : (
+        <p className="mb-0">{currentPost.comments.length} Comments</p>
+      )}
     </Link>
   );
 }

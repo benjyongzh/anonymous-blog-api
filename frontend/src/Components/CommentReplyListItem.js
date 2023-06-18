@@ -12,15 +12,14 @@ function CommentReplyListItem(props) {
       {!isEmpty(reply.user) ? (
         <Link className="fw-bold link-primary" to={reply.user.url}>
           {reply.user.username}
-          {isByPoster ? (
-            <span className="badge text-bg-primary"> OP</span>
-          ) : null}
         </Link>
       ) : (
         <Link className="fw-bold link-secondary" to="/users/null">
           Deleted User
         </Link>
       )}
+      <span>&nbsp;&nbsp;</span>
+      {isByPoster ? <span className="badge text-bg-primary">OP</span> : null}
       <p className="mb-1 mt-2">{reply.text_escaped}</p>
       <p className="mb-0">
         <em>{reply.date_of_comment_ago}</em>
