@@ -4,6 +4,7 @@ Made using Create-React-App.
 
 to-do:
 
-- member status page.
+- member status page submission.
 - redirecting to error page for all errors. (fetching error, post not found, etc)
-- form validation on client to show input errors before form submit
+- form validation on client to show input errors before form submit.
+- fix navbar lighting up on user profile even if not on own profile.
