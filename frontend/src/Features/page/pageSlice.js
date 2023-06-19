@@ -7,7 +7,7 @@ export const pageNameList = {
   loggingout: "Logging Out",
   loggedout: "Logged Out",
   home: "Home",
-  member_status: "Membership",
+  member_status: "Update Membership",
   error: "Oops!",
   post_create: "Create a Post",
 };
