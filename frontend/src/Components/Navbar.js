@@ -6,6 +6,7 @@ function Navbar() {
   const user = useSelector((state) => state.auth.user);
   const pageName = useSelector((state) => state.page.pageName);
   const mainTitle = useSelector((state) => state.page.mainTitle);
+  const mainId = useSelector((state) => state.page.mainId);
 
   const navBarButtons = () => {
     if (!isEmpty(user)) {
@@ -14,7 +15,7 @@ function Navbar() {
           <li className="nav-item">
             <NavLink
               className={`fs-6 nav-link text-end ${
-                pageName === "user_detail" ? "active text-primary fw-bold" : ""
+                mainId === user._id ? "active text-primary fw-bold" : ""
               }`}
               to={`/users/${user._id}`}
             >

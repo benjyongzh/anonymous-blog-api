@@ -3,7 +3,11 @@ import { useEffect, useState } from "react";
 import axiosInstance from "../api/axios";
 
 import { useDispatch, useSelector } from "react-redux";
-import { setPageName, pageNameList } from "../Features/page/pageSlice";
+import {
+  setPageName,
+  pageNameList,
+  setMainId,
+} from "../Features/page/pageSlice";
 
 import ErrorList from "../Components/ErrorList";
 import FormInput from "../Components/FormInput";
@@ -61,6 +65,7 @@ function PostCreatePage() {
   //componentOnMount
   useEffect(() => {
     dispatch(setPageName("post_create"));
+    dispatch(setMainId(""));
     //do fetching
     getData();
   }, []);

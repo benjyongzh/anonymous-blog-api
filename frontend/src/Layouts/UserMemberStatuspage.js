@@ -3,7 +3,11 @@ import { useLocation, Navigate, useNavigate } from "react-router-dom";
 import axiosInstance from "../api/axios";
 
 import { useSelector, useDispatch } from "react-redux";
-import { setPageName, pageNameList } from "../Features/page/pageSlice";
+import {
+  setPageName,
+  pageNameList,
+  setMainId,
+} from "../Features/page/pageSlice";
 
 import ErrorList from "../Components/ErrorList";
 import FormInput from "../Components/FormInput";
@@ -17,6 +21,7 @@ function UserMemberStatuspage() {
   const [updateLoading, setUpdateLoading] = useState(false);
 
   const pageName = useSelector((state) => state.page.pageName);
+  const currentUser = useSelector((state) => state.auth.user);
   const dispatch = useDispatch();
 
   const getData = async () => {
@@ -61,6 +66,7 @@ function UserMemberStatuspage() {
   //componentOnMount
   useEffect(() => {
     dispatch(setPageName("member_status"));
+    dispatch(setMainId(currentUser._id));
     //do fetching
     getData();
   }, []);

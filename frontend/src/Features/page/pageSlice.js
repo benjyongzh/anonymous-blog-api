@@ -15,6 +15,7 @@ export const pageNameList = {
 const initialState = {
   pageName: "home", // user_detail, login, signup, loggingout, loggedout, home, member_status, error
   mainTitle: "Anon Blog",
+  mainId: "",
 };
 
 // create slice takes an object with name, initialState and reducers
@@ -28,8 +29,11 @@ const pageSlice = createSlice({
     setMainTitle: (state, action) => {
       state.mainTitle = action.payload;
     },
+    setMainId: (state, action) => {
+      state.mainId = action.payload;
+    },
   },
 });
 
 export default pageSlice.reducer;
-export const { setPageName, setMainTitle } = pageSlice.actions;
+export const { setPageName, setMainTitle, setMainId } = pageSlice.actions;

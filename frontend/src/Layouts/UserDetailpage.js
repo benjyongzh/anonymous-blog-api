@@ -4,7 +4,7 @@ import axiosInstance from "../api/axios";
 import { isEmpty } from "lodash";
 
 import { useDispatch, useSelector } from "react-redux";
-import { setPageName } from "../Features/page/pageSlice";
+import { setPageName, setMainId } from "../Features/page/pageSlice";
 
 import LoadingMessage from "../Components/LoadingMessage";
 import UserDetailPostListItem from "../Components/UserDetailPostListItem";
@@ -26,6 +26,7 @@ const UserDetailpage = () => {
         setPosts(response.data.posts);
         setUserToLookAt(response.data.userToLookAt);
         setSameUser(response.data.sameUser);
+        dispatch(setMainId(response.data.userToLookAt._id));
       })
       .catch((error) => {
         console.log(error);

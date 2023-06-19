@@ -2,7 +2,7 @@ import { Link, useLocation } from "react-router-dom";
 import { useEffect } from "react";
 
 import { useDispatch } from "react-redux";
-import { setPageName } from "../Features/page/pageSlice";
+import { setPageName, setMainId } from "../Features/page/pageSlice";
 
 function LogoutPage(props) {
   const { state } = useLocation();
@@ -12,6 +12,7 @@ function LogoutPage(props) {
   //componentOnMount
   useEffect(() => {
     dispatch(setPageName("loggedout"));
+    dispatch(setMainId(""));
   }, []);
 
   return (

@@ -5,7 +5,11 @@ import axiosInstance from "../api/axios";
 import { isEmpty } from "lodash";
 
 import { useDispatch, useSelector } from "react-redux";
-import { setPageName, pageNameList } from "../Features/page/pageSlice";
+import {
+  setPageName,
+  pageNameList,
+  setMainId,
+} from "../Features/page/pageSlice";
 
 import PostListItem from "../Components/PostListItem";
 import LoadingMessage from "../Components/LoadingMessage";
@@ -31,6 +35,7 @@ function Homepage(props) {
   useEffect(() => {
     //do fetching
     dispatch(setPageName("home"));
+    dispatch(setMainId(""));
     getData();
   }, []);
 

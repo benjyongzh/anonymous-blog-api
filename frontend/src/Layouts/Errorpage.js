@@ -2,7 +2,7 @@ import { Link, useLocation } from "react-router-dom";
 import { useEffect } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
-import { setPageName } from "../Features/page/pageSlice";
+import { setPageName, setMainId } from "../Features/page/pageSlice";
 import { pageNameList } from "../Features/page/pageSlice";
 
 import React from "react";
@@ -16,6 +16,7 @@ function Errorpage() {
   //componentOnMount
   useEffect(() => {
     dispatch(setPageName("error"));
+    dispatch(setMainId(""));
   }, []);
 
   return (

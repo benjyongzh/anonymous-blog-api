@@ -4,7 +4,7 @@ import axiosInstance from "../api/axios";
 
 import { useDispatch } from "react-redux";
 import { loggedIn } from "../Features/auth/authSlice";
-import { setPageName } from "../Features/page/pageSlice";
+import { setMainId, setPageName } from "../Features/page/pageSlice";
 
 import ErrorList from "../Components/ErrorList";
 import FormInput from "../Components/FormInput";
@@ -69,6 +69,8 @@ function LoginForm() {
   //componentOnMount
   useEffect(() => {
     dispatch(setPageName("login"));
+    dispatch(setMainId(""));
+
     //do fetching
     getData();
   }, []);

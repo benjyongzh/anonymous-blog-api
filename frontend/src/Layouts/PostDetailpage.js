@@ -4,7 +4,7 @@ import axiosInstance from "../api/axios";
 import { isEmpty } from "lodash";
 
 import { useDispatch, useSelector } from "react-redux";
-import { setPageName } from "../Features/page/pageSlice";
+import { setPageName, setMainId } from "../Features/page/pageSlice";
 
 import LoadingMessage from "../Components/LoadingMessage";
 import TextAreaInput from "../Components/TextAreaInput";
@@ -30,6 +30,7 @@ const PostDetailpage = () => {
       .then((response) => {
         console.log("Post Detail page response: ", response.data);
         setCurrentPost(response.data.post);
+        dispatch(setMainId(response.data.post._id));
         setOwnPost(response.data.ownPost);
         setCanDelete(response.data.canDelete);
       })

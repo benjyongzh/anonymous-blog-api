@@ -191,6 +191,7 @@ exports.user_detail = [
       //GET without sign in
       return res.status(200).json({
         userToLookAt: {
+          _id: userToFind._id,
           username: userToFind.username,
           member_status: userToFind.member_status,
           url: userToFind.url,
@@ -219,6 +220,7 @@ exports.user_detail = [
         //signed in, but looking at other users
         return res.status(200).json({
           userToLookAt: {
+            _id: userToFind._id,
             first_name:
               req.user.member_status !== "Basic" ? userToFind.first_name : "",
             last_name:
