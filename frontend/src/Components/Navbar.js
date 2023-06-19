@@ -8,57 +8,32 @@ function Navbar() {
   const mainTitle = useSelector((state) => state.page.mainTitle);
   const mainId = useSelector((state) => state.page.mainId);
 
-  const navBarButtons = () => {
-    if (!isEmpty(user)) {
-      return (
-        <ul className="nav navbar-nav" style={{ gap: "1rem" }}>
-          <li className="nav-item">
-            <NavLink
-              className={`fs-6 nav-link text-end ${
-                mainId === user._id ? "active text-primary fw-bold" : ""
-              }`}
-              to={`/users/${user._id}`}
-            >
-              {user.first_name}
-            </NavLink>
-          </li>
-          <li className="nav-item">
-            <NavLink
-              className="fs-6 nav-link text-end"
-              to={`/auth/loggingout/${user._id}`}
-            >
-              Log Out
-            </NavLink>
-          </li>
-        </ul>
-      );
-    } else {
-      return (
-        <ul className="nav navbar-nav" style={{ gap: "1rem" }}>
-          <li className="nav-item">
-            <NavLink
-              className={`fs-6 nav-link text-end ${
-                pageName === "login" ? "active text-primary fw-bold" : ""
-              }`}
-              to="/auth/login"
-            >
-              Log In
-            </NavLink>
-          </li>
-          <li className="nav-item">
-            <NavLink
-              className={`fs-6 nav-link text-end ${
-                pageName === "signup" ? "active text-primary fw-bold" : ""
-              }`}
-              to="/auth/signup"
-            >
-              Sign Up
-            </NavLink>
-          </li>
-        </ul>
-      );
-    }
-  };
+  const navBarButtons = (
+    <ul className="nav navbar-nav" style={{ gap: "1rem" }}>
+      <li className="nav-item">
+        <NavLink
+          className={`fs-6 nav-link text-end ${
+            mainId === user._id || pageName === "login"
+              ? "active text-primary fw-bold"
+              : ""
+          }`}
+          to={!isEmpty(user) ? `/users/${user._id}` : "/auth/login"}
+        >
+          {!isEmpty(user) ? user.first_name : "Log In"}
+        </NavLink>
+      </li>
+      <li className="nav-item">
+        <NavLink
+          className={`fs-6 nav-link text-end ${
+            pageName === "signup" ? "active text-primary fw-bold" : ""
+          }`}
+          to={!isEmpty(user) ? `/auth/loggingout/${user._id}` : "/auth/signup"}
+        >
+          {!isEmpty(user) ? "Log Out" : "Sign Up"}
+        </NavLink>
+      </li>
+    </ul>
+  );
 
   return (
     <nav className="navbar navbar-expand-sm navbar-light bg-light">
@@ -83,7 +58,7 @@ function Navbar() {
           className="navbar-collapse collapse justify-content-end"
           id="navbarSupportedContent"
         >
-          {navBarButtons()}
+          {navBarButtons}
         </div>
       </div>
     </nav>
