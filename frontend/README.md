@@ -5,5 +5,5 @@ Made using Create-React-App.
 to-do:
 
 - member status page.
-- post detail page.
-- post creation page.
+- redirecting to error page for all errors. (fetching error, post not found, etc)
+- form validation on client to show input errors before form submit
