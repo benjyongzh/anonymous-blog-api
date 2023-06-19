@@ -50,26 +50,7 @@ function App() {
 
                 <Route path="posts">
                   <Route path="create" element={<PostCreatePage />} />
-                  <Route path=":postId" element={<PostDetailpage />}>
-                    {/* <Route
-                      path="delete"
-                      element={
-                        <PokeballProducts addItemToCart={updateCartItems} />
-                      }
-                    />
-                    <Route
-                      path="comments/create"
-                      element={
-                        <PokeballProducts addItemToCart={updateCartItems} />
-                      }
-                    />
-                    <Route
-                      path="comments/:commentid/reply"
-                      element={
-                        <PokeballProducts addItemToCart={updateCartItems} />
-                      }
-                    /> */}
-                  </Route>
+                  <Route path=":postId" element={<PostDetailpage />} />
                 </Route>
               </Routes>
             </div>
