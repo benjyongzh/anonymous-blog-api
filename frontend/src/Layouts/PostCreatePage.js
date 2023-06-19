@@ -1,4 +1,4 @@
-import { useLocation, Link, Navigate } from "react-router-dom";
+import { useLocation, Link, Navigate, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axiosInstance from "../api/axios";
 
@@ -19,6 +19,7 @@ function PostCreatePage() {
 
   const dispatch = useDispatch();
   const pageName = useSelector((state) => state.page.pageName);
+  const navigateHook = useNavigate();
 
   const getData = async () => {
     return await axiosInstance
@@ -101,14 +102,14 @@ function PostCreatePage() {
           >
             Create
           </button>
-          <Link
-            to="/"
+          <button
+            onClick={() => navigateHook(-1)}
             type="button"
             className="w-100 btn btn-outline-secondary ms-3"
             style={{ maxWidth: "250px" }}
           >
             Cancel
-          </Link>
+          </button>
         </div>
       </form>
     </div>
