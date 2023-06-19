@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axiosInstance from "../api/axios";
 import { isEmpty } from "lodash";
@@ -14,7 +14,8 @@ const UserDetailpage = () => {
   const [userToLookAt, setUserToLookAt] = useState({});
   const [sameUser, setSameUser] = useState(false);
   const currentUser = useSelector((state) => state.auth.user);
-  // const pageName = useSelector((state) => state.page.pageName);
+
+  let { userId } = useParams();
 
   const dispatch = useDispatch();
 
@@ -37,7 +38,7 @@ const UserDetailpage = () => {
     dispatch(setPageName("user_detail"));
     //do fetching
     getData();
-  }, []);
+  }, [userId]);
 
   return (
     <div

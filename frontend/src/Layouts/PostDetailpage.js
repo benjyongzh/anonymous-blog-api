@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axiosInstance from "../api/axios";
 import { isEmpty } from "lodash";
@@ -22,6 +22,7 @@ const PostDetailpage = () => {
   const [newCommentIsLoading, setNewCommentIsLoading] = useState(false);
   const [deletePostIsLoading, setDeletePostIsLoading] = useState(false);
 
+  let { postId } = useParams();
   const dispatch = useDispatch();
 
   const getData = async () => {
@@ -44,7 +45,7 @@ const PostDetailpage = () => {
     dispatch(setPageName("post_detail"));
     //do fetching
     getData();
-  }, []);
+  }, [postId]);
 
   const handleDeletePost = async (event) => {
     event.preventDefault();
