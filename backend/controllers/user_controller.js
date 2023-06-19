@@ -204,6 +204,7 @@ exports.user_detail = [
       if (req.user._id.toString() === req.params.id) {
         return res.status(200).json({
           userToLookAt: {
+            _id: userToFind._id,
             first_name: userToFind.first_name,
             last_name: userToFind.last_name,
             full_name: userToFind.full_name,
@@ -245,9 +246,7 @@ exports.user_memberstatus_get = [
 
     //check if req.user is same as userToLookAt. return the form's select controls
     if (req.user._id.toString() === req.params.id) {
-      return res.status(200).json({
-        formChoices: ["Basic", "Premium", "Admin"],
-      });
+      return res.status(200).json({});
     } else {
       return res
         .status(403)

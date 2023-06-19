@@ -23,28 +23,12 @@ const UserDetailpage = () => {
       .get(`${location.pathname}`)
       .then((response) => {
         console.log("User Detail page response: ", response.data);
-        // response.data will be:
-        // {
-        //   userToLookAt: {
-        //     first_name: userToFind.first_name,
-        //     last_name: userToFind.last_name,
-        //     full_name: userToFind.full_name,
-        //     username: userToFind.username,
-        //     member_status: userToFind.member_status,
-        //     url: userToFind.url,
-        //   },
-        //   sameUser: true/false,
-        //   posts,
-        // }
-        // console.log("Posts: ", response.data.posts);
-        // console.log("UserToLookAt: ", response.data.userToLookAt);
         setPosts(response.data.posts);
         setUserToLookAt(response.data.userToLookAt);
         setSameUser(response.data.sameUser);
       })
       .catch((error) => {
         console.log(error);
-        setErrors([{ path: "generic", msg: "Connection to server failed" }]);
       });
   };
   //componentOnMount
