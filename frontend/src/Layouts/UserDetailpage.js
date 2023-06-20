@@ -1,4 +1,4 @@
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axiosInstance from "../api/axios";
 import { isEmpty } from "lodash";
@@ -13,11 +13,13 @@ const UserDetailpage = () => {
   const [posts, setPosts] = useState([]);
   const [userToLookAt, setUserToLookAt] = useState({});
   const [sameUser, setSameUser] = useState(false);
+  const [loadingFlag, setLoadingFlag] = useState(false);
   const currentUser = useSelector((state) => state.auth.user);
 
   let { userId } = useParams();
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const getData = async () => {
     await axiosInstance
@@ -30,14 +32,15 @@ const UserDetailpage = () => {
         dispatch(setMainId(response.data.userToLookAt._id));
       })
       .catch((error) => {
-        console.log(error);
+        navigate("/users/null", { replace: true });
       });
   };
   //componentOnMount
   useEffect(() => {
+    setLoadingFlag(true);
     dispatch(setPageName("user_detail"));
     //do fetching
-    getData();
+    getData().then((response) => setLoadingFlag(false));
   }, [userId]);
 
   return (
@@ -45,8 +48,8 @@ const UserDetailpage = () => {
       className="d-flex flex-column align-items-stretch justify-content-center container"
       style={{ maxWidth: "900px" }}
     >
-      {isEmpty(userToLookAt) ? (
-        <LoadingMessage path="Async userToLookAt" message={"user info..."} />
+      {isEmpty(userToLookAt) || loadingFlag ? (
+        <LoadingMessage path="Async userToLookAt" message={"user info"} />
       ) : (
         <div>
           <h3 className="text-center mt-2 mb-0">{userToLookAt.username}</h3>

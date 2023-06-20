@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import axiosInstance from "../api/axios";
 import { isEmpty } from "lodash";
@@ -15,11 +15,13 @@ import PostListItem from "../Components/PostListItem";
 import LoadingMessage from "../Components/LoadingMessage";
 
 function Homepage(props) {
-  const [allPosts, setAllPosts] = useState(undefined);
+  const [allPosts, setAllPosts] = useState([]);
+  const [loadingFlag, setLoadingFlag] = useState(false);
   const currentUser = useSelector((state) => state.auth.user);
   const pageName = useSelector((state) => state.page.pageName);
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const getData = async () => {
     await axiosInstance
@@ -28,15 +30,21 @@ function Homepage(props) {
         // console.log("Home page response: ", response);
         setAllPosts(response.data.posts || []);
       })
-      .catch((error) => console.log("Home page error caught: ", error));
+      .catch((error) => {
+        navigate("/error", {
+          state: { message: "Connection to server not found" },
+          replace: true,
+        });
+      });
   };
 
   //componentOnMount
   useEffect(() => {
+    setLoadingFlag(true);
     //do fetching
     dispatch(setPageName("home"));
     dispatch(setMainId(""));
-    getData();
+    getData().then((response) => setLoadingFlag(false));
   }, []);
 
   return (
@@ -59,9 +67,9 @@ function Homepage(props) {
 
       <ul className="list-group mt-3 gap-3">
         {/* posts here */}
-        {allPosts === undefined ? (
-          <LoadingMessage path="Async Props" message={"blog posts"} />
-        ) : allPosts.length > 0 ? (
+        {loadingFlag ? (
+          <LoadingMessage path="Async Props" message={"posts"} />
+        ) : allPosts.length ? (
           allPosts.map((post) => {
             return (
               <PostListItem

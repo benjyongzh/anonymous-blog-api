@@ -1,4 +1,4 @@
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axiosInstance from "../api/axios";
 import { isEmpty } from "lodash";
@@ -14,6 +14,7 @@ const PostDetailpage = () => {
   const [currentPost, setCurrentPost] = useState({});
   const [ownPost, setOwnPost] = useState(false);
   const [canDelete, setCanDelete] = useState(false);
+  const [loadingFlag, setLoadingFlag] = useState(false);
   const currentUser = useSelector((state) => state.auth.user);
   // const pageName = useSelector((state) => state.page.pageName);
 
@@ -24,6 +25,7 @@ const PostDetailpage = () => {
 
   let { postId } = useParams();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const getData = async () => {
     await axiosInstance
@@ -37,14 +39,18 @@ const PostDetailpage = () => {
       })
       .catch((error) => {
         console.log(error);
-        setErrors([{ path: "generic", msg: "Connection to server failed" }]);
+        navigate("/error", {
+          state: { message: "Post could not be found" },
+          replace: true,
+        });
       });
   };
   //componentOnMount
   useEffect(() => {
+    setLoadingFlag(true);
     dispatch(setPageName("post_detail"));
     //do fetching
-    getData();
+    getData().then((response) => setLoadingFlag(false));
   }, [postId]);
 
   const handleDeletePost = async (event) => {
@@ -111,14 +117,14 @@ const PostDetailpage = () => {
       className="d-flex flex-column align-items-stretch justify-content-center container"
       style={{ maxWidth: "900px" }}
     >
-      {isEmpty(currentPost) ? (
-        <LoadingMessage path="Async post" message={"post info..."} />
+      {loadingFlag || isEmpty(currentPost) ? (
+        <LoadingMessage path="Async post" message={"post info"} />
       ) : (
         <div>
           {/* header */}
           <div className="d-flex flex-wrap mt-2 mb-0">
             {/* post OP and date of posting */}
-            {currentPost.user !== null ? (
+            {!isEmpty(currentPost.user) ? (
               <div>
                 <Link
                   className="fw-bold link-primary"
