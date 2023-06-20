@@ -1,6 +1,7 @@
 const User = require("../models/user");
 const Post = require("../models/post");
 const Comment = require("../models/comment");
+const isEmpty = require("lodash").isEmpty;
 
 const asyncHandler = require("express-async-handler");
 const { body, validationResult } = require("express-validator");
@@ -142,6 +143,8 @@ exports.post_detail = [
       })
       .exec();
 
+    console.log(post);
+
     if (post === null) {
       return res.status(404).json({ error: "Post could not be found" });
     }
@@ -149,8 +152,11 @@ exports.post_detail = [
     //check if req.user and if this is own post, and member_status of req.user to see OP's full name
     return res.status(200).json({
       post,
-      ownPost: req.user && req.user._id.toString() === post.user._id.toString(),
-      canDelete: req.user && req.user.member_status === "Admin",
+      ownPost:
+        !isEmpty(req.user) &&
+        !isEmpty(post.user) &&
+        req.user._id.toString() === post.user._id.toString(),
+      canDelete: !isEmpty(req.user) && req.user.member_status === "Admin",
     });
   }),
 ];
