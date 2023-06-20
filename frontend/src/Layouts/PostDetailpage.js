@@ -75,29 +75,30 @@ const PostDetailpage = () => {
   const handleSubmitComment = async (event) => {
     event.preventDefault();
     setNewCommentIsLoading(true);
-    const responseObject = await axiosInstance
+    await axiosInstance
       .post(
         `${location.pathname}/comments/create`,
         JSON.stringify({ new_comment: newComment })
       )
       .then((response) => {
-        // console.log("response of creating comment: ", response);
-        return response.data;
+        console.log("response of creating comment: ", response);
+        if (response.data.errors) {
+          //there are still errors in the form
+          setErrors(response.data.errors);
+          setNewCommentIsLoading(false);
+        } else {
+          // success: find a way to clear newComment, and display new comment object
+          setNewComment("");
+          getData().then((data) => setNewCommentIsLoading(false));
+        }
       })
       .catch((error) => {
         console.log("error from post detail page fetching: ", error);
-        setErrors([{ path: "generic", msg: "Connection to server failed" }]);
+        setErrors([
+          { path: "new_comment", msg: "Connection to server failed" },
+        ]);
+        setNewCommentIsLoading(false);
       });
-
-    if (responseObject.errors) {
-      //there are still errors in the form
-      setErrors(responseObject.errors);
-      setNewCommentIsLoading(false);
-    } else {
-      // success: find a way to clear newComment, and display new comment object
-      setNewComment("");
-      getData().then((data) => setNewCommentIsLoading(false));
-    }
   };
 
   const handleSubmitReply = async () => {
@@ -136,10 +137,10 @@ const PostDetailpage = () => {
                 Deleted User
               </Link>
             )}
-            <span>&nbsp;-&nbsp;</span>
-            <p className="mb-0">
-              posted on {currentPost.date_of_post_formatted}{" "}
-              <em>({currentPost.date_of_post_ago})</em>
+            <span>&nbsp;&nbsp;</span>
+            <p className="mb-0 fst-italic text-secondary">
+              posted on {currentPost.date_of_post_formatted} (
+              {currentPost.date_of_post_ago})
             </p>
 
             {/* delete button for admins */}
