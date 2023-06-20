@@ -56,7 +56,10 @@ function LoggingOutPage(props) {
     <Navigate to="/auth/logout" replace={true} state={{ username: username }} />
   ) : (
     <div>
-      <p className="text-center">Logging you out...</p>
+      <p className="text-center">
+        <i className="bx align-bottom mb-1 bx-loader-circle bx-spin bx-flip-horizontal"></i>
+        &nbsp;Logging you out...
+      </p>
     </div>
   );
 }
