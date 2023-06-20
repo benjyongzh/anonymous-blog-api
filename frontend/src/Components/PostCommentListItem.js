@@ -23,50 +23,58 @@ function PostCommentListItem(props) {
   const handleSubmitReply = async (event) => {
     event.preventDefault();
     setNewReplyIsLoading(true);
-    const responseObject = await axiosInstance
+    await axiosInstance
       .post(
         `${location.pathname}/comments/${comment._id}/reply`,
         JSON.stringify({ new_reply: newReply })
       )
       .then((response) => {
-        // console.log("response: ", response);
-        return response.data;
+        if (response.data.errors) {
+          //there are still errors in the form
+          setErrors(response.data.errors);
+          setNewReplyIsLoading(false);
+        } else {
+          setNewReply("");
+          setErrors([]);
+          // success: find a way to clear newReply, and display new reply object
+          createNewReply().then((data) => setNewReplyIsLoading(false));
+        }
       })
       .catch((error) => {
         console.log(error);
-        setErrors([{ path: "generic", msg: "Connection to server failed" }]);
+        setErrors([{ path: "new_reply", msg: "Connection to server failed" }]);
+        setNewReplyIsLoading(false);
       });
-
-    if (responseObject.errors) {
-      //there are still errors in the form
-      setErrors(responseObject.errors);
-      setNewReplyIsLoading(false);
-    } else {
-      setNewReply("");
-      // success: find a way to clear newReply, and display new reply object
-      createNewReply().then((data) => setNewReplyIsLoading(false));
-    }
   };
 
   return (
     <div className="list-group-item bg-light">
       {/* comment info */}
-      <div className="mt-2 mb-3">
-        <Link
-          className={`fw-bold ${
-            !isEmpty(comment.user) ? "link-primary" : "link-secondary"
-          }`}
-          to={!isEmpty(comment.user) ? comment.user.url : "/users/null"}
-        >
-          {!isEmpty(comment.user) ? comment.user.username : "Deleted User"}
-        </Link>
-        {!isEmpty(comment.user) && showCommenterFullName ? (
-          <span>&nbsp;({comment.user.full_name})</span>
-        ) : null}
-        {comment.isPoster || isByPoster ? (
-          <span className="badge text-bg-primary">&nbsp;&nbsp;OP</span>
-        ) : null}
-        <span> - {comment.date_of_comment_ago}</span>
+      <div className="mt-2 mb-3 d-flex justify-content-start flex-column flex-sm-row">
+        <div className="d-flex">
+          <Link
+            className={`fw-bold ${
+              !isEmpty(comment.user) ? "link-primary" : "link-secondary"
+            }`}
+            to={!isEmpty(comment.user) ? comment.user.url : "/users/null"}
+          >
+            {!isEmpty(comment.user) ? comment.user.username : "Deleted User"}
+          </Link>
+          {!isEmpty(comment.user) && showCommenterFullName ? (
+            <span>&nbsp;({comment.user.full_name})</span>
+          ) : null}
+          <span>&nbsp;&nbsp;</span>
+          {comment.isPoster || isByPoster ? (
+            <div>
+              <span className="badge text-bg-primary">OP</span>
+              <span>&nbsp;&nbsp;</span>
+            </div>
+          ) : null}
+        </div>
+
+        <span className="mb-0 fst-italic text-secondary">
+          {comment.date_of_comment_ago}
+        </span>
       </div>
 
       {/* comment text */}
@@ -155,7 +163,14 @@ function PostCommentListItem(props) {
                   type="submit"
                   style={{ maxWidth: "250px" }}
                 >
-                  {newReplyIsLoading ? "Replying..." : "Reply"}
+                  {newReplyIsLoading ? (
+                    <div>
+                      <i className="bx align-bottom mb-1 bx-loader-circle bx-spin bx-flip-horizontal"></i>
+                      Replying...
+                    </div>
+                  ) : (
+                    "Reply"
+                  )}
                 </button>
               </div>
             </form>
