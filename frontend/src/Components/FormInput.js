@@ -1,6 +1,10 @@
+import { useState } from "react";
+
 import ErrorList from "./ErrorList";
 
 function FormInput(props) {
+  const [hasError, setHasError] = useState(false);
+
   const {
     inputName,
     inputType,
@@ -16,7 +20,7 @@ function FormInput(props) {
       <div className="form-floating mb-1">
         <input
           id={inputName}
-          className="form-control"
+          className={`form-control ${hasError ? "is-invalid" : null}`}
           type={inputType}
           placeholder={placeholder}
           name={inputName}
@@ -25,7 +29,11 @@ function FormInput(props) {
         ></input>
         <label htmlFor={inputName}>{labelText}</label>
       </div>
-      <ErrorList errors={errors} includePaths={[inputName]} />
+      <ErrorList
+        errors={errors}
+        includePaths={[inputName]}
+        checkFormInputValidityStyle={(bool) => setHasError(bool)}
+      />
     </div>
   );
 }

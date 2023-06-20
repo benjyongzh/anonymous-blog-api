@@ -1,6 +1,8 @@
 import ErrorMessage from "./ErrorMessage";
+import { useState, useEffect } from "react";
 
 function ErrorList(props) {
+  const [hasErrorMessage, setHasErrorMessage] = useState(false);
   const filteredErrors = props.errors.filter((error) => {
     if (error.path) {
       return (
@@ -11,6 +13,14 @@ function ErrorList(props) {
     return props.includes("generic");
   });
 
+  useEffect(() => {
+    console.log(props);
+    setHasErrorMessage(filteredErrors.length > 0);
+    props.checkFormInputValidityStyle
+      ? props.checkFormInputValidityStyle(hasErrorMessage)
+      : null;
+  });
+
   return (
     <p className="mt-1 mb-1" style={{ height: "35px" }}>
       {props.errors.length && filteredErrors.length ? (
@@ -19,7 +29,7 @@ function ErrorList(props) {
           message={filteredErrors[0].msg || filteredErrors[0].message}
         />
       ) : (
-        <span key="0">&nbsp;</span>
+        <span>&nbsp;</span>
       )}
     </p>
   );
