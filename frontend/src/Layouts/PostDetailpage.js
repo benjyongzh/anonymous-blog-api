@@ -62,7 +62,7 @@ const PostDetailpage = () => {
         // success: redirect to homepage or backpage
         console.log("response of deleting post: ", response);
         setDeletePostIsLoading(false);
-        navigate(-1);
+        // navigate(-1);
       })
       .catch((error) => {
         //error somewhere
@@ -149,14 +149,20 @@ const PostDetailpage = () => {
                 onSubmit={deletePostIsLoading ? handleDeletePost : null}
               >
                 <button
-                  className="btn btn-outline-danger btn-sm text-center align-top"
+                  className={`btn ${
+                    deletePostIsLoading ? "btn-danger" : "btn-outline-danger"
+                  } btn-sm text-center align-top`}
+                  // className={`btn btn-danger btn-sm text-center align-top`}
                   style={{ borderWidth: "0px", maxWidth: "250px" }}
                   type="submit"
                 >
                   <i
-                    className={`bx bxs-${
-                      deletePostIsLoading ? "loader-circle" : "trash"
-                    } align-bottom mb-1`}
+                    className={`bx align-bottom mb-1 ${
+                      deletePostIsLoading
+                        ? "bx-loader-circle bx-spin bx-flip-horizontal"
+                        : "bxs-trash"
+                    } `}
+                    // className="bx bx-loader-circle bx-spin bx-flip-horizontal align-bottom mb-1"
                   ></i>
                 </button>
               </form>
