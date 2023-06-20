@@ -1,4 +1,4 @@
-import { useLocation, Navigate } from "react-router-dom";
+import { useLocation, Navigate, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axiosInstance from "../api/axios";
 
@@ -11,6 +11,7 @@ function LoggingOutPage(props) {
   const [username, setUsername] = useState("");
   const location = useLocation();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const currentUser = useSelector((state) => state.auth.user);
 
   const getData = async () => {
@@ -24,8 +25,10 @@ function LoggingOutPage(props) {
         setLogoutSuccess(true);
       })
       .catch((error) => {
-        // console.log("Logging out page error caught: ", error);
-        // console.log("Request header: ", error.request.header);
+        navigate("/error", {
+          state: { message: "Connection to server not found" },
+          replace: true,
+        });
       });
   };
 
@@ -42,10 +45,11 @@ function LoggingOutPage(props) {
     //do fetching
     if (identicalUserId()) {
       getData();
-    } /* else
-      console.log(
-        "LoggingOutPage detects different userIDs between URL and storeData"
-      ); */
+    } else
+      navigate("/error", {
+        state: { message: "Unauthorized to log out as this user" },
+        replace: true,
+      });
   }, []);
 
   return logoutSuccess ? (
