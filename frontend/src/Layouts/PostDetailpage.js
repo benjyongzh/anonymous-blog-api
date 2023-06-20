@@ -89,6 +89,7 @@ const PostDetailpage = () => {
         } else {
           // success: find a way to clear newComment, and display new comment object
           setNewComment("");
+          setErrors([]);
           getData().then((data) => setNewCommentIsLoading(false));
         }
       })
