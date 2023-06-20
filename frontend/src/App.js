@@ -1,3 +1,4 @@
+// import { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 //components
@@ -20,7 +21,7 @@ import PostCreatePage from "./Layouts/PostCreatePage";
 
 function App() {
   return (
-    <div className="App bg-light p-2">
+    <div className={`App`}>
       <BrowserRouter>
         <div className="container-fluid p-0">
           <Navbar />

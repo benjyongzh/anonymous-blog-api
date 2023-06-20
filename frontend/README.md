@@ -4,4 +4,5 @@ Made using Create-React-App.
 
 to-do:
 
+- deleting posts.
 - toggle nightmode.
