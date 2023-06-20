@@ -1,6 +1,7 @@
 const User = require("../models/user");
 const Post = require("../models/post");
 const Comment = require("../models/comment");
+const isEmpty = require("lodash").isEmpty;
 
 const asyncHandler = require("express-async-handler");
 
@@ -24,7 +25,7 @@ exports.comment_create_post = [
       .populate({ path: "comments", model: Comment })
       .exec();
 
-    if (post === null) {
+    if (isEmpty(post)) {
       return res.status(404).json({
         errors: [{ message: "Post could not be found" }],
       });
@@ -63,13 +64,13 @@ exports.reply_create_post = [
       Comment.findById(req.params.commentid).exec(),
     ]);
 
-    if (currentPost === null) {
+    if (isEmpty(currentPost)) {
       return res.status(404).json({
         errors: [{ message: "Post could not be found" }],
       });
     }
 
-    if (currentComment === null) {
+    if (isEmpty(currentComment)) {
       return res.status(404).json({
         errors: [{ message: "Comment could not be found" }],
       });
@@ -90,10 +91,22 @@ exports.reply_create_post = [
         date_of_comment: Date.now(),
         isPoster: req.user._id.toString() === currentPost.user._id.toString(),
       });
-      await newReply.save();
-      currentComment.replies.push(newReply);
-      await currentComment.save();
-      return res.status(201).json({ newReply, currentComment });
+      await newReply
+        .save()
+        .then((createdReply) => {
+          // console.log("here is where the reply is pushed.");
+          if (isEmpty(currentComment.isPoster)) {
+            currentComment.isPoster =
+              currentComment.user._id.toString() ===
+              currentPost.user._id.toString();
+          }
+          currentComment.replies.push(createdReply);
+          // console.log("reply has been pushed");
+        })
+        .then(() => currentComment.save())
+        .then(() => {
+          return res.status(201).json({ newReply, currentComment });
+        });
     }
   }),
 ];
