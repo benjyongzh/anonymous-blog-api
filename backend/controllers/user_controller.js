@@ -87,7 +87,7 @@ exports.user_login_post = [
             if (oldTokens.length > 0) {
               oldTokens = oldTokens.filter((t) => {
                 const timeDiff = (Date.now() - parseInt(t.signedAt)) / 1000;
-                console.log(timeDiff);
+                // console.log(timeDiff);
                 // token is less than 1 day old. keep token. otherwise, filter out
                 return timeDiff < 86400;
               });
@@ -276,7 +276,7 @@ exports.user_memberstatus_post = [
       });
     } else {
       //check if req.user is same as userToLookAt
-      if (req.user._id === req.params.id) {
+      if (req.user._id.toString() === req.params.id.toString()) {
         //update user object into db
         userToLookAt.member_status = req.body.new_membership;
         await userToLookAt.save();
