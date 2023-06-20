@@ -56,28 +56,20 @@ const PostDetailpage = () => {
   const handleDeletePost = async (event) => {
     event.preventDefault();
     setDeletePostIsLoading(true);
-    const responseObject = await axiosInstance
-      .delete(
-        `${location.pathname}/delete`,
-        JSON.stringify({ new_comment: newComment })
-      )
+    await axiosInstance
+      .delete(`${location.pathname}/delete`)
       .then((response) => {
-        // console.log("response of creating comment: ", response);
-        return response.data;
+        // success: redirect to homepage or backpage
+        console.log("response of creating comment: ", response);
+        setDeletePostIsLoading(false);
+        navigate(-1);
       })
       .catch((error) => {
+        //error somewhere
         console.log("error from post detail page deleting: ", error);
-        setErrors([{ path: "generic", msg: "Connection to server failed" }]);
+        setDeletePostIsLoading(false);
+        navigate("/error", { state: { message: response.data.message } });
       });
-
-    if (responseObject.errors) {
-      //there are still errors in the form
-      setErrors(responseObject.errors);
-      setDeletePostIsLoading(false);
-    } else {
-      // success: redirect to homepage or backpage
-      setDeletePostIsLoading(false);
-    }
   };
 
   const handleSubmitComment = async (event) => {
@@ -152,13 +144,20 @@ const PostDetailpage = () => {
 
             {/* delete button for admins */}
             {canDelete ? (
-              <form className="ms-auto">
+              <form
+                className="ms-auto"
+                onSubmit={deletePostIsLoading ? handleDeletePost : null}
+              >
                 <button
                   className="btn btn-outline-danger btn-sm text-center align-top"
                   style={{ borderWidth: "0px", maxWidth: "250px" }}
                   type="submit"
                 >
-                  <i className="bx bxs-trash align-bottom mb-1"></i>
+                  <i
+                    className={`bx bxs-${
+                      deletePostIsLoading ? "loader-circle" : "trash"
+                    } align-bottom mb-1`}
+                  ></i>
                 </button>
               </form>
             ) : null}
