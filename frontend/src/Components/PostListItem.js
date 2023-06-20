@@ -9,20 +9,22 @@ function PostListItem(props) {
       to={currentPost.url} //need to solve how to get virtuals from mongoose object
       className="list-group-item list-group-item-action bg-light bg-gradient border border-2 border-secondary rounded-3"
     >
-      <div className="mb-1">
+      <div className="d-flex justify-content-between mb-1 align-items-sm-top">
         {currentPost.user !== null ? (
-          <span className="fw-bold text-primary">
-            {currentPost.user.username}
+          <div className="d-flex flex-column flex-sm-row justify-content-start align-items-sm-center">
+            <div className="fw-bold text-primary">
+              {currentPost.user.username}&nbsp;
+            </div>
             {!isEmpty(currentUser) && currentUser.member_status !== "Basic" ? (
-              <span> ({currentPost.user.full_name})</span>
-            ) : (
-              ""
-            )}
-          </span>
+              <div>({currentPost.user.full_name})&nbsp;</div>
+            ) : null}
+          </div>
         ) : (
-          <span className="fw-bold text-secondary">Deleted User</span>
+          <div className="fw-bold text-secondary">Deleted User&nbsp;</div>
         )}
-        <span> - {currentPost.date_of_post_ago}</span>
+        <div className="fst-italic text-secondary" style={{ fontSize: "14px" }}>
+          {currentPost.date_of_post_ago}
+        </div>
       </div>
       <p className="h5">{currentPost.title}</p>
       {currentPost.comments.length === 1 ? (
