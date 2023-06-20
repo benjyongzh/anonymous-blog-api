@@ -60,7 +60,7 @@ const PostDetailpage = () => {
       .delete(`${location.pathname}/delete`)
       .then((response) => {
         // success: redirect to homepage or backpage
-        console.log("response of creating comment: ", response);
+        console.log("response of deleting post: ", response);
         setDeletePostIsLoading(false);
         navigate(-1);
       })
