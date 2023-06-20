@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { isEmpty } from "lodash";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axiosInstance from "../api/axios";
 
 import CommentReplyListItem from "./CommentReplyListItem";
@@ -60,7 +60,7 @@ function PostCommentListItem(props) {
         >
           {!isEmpty(comment.user) ? comment.user.username : "Deleted User"}
         </Link>
-        {showCommenterFullName ? (
+        {!isEmpty(comment.user) && showCommenterFullName ? (
           <span>&nbsp;({comment.user.full_name})</span>
         ) : null}
         {comment.isPoster || isByPoster ? (
