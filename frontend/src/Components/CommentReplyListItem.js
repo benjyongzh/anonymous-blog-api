@@ -23,8 +23,11 @@ function CommentReplyListItem(props) {
         <span className="badge text-bg-primary">OP</span>
       ) : null}
       <p className="mb-1 mt-2">{reply.text}</p>
-      <p className="mb-0">
-        <em>{reply.date_of_comment_ago}</em>
+      <p
+        className="mb-0 fst-italic text-secondary"
+        style={{ fontSize: "12px" }}
+      >
+        {reply.date_of_comment_ago}
       </p>
     </li>
   );
