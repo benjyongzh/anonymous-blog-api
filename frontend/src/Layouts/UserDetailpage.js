@@ -98,7 +98,7 @@ const UserDetailpage = () => {
             {sameUser ? "Your posts" : `Posts by ${userToLookAt.username}`}
           </h5>
 
-          <ul className="list-group mt-2 mb-3">
+          <ul className="list-group mt-2 mb-3 gap-2">
             {posts.length ? (
               posts.map((post) => (
                 <UserDetailPostListItem key={post._id} post={post} />

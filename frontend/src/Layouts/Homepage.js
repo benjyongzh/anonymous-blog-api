@@ -65,7 +65,7 @@ function Homepage(props) {
         </Link>
       </div>
 
-      <ul className="list-group mt-3 gap-3">
+      <ul className="list-group mt-3 gap-2">
         {/* posts here */}
         {loadingFlag ? (
           <LoadingMessage path="Async Props" message={"posts"} />
