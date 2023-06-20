@@ -34,7 +34,7 @@ exports.comment_create_post = [
     const results = validationResult(req);
     if (!results.isEmpty()) {
       //there are errors in validation
-      return res.json({ user: req.user, errors: results.array() });
+      return res.json({ errors: results.array() });
     } else {
       //add comment to post's comment array
       const newComment = new Comment({

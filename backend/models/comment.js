@@ -9,7 +9,7 @@ const CommentSchema = new Schema(
     text: { type: String, required: true },
     user: { type: Schema.Types.ObjectId, ref: "User", required: true },
     date_of_comment: { type: Date, required: true, default: Date.now() },
-    isPoster: { type: Schema.Types.ObjectId, ref: "User", required: true },
+    isPoster: { type: Boolean, required: true },
   },
   { toObject: { virtuals: true }, toJSON: { virtuals: true } }
 );
