@@ -45,6 +45,12 @@ function checkToken(req, res, next) {
         } else {
           //check if token is in user's db document
           let authUser = await User.findById(authData._id).exec();
+          if (isEmpty(authUser)) {
+            //auth token does not give a valid user at all
+            return res
+              .status(403)
+              .json({ errors: [{ message: "Invalid auth token" }] });
+          }
           let authTokensInUse = authUser.auth_tokens.map(
             (tokenObject) => tokenObject.token
           );
