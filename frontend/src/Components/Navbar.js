@@ -2,6 +2,8 @@ import { useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 import { isEmpty } from "lodash";
 
+import DisplayModeToggle from "./DisplayModeToggle";
+
 function Navbar() {
   const user = useSelector((state) => state.auth.user);
   const pageName = useSelector((state) => state.page.pageName);
@@ -9,7 +11,7 @@ function Navbar() {
   const mainId = useSelector((state) => state.page.mainId);
 
   const navBarButtons = (
-    <ul className="nav navbar-nav" style={{ gap: "1rem" }}>
+    <ul className="nav navbar-nav column-gap-3">
       <li className="nav-item">
         <NavLink
           className={`fs-6 nav-link text-end ${
@@ -36,13 +38,16 @@ function Navbar() {
   );
 
   return (
-    <nav className="navbar navbar-expand-sm navbar-light bg-light">
-      <div className="container-fluid">
+    <nav className="navbar navbar-expand-sm p-2">
+      <div className="container-fluid d-flex">
         <NavLink className="navbar-brand text-uppercase fw-bold" to="/">
           {mainTitle}
         </NavLink>
+
+        <DisplayModeToggle />
+
         <button
-          className="navbar-toggler mb-3"
+          className="navbar-toggler"
           type="button"
           data-bs-toggle="collapse"
           data-bs-target="#navbarSupportedContent"

@@ -6,7 +6,7 @@ function CommentReplyListItem(props) {
 
   return (
     <li
-      className="list-group-item bg-light py-2 border-bottom border-secondary border-2"
+      className="list-group-item py-2 border-bottom-2 border-secondary-subtle"
       style={{ paddingRight: "0px" }}
     >
       {!isEmpty(reply.user) ? (

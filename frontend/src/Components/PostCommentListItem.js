@@ -48,7 +48,7 @@ function PostCommentListItem(props) {
   };
 
   return (
-    <div className="list-group-item bg-light">
+    <div className="list-group-item">
       {/* comment info */}
       <div className="mt-2 mb-3 d-flex justify-content-start flex-column flex-sm-row">
         <div className="d-flex">
