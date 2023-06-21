@@ -14,7 +14,7 @@ function ErrorList(props) {
   });
 
   useEffect(() => {
-    console.log(props);
+    // console.log(props);
     setHasErrorMessage(filteredErrors.length > 0);
     props.checkFormInputValidityStyle
       ? props.checkFormInputValidityStyle(hasErrorMessage)
