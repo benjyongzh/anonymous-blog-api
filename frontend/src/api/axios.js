@@ -2,7 +2,7 @@ import axios from "axios";
 import store from "../Context/store.js";
 
 const defaultOptions = {
-  baseURL: `${process.env.REACT_APP_API_INDEX_URL}${process.env.REACT_APP_BACKEND_PORT}`,
+  baseURL: `${process.env.REACT_APP_API_INDEX_URL}`,
   headers: {
     "Content-Type": "application/json",
   },
