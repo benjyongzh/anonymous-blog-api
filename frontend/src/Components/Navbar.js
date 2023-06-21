@@ -24,6 +24,16 @@ function Navbar() {
 
   const navBarButtons = (
     <ul className="nav navbar-nav column-gap-3">
+      <li className="mt-3" />
+      <li className="nav-item d-flex justify-content-end align-items-center">
+        <DisplayModeToggle
+          setLightMode={setLightMode}
+          setDarkMode={setDarkMode}
+          displayState={displayMode}
+        />
+      </li>
+      <li className="mx-0 mt-1" />
+
       <li className="nav-item">
         <NavLink
           className={`fs-6 nav-link text-end ${
@@ -55,12 +65,6 @@ function Navbar() {
         <NavLink className="navbar-brand text-uppercase fw-bold" to="/">
           {mainTitle}
         </NavLink>
-
-        <DisplayModeToggle
-          setLightMode={setLightMode}
-          setDarkMode={setDarkMode}
-          displayState={displayMode}
-        />
 
         <button
           className="navbar-toggler"
