@@ -9,7 +9,7 @@ Users can apply to become Premium members and/or Admins. Premium members are abl
 This repo is only the API of the project, and it has been deployed on Railway, [here](http://anonymous-blog-production.up.railway.app).
 <br/>
 
-The Front-end site is located here.
+The Front-end site is located [here](https://anonymous-blog-production-93e5.up.railway.app/).
 <br/>
 
 ## Learning points:
