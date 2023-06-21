@@ -1,36 +1,18 @@
 import { useEffect } from "react";
 import "../Styles/displayModeToggle.css";
 import Icon from "@mdi/react";
-import {
-  mdiWhiteBalanceSunny,
-  mdiWeatherNight,
-  mdiMoonWaningCrescent,
-} from "@mdi/js";
+import { mdiWhiteBalanceSunny, mdiMoonWaningCrescent } from "@mdi/js";
 
-import { useSelector, useDispatch } from "react-redux";
-import { setDisplayMode } from "../Features/display/displaySlice";
-
-function DisplayModeToggle() {
-  const displayMode = useSelector((state) => state.display.mode);
-  const dispatch = useDispatch();
+function DisplayModeToggle(props) {
+  const { setLightMode, setDarkMode, displayState } = props;
 
   const toggleDisplayMode = () => {
-    displayMode === "light" ? setDarkMode() : setLightMode();
-  };
-
-  const setDarkMode = () => {
-    // set custom callback here
-    dispatch(setDisplayMode("dark"));
-  };
-
-  const setLightMode = () => {
-    // set custom callback here
-    dispatch(setDisplayMode("light"));
+    displayState === "light" ? setDarkMode() : setLightMode();
   };
 
   useEffect(() => {
-    document.querySelector("html").setAttribute("data-bs-theme", displayMode);
-  }, [displayMode]);
+    document.querySelector("html").setAttribute("data-bs-theme", displayState);
+  }, [displayState]);
 
   return (
     <div className="displaymode-switch">
@@ -41,7 +23,7 @@ function DisplayModeToggle() {
             <Icon
               className="slider-icon"
               path={
-                displayMode === "light"
+                displayState === "light"
                   ? mdiWhiteBalanceSunny
                   : mdiMoonWaningCrescent
               }

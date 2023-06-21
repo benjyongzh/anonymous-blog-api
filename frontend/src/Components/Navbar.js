@@ -1,6 +1,8 @@
-import { useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 import { isEmpty } from "lodash";
+
+import { useSelector, useDispatch } from "react-redux";
+import { setDisplayMode } from "../Features/display/displaySlice";
 
 import DisplayModeToggle from "./DisplayModeToggle";
 
@@ -9,6 +11,16 @@ function Navbar() {
   const pageName = useSelector((state) => state.page.pageName);
   const mainTitle = useSelector((state) => state.page.mainTitle);
   const mainId = useSelector((state) => state.page.mainId);
+
+  const displayMode = useSelector((state) => state.display.mode);
+  const dispatch = useDispatch();
+
+  const setLightMode = () => {
+    dispatch(setDisplayMode("light"));
+  };
+  const setDarkMode = () => {
+    dispatch(setDisplayMode("dark"));
+  };
 
   const navBarButtons = (
     <ul className="nav navbar-nav column-gap-3">
@@ -44,7 +56,11 @@ function Navbar() {
           {mainTitle}
         </NavLink>
 
-        <DisplayModeToggle />
+        <DisplayModeToggle
+          setLightMode={setLightMode}
+          setDarkMode={setDarkMode}
+          displayState={displayMode}
+        />
 
         <button
           className="navbar-toggler"
