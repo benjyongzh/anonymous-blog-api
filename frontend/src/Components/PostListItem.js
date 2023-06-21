@@ -7,7 +7,7 @@ function PostListItem(props) {
   return (
     <Link
       to={currentPost.url} //need to solve how to get virtuals from mongoose object
-      className="list-group-item bg-secondary-subtle list-group-item-action border border-1 border-secondary-subtle rounded-3"
+      className="list-group-item list-group-item-action bg-secondary-subtle border border-0 rounded-0"
     >
       <div className="d-flex justify-content-between mb-1 align-items-sm-top">
         {currentPost.user !== null ? (

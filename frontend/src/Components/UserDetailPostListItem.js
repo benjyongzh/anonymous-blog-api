@@ -6,7 +6,7 @@ function UserDetailPostListItem(props) {
   return (
     <Link
       to={currentPost.url}
-      className="list-group-item list-group-item-action bg-secondary-subtle  border border-1 border-secondary-subtle rounded-3"
+      className="list-group-item list-group-item-action bg-secondary-subtle border border-0 rounded-0"
     >
       <p className="fst-italic text-secondary">
         {currentPost.date_of_post_formatted} ({currentPost.date_of_post_ago})
