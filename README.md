@@ -27,3 +27,5 @@ Learning points:
 - CSRF prevention by sticking to REST rules.
 - Splitting project into React front-end vs ExpressJS API back-end.
 - React-redux toolkit.
+- Creating togglable Dark Mode within Bootstrap v5.3.
+- Forcing all logic into back-end, and passing only relevant data to front-end.

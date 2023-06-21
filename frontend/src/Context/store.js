@@ -1,8 +1,8 @@
 import { configureStore } from "@reduxjs/toolkit";
 
 //middleware
-import { createLogger } from "redux-logger";
-const logger = createLogger();
+// import { createLogger } from "redux-logger";
+// const logger = createLogger();
 
 //reducers
 import authReducer from "../Features/auth/authSlice";
@@ -19,7 +19,7 @@ const store = configureStore({
     display: displayReducer,
   },
   //middleware takes a function that has getDefaultMiddleware. concat your middleware to it
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(logger),
+  // middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(logger),
 });
 
 export default store;
