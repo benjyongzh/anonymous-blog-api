@@ -1,13 +1,21 @@
 import { Link } from "react-router-dom";
 import { isEmpty } from "lodash";
+import "../Styles/custom.css";
+
+import { useSelector } from "react-redux";
 
 function PostListItem(props) {
   const { post: currentPost, currentUser } = props;
+  const displayMode = useSelector((state) => state.display.mode);
 
   return (
     <Link
       to={currentPost.url} //need to solve how to get virtuals from mongoose object
-      className="list-group-item list-group-item-action bg-secondary-subtle border border-0 rounded-0"
+      className={`list-group-item list-group-item-action border border-0 rounded-0 ${
+        displayMode === "light"
+          ? "list-item-button-light"
+          : "list-item-button-dark"
+      }`}
     >
       <div className="d-flex justify-content-between mb-1 align-items-sm-top">
         {currentPost.user !== null ? (

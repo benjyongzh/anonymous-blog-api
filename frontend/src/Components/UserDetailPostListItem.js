@@ -1,12 +1,20 @@
 import { Link } from "react-router-dom";
+import "../Styles/custom.css";
+
+import { useSelector } from "react-redux";
 
 function UserDetailPostListItem(props) {
   const { post: currentPost } = props;
+  const displayMode = useSelector((state) => state.display.mode);
 
   return (
     <Link
       to={currentPost.url}
-      className="list-group-item list-group-item-action bg-secondary-subtle border border-0 rounded-0"
+      className={`list-group-item list-group-item-action border border-0 rounded-0 ${
+        displayMode === "light"
+          ? "list-item-button-light"
+          : "list-item-button-dark"
+      }`}
     >
       <p className="fst-italic text-secondary">
         {currentPost.date_of_post_formatted} ({currentPost.date_of_post_ago})
