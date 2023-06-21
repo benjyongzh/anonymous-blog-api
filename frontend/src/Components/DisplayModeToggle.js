@@ -1,17 +1,31 @@
 import { useEffect } from "react";
+import "../Styles/displayModeToggle.css";
+import Icon from "@mdi/react";
+import {
+  mdiWhiteBalanceSunny,
+  mdiWeatherNight,
+  mdiMoonWaningCrescent,
+} from "@mdi/js";
 
 import { useSelector, useDispatch } from "react-redux";
 import { setDisplayMode } from "../Features/display/displaySlice";
-import { isEmpty } from "lodash";
 
-function Navbar() {
+function DisplayModeToggle() {
   const displayMode = useSelector((state) => state.display.mode);
   const dispatch = useDispatch();
 
   const toggleDisplayMode = () => {
-    displayMode === "light"
-      ? dispatch(setDisplayMode("dark"))
-      : dispatch(setDisplayMode("light"));
+    displayMode === "light" ? setDarkMode() : setLightMode();
+  };
+
+  const setDarkMode = () => {
+    // set custom callback here
+    dispatch(setDisplayMode("dark"));
+  };
+
+  const setLightMode = () => {
+    // set custom callback here
+    dispatch(setDisplayMode("light"));
   };
 
   useEffect(() => {
@@ -19,25 +33,27 @@ function Navbar() {
   }, [displayMode]);
 
   return (
-    <div className="d-flex gap-1">
-      <label className="form-check-label" htmlFor="displayModeSwitch">
-        <i className="bx align-bottom mb-1 bxs-sun"></i>
-      </label>
-      <div className="form-check form-switch ms-2">
-        <input
-          className="form-check-input"
-          type="checkbox"
-          role="switch"
-          id="displayModeSwitch"
-          checked={displayMode === "dark"}
-          onChange={toggleDisplayMode}
-        ></input>
-      </div>
-      <label className="form-check-label" htmlFor="displayModeSwitch">
-        <i className="bx align-bottom mb-1 bxs-moon"></i>
+    <div className="displaymode-switch">
+      <label className="switch">
+        <input type="checkbox" onChange={toggleDisplayMode} />
+        <span className="slider">
+          <div className="slider-control">
+            <Icon
+              className="slider-icon"
+              path={
+                displayMode === "light"
+                  ? mdiWhiteBalanceSunny
+                  : mdiMoonWaningCrescent
+              }
+              size={0.65}
+              color={"snow"}
+              rotate={-30}
+            />
+          </div>
+        </span>
       </label>
     </div>
   );
 }
 
-export default Navbar;
+export default DisplayModeToggle;
