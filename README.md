@@ -11,7 +11,8 @@ This project has been deployed on Railway, [here](http://anonymous-blog-producti
 
 Things to work on:
 
-- like/dislike system(?).
+- API/frontend structure.
+- Backend should conduct all logic and minimise conditional statements on front-end (whether currentUser == userToLookAt, visibility of first_name and last_name, etc)
 
 Learning points:
 
@@ -24,3 +25,8 @@ Learning points:
 - Using conditional middlewares alongside express-validator.
 - Mongoose multi-level deletion of linked database objects.
 - CSRF prevention by sticking to REST rules.
+- Splitting project into React front-end vs ExpressJS API back-end.
+- React-redux toolkit.
+- Creating togglable Dark Mode within Bootstrap v5.3, with Material Design UI library.
+- Forcing all logic into back-end, and passing only relevant data to front-end.
+- Redux-persist.
