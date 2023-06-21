@@ -68,20 +68,25 @@ exports.post_delete_post = [
       })
       .exec();
 
-    if (currentPost === null) {
+    if (isEmpty(currentPost)) {
       return res.status(404).json({ error: "Post could not be found" });
     }
-
+    // console.log("post to be deleted: ", currentPost);
     //check if req.user is an admin
     if (req.user.member_status === "Admin") {
+      // console.log("Is admin. proceed to delete post");
       //get all related comments and replies in this post. will need recursion to find replies
       const directCommentsId = currentPost.comments.map(
         (comment) => comment._id
       );
+
+      // console.log("directCommentsId: ", directCommentsId);
       const indirectCommentsId = currentPost.comments
         .map((comment) => comment.replies)
         .flat()
         .map((reply) => reply._id);
+
+      // console.log("indirectCommentsId: ", indirectCommentsId);
 
       await Comment.deleteMany({ _id: { $in: indirectCommentsId } });
       await Comment.deleteMany({ _id: { $in: directCommentsId } });
@@ -92,6 +97,7 @@ exports.post_delete_post = [
         indirectCommentsId,
       });
     } else {
+      // console.log("Unauthorised to delete post");
       return res
         .status(403)
         .json({ message: "Unauthorized to perform this action." });

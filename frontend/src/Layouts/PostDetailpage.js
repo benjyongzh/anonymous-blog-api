@@ -10,6 +10,8 @@ import LoadingMessage from "../Components/LoadingMessage";
 import TextAreaInput from "../Components/TextAreaInput";
 import PostCommentListItem from "../Components/PostCommentListItem";
 
+import "../Styles/custom.css";
+
 const PostDetailpage = () => {
   const [currentPost, setCurrentPost] = useState({});
   const [ownPost, setOwnPost] = useState(false);
@@ -21,6 +23,7 @@ const PostDetailpage = () => {
   const [errors, setErrors] = useState([]);
   const [newComment, setNewComment] = useState("");
   const [newCommentIsLoading, setNewCommentIsLoading] = useState(false);
+  const [deletePostConfirming, setDeletePostConfirming] = useState(false);
   const [deletePostIsLoading, setDeletePostIsLoading] = useState(false);
 
   let { postId } = useParams();
@@ -53,6 +56,10 @@ const PostDetailpage = () => {
     getData().then((response) => setLoadingFlag(false));
   }, [postId]);
 
+  const toggleDeleteConfirmation = () => {
+    setDeletePostConfirming((curr) => !curr);
+  };
+
   const handleDeletePost = async (event) => {
     event.preventDefault();
     setDeletePostIsLoading(true);
@@ -62,7 +69,7 @@ const PostDetailpage = () => {
         // success: redirect to homepage or backpage
         console.log("response of deleting post: ", response);
         setDeletePostIsLoading(false);
-        // navigate(-1);
+        navigate(-1);
       })
       .catch((error) => {
         //error somewhere
@@ -116,59 +123,96 @@ const PostDetailpage = () => {
       ) : (
         <div>
           {/* header */}
-          <div className="d-flex flex-wrap mt-2 mb-0">
+          <div className="d-flex justify-content-between mt-2 mb-0">
             {/* post OP and date of posting */}
-            {!isEmpty(currentPost.user) ? (
-              <div>
-                <Link
-                  className="fw-bold link-primary"
-                  to={currentPost.user.url}
-                >
-                  {currentPost.user.username}
+            <div className="d-flex flex-wrap">
+              {!isEmpty(currentPost.user) ? (
+                <div>
+                  <Link
+                    className="fw-bold link-primary"
+                    to={currentPost.user.url}
+                  >
+                    {currentPost.user.username}
+                  </Link>
+                  <span>
+                    {!isEmpty(currentPost.user.first_name) &&
+                    !isEmpty(currentPost.user.last_name)
+                      ? ` (${currentPost.user.full_name})`
+                      : ""}
+                  </span>
+                </div>
+              ) : (
+                <Link className="fw-bold link-secondary" to="/users/null">
+                  Deleted User
                 </Link>
-                <span>
-                  {!isEmpty(currentPost.user.first_name) &&
-                  !isEmpty(currentPost.user.last_name)
-                    ? ` (${currentPost.user.full_name})`
-                    : ""}
-                </span>
-              </div>
-            ) : (
-              <Link className="fw-bold link-secondary" to="/users/null">
-                Deleted User
-              </Link>
-            )}
-            <span>&nbsp;&nbsp;</span>
-            <p className="mb-0 fst-italic text-secondary">
-              posted on {currentPost.date_of_post_formatted} (
-              {currentPost.date_of_post_ago})
-            </p>
-
-            {/* delete button for admins */}
-            {canDelete ? (
-              <form
-                className="ms-auto"
-                onSubmit={deletePostIsLoading ? handleDeletePost : null}
+              )}
+              <span>&nbsp;&nbsp;</span>
+              <p className="mb-0 fst-italic text-secondary">
+                posted on {currentPost.date_of_post_formatted} (
+                {currentPost.date_of_post_ago})
+              </p>
+            </div>
+            {/* options */}
+            <div className="btn-group ms-auto mt-0">
+              <button
+                className="btn btn-outline-secondary border border-0 rounded-2 px-1"
+                type="button"
+                data-bs-toggle="dropdown"
+                data-bs-auto-close="outside"
+                aria-expanded="false"
               >
-                <button
-                  className={`btn ${
-                    deletePostIsLoading ? "btn-danger" : "btn-outline-danger"
-                  } btn-sm text-center align-top`}
-                  // className={`btn btn-danger btn-sm text-center align-top`}
-                  style={{ borderWidth: "0px", maxWidth: "250px" }}
-                  type="submit"
-                >
-                  <i
-                    className={`bx align-bottom mb-1 ${
-                      deletePostIsLoading
-                        ? "bx-loader-circle bx-spin bx-flip-horizontal"
-                        : "bxs-trash"
-                    } `}
-                    // className="bx bx-loader-circle bx-spin bx-flip-horizontal align-bottom mb-1"
-                  ></i>
-                </button>
-              </form>
-            ) : null}
+                <i className="bx bx-dots-vertical-rounded"></i>
+              </button>
+              <ul className="dropdown-menu dropdown-menu-end">
+                <li>
+                  <span className="dropdown-item-text">
+                    Post options here. If you had one
+                  </span>
+                </li>
+                {/* delete button for admins */}
+                {canDelete ? (
+                  <li>
+                    {deletePostConfirming ? (
+                      <form
+                        className="dropdown-item-text d-flex gap-2 align-items-center justify-content-end"
+                        onSubmit={handleDeletePost}
+                      >
+                        <div className="mx-2">Confirm delete?</div>
+                        <button
+                          className={`btn btn-danger btn-sm text-center align-top`}
+                          style={{ borderWidth: "0px", maxWidth: "250px" }}
+                          type="submit"
+                        >
+                          <i
+                            className={`bx align-bottom mb-1 ${
+                              deletePostIsLoading
+                                ? "bx-loader-circle bx-spin bx-flip-horizontal"
+                                : "bx-check"
+                            } `}
+                          ></i>
+                        </button>
+                        <button
+                          className={`btn btn-outline-secondary btn-sm text-center align-top`}
+                          style={{ borderWidth: "0px", maxWidth: "250px" }}
+                          onClick={toggleDeleteConfirmation}
+                          type="button"
+                        >
+                          <i className={`bx align-bottom mb-1 bx-x`}></i>
+                        </button>
+                      </form>
+                    ) : (
+                      <button
+                        className="btn dropdown-item text-end"
+                        onClick={toggleDeleteConfirmation}
+                        type="button"
+                      >
+                        Delete
+                      </button>
+                    )}
+                  </li>
+                ) : null}
+              </ul>
+            </div>
           </div>
 
           {/* post content */}

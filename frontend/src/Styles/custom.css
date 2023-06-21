@@ -18,3 +18,7 @@
 .list-item-button-dark:hover {
   background-color: rgb(20, 26, 32);
 }
+
+.dropdown-menu {
+  white-space: nowrap;
+}
