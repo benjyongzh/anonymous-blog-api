@@ -17,7 +17,11 @@ function DisplayModeToggle(props) {
   return (
     <div className="displaymode-switch">
       <label className="switch">
-        <input type="checkbox" onChange={toggleDisplayMode} />
+        <input
+          type="checkbox"
+          onChange={toggleDisplayMode}
+          checked={displayState !== "light"}
+        />
         <span className="slider">
           <div className="slider-control">
             <Icon
