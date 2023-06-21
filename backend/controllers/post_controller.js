@@ -143,7 +143,7 @@ exports.post_detail = [
       })
       .exec();
 
-    console.log(post);
+    // console.log(post);
 
     if (post === null) {
       return res.status(404).json({ error: "Post could not be found" });
