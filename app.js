@@ -23,9 +23,7 @@ var indexRouter = require("./routes/index");
 var mongoose = require("mongoose");
 require("dotenv").config();
 const mongoDb = process.env.MONGODB_URI;
-mongoose
-  .connect(mongoDb, { useUnifiedTopology: true, useNewUrlParser: true })
-  .catch((error) => console.error(error));
+mongoose.connect(mongoDb, {}).catch((error) => console.error(error));
 
 // mongo error handling
 const db = mongoose.connection;
