@@ -7,7 +7,7 @@ const usernameSanitize = [
     .trim()
     .isLength({ min: 5, max: 20 })
     .withMessage("Username must be 5 to 20 characters long")
-    .isAlphanumeric("en-US", { ignore: /\_\-/g })
+    .isAlphanumeric("en-US", { ignore: "_-" })
     .withMessage(
       "Username can only contain alphanumeric characters, underscores and hypens."
     ),
