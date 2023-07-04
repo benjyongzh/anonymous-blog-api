@@ -34,10 +34,12 @@ The Front-end site is located [here](https://anonymous-blog-production-93e5.up.r
 ### Homepage
 
 > **GET**
+>
 > endpoint: "/"
+>
 > **optional** header:
 >
-> - Authorization: Bearer some_jwt_token
+> - Authorization: "Bearer\<space\>some_jwt_token"
 
 Example response:
 
@@ -62,10 +64,12 @@ status 200
 ### User Detail Page
 
 > **GET**
+>
 > endpoint: "/users/:id"
+>
 > **optional** header:
 >
-> - Authorization: Bearer some_jwt_token
+> - Authorization: "Bearer\<space\>some_jwt_token"
 
 Example response:
 
@@ -82,7 +86,11 @@ status 200
         url: "/users/987654321",
     },
     sameUser: false, //
-    posts: [<posts made by thommy>],
+    posts: [
+        {first post made by Thommy},
+        {second post made by Thommy},
+        {third post made by Thommy}
+    ],
 }
 ```
 
