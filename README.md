@@ -331,7 +331,7 @@ status 200
                 ],
     },
       ownPost: false, // will only be true if you are accessing this endpoint as the authorized user of this post
-      canDelete: false, / will only be true if you are accessing this endpoint as an authorized user with "Admin" membership,
+      canDelete: false, // will only be true if you are accessing this endpoint as an authorized user with "Admin" membership,
 }
 ```
 
