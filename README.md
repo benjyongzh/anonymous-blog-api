@@ -18,8 +18,6 @@ The Front-end site is located [here](https://anonymous-blog-production-93e5.up.r
 - Forcing all logic into back-end, and passing only relevant data to front-end.
 - Deploying back-end and front-end separately in Railway, as separate repos.
 
-### Back-end
-
 - OAuth with passport-local, express-validations and form UX.
 - Migrating Bootstrap from v4 to v5.
 - Mongoose multi-level populate.
@@ -31,12 +29,71 @@ The Front-end site is located [here](https://anonymous-blog-production-93e5.up.r
 - CSRF prevention by sticking to REST rules.
 - Expanding DB models for new features.
 
-### Front-end
+## How to use API
 
-- React-redux toolkit.
-- Redux-persist.
-- Using Axios to link to back-end.
-- Material Design UI.
-- Bootstrap v5.3 with dark theme.
-- Creating togglable Dark Mode switch from scratch.
-- Minor Bootstrap styling customizations.
+### Homepage
+
+> **GET**
+> endpoint: "/"
+> **optional** header:
+>
+> - Authorization: Bearer some_jwt_token
+
+Example response:
+
+```
+status 200
+{
+ posts: [
+    {
+    title: "some_post_title",
+    text: "some optional text in the post",
+    user: ObjectId(1234567890),
+    date_of_post: 2023-06-05T09:35:28.499+00:00,
+    comments: [
+                ObjectId(1029589671056),
+                ObjectId(1025811025905)
+                ],
+    }
+  ]
+}
+```
+
+### User Detail Page
+
+> **GET**
+> endpoint: "/users/:id"
+> **optional** header:
+>
+> - Authorization: Bearer some_jwt_token
+
+Example response:
+
+```
+status 200
+{
+    userToLookAt: {
+        _id: ObjectId(987654321),
+        first_name: "Thommy", //if you are not authenticated with a JWT token or your account is "Basic", your response for first_name will be ""
+        last_name: "Lim", //if you are not authenticated with a JWT token or your account is "Basic", your response for last_name will be ""
+        full_name: "Thommy Lim", //if you are not authenticated with a JWT token or your account is "Basic", your response for full_name will be ""
+        username: "Thommy_lim_123",
+        member_status: "Basic",
+        url: "/users/987654321",
+    },
+    sameUser: false, //
+    posts: [<posts made by thommy>],
+}
+```
+
+```
+status 404
+{
+    errors: [
+        {
+            path: "generic",
+            message: "User could not be found"
+        }
+    ],
+}
+```
